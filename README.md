@@ -1,8 +1,10 @@
-= architecture-js
+# architecture-js
 
-Description goes here.
+##About
 
-== Contributing to architecture-js
+Architecture.js is a suite of tools to help you build and manage complex javascript applications and frameworks.
+
+###contributing to architecture.js
  
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
 * Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it
