@@ -31,7 +31,7 @@ Gem::Specification.new do |s|
     "spec/architecture-js_spec.rb",
     "spec/spec_helper.rb"
   ]
-  s.homepage = "github.com/daytonn/architecture.js"
+  s.homepage = "http://github.com/daytonn/architecture.js"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
   s.rubygems_version = "1.8.10"
