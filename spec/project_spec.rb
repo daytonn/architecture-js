@@ -10,8 +10,12 @@ describe ArchitectureJS::Project do
     before :each do
       FileUtils.mkdir TMP_DIR
       suppress_output do
-        @project = ArchitectureJS::Project.new('myapp', { root: TMP_DIR })
+        @project = ArchitectureJS::Project.new({ name: 'myapp' }, TMP_DIR)
       end
+    end
+
+    it "should add the 'none' framework to ArchitectureJS" do
+      ArchitectureJS::FRAMEWORKS['none'].should == ArchitectureJS::Project
     end
 
     after :each do
@@ -30,43 +34,17 @@ describe ArchitectureJS::Project do
       @project.respond_to?("write_config").should be_true
     end
 
+    it "should have a watch_directories array" do
+      @project.watch_directories.should == ['src']
+    end
+
   end # Instantiation
-=begin
-  context "Instantiation with a config file" do
-
-   before :each do
-     FileUtils.mkdir("#{TMP_DIR}")
-     FileUtils.cp "#{FIXTURES}/existing.conf", "#{TMP_DIR}/myapp.conf"
-     suppress_output { @project = ArchitectureJS::Project.init_with_config({ root: "#{TMP_DIR}" }) }
-   end
-
-   after :each do
-     FileUtils.rm_rf "#{TMP_DIR}" if File.exists? "#{TMP_DIR}"
-   end
-
-   it 'should throw and error when no config exists' do
-     FileUtils.rm_rf "#{TMP_DIR}/myapp.conf"
-     lambda {
-       ArchitectureJS::Project.init_with_config root: "#{TMP_DIR}"
-     }.should raise_error
-   end
-
-   it 'should set defaults from config file' do
-     @project.config.should == {
-       name: 'test',
-       framework: 'custom',
-       src_dir: 'source',
-       dest_dir: 'dest',
-       output: 'compressed'
-     }
-   end
-  end # Instantiation with an existing config file
 
   context "Project Creation" do
    before :each do
      FileUtils.mkdir("#{TMP_DIR}")
      suppress_output do
-       @project = ArchitectureJS::Project.new('myapp', { root: "#{TMP_DIR}" })
+       @project = ArchitectureJS::Project.new({ name: 'myapp' }, TMP_DIR)
        @project.create
      end
    end
@@ -81,8 +59,8 @@ describe ArchitectureJS::Project do
    end
 
    it 'should create a config file' do
-     File.exists?("#{TMP_DIR}/myapp.conf").should be_true
-     "#{TMP_DIR}/myapp.conf".should be_same_file_as "#{FIXTURES}/myapp.conf"
+     File.exists?("#{TMP_DIR}/myapp.architecture").should be_true
+     "#{TMP_DIR}/myapp.architecture".should be_same_file_as "#{FIXTURES}/myapp.architecture"
    end
 
   end # Project Creation
@@ -91,7 +69,7 @@ describe ArchitectureJS::Project do
     before :each do
       FileUtils.mkdir("#{TMP_DIR}")
       suppress_output do
-        @project = ArchitectureJS::Project.new('myapp', { root: "#{TMP_DIR}" })
+        @project = ArchitectureJS::Project.new({ name: 'myapp' },TMP_DIR)
         @project.create
         FileUtils.cp "#{FIXTURES}/lib1.js", "#{TMP_DIR}/lib/lib1.js"
         FileUtils.cp "#{FIXTURES}/lib2.js", "#{TMP_DIR}/lib/lib2.js"
@@ -110,5 +88,5 @@ describe ArchitectureJS::Project do
     end
 
   end # Project Update
-=end
+
 end

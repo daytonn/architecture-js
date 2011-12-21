@@ -1,0 +1,6 @@
+name: test
+framework: none
+src_dir: source
+build_dir: dest
+asset_root: ../
+output: compressed

@@ -1,48 +1,47 @@
 module ArchitectureJS
   class Project # TODO make generator belong to project to have default templates hooked up to generator
     attr_reader :root,
-                :config,
                 :src_files,
-                :framework
+                :framework,
+                :config_name,
+                :watch_directories
 
-    attr_accessor :config_name
+    attr_accessor :config
 
-    # this line adds 
-    ArchitectureJS::register_framework
-    
-    def self.init_with_config(options = nil)
-      # TODO the project needs to be able to access the custom framework class
-      self.new(options).read_config
-    end
+    # this line adds the default framework to ArchitectureJS
+    ArchitectureJS::register_framework 'none', self
 
-    def initialize(name, options = nil)
-      @settings = {
-        root: Dir.getwd,
-        config_file: "#{name.downcase}.architecture"
-      }
-      @settings.merge!(options) unless options.nil?
-      @root = File.expand_path(@settings[:root])
+    def initialize(config, root = nil)
+      raise "#{self.class}.new({ name: 'myapp' }, options): config[:name] is undefined" unless config[:name]
+      @config_file = "#{config[:name].downcase}.architecture"
+      root ||= Dir.getwd
+      @root = File.expand_path(root)
       @directories = ['lib', 'src']
+      @watch_directories = ['src']
       @src_files = Array.new
       @config = {
-        name: name,
+        framework: 'none',
         src_dir: 'src',
         build_dir: 'lib',
         asset_root: '../',
         output: 'compressed'
       }
+      @config.merge! config unless config.nil?
+    end
+  
+    def read_config
+      config = YAML.load_file("#{@root}/#{@config_file}")
+      assign_config_variables config
     end
 
-    def read_config
-      config = YAML.load_file("#{@root}/#{@config[:name]}.conf")
+    def assign_config_variables(config)
       config.each do |key, value|
         @config[key.to_sym] = value
       end
-      self
     end
 
     def create
-      puts ArchitectureJS::Notification.notice "Creating the #{@name} project in #{@root}" 
+      puts ArchitectureJS::Notification.notice "Creating the #{@config[:name]} project in #{@root}" 
       create_project_scaffold
       write_config
     end
@@ -57,14 +56,14 @@ module ArchitectureJS
     end
 
     def write_config
-      File.open("#{@root}/#{@settings[:config_file]}", "w+") do |conf_file|
+      File.open("#{@root}/#{@config_file}", "w+") do |conf_file|
         @config.each do |key, value|
-          Array conf_file << "#{key}: #{ArchitectureJS::Helpers.array_to_yml value}\n" if value.is_a?
-          String conf_file << "#{key}: #{value}\n" if value.is_a?
+          conf_file << "#{key}: #{ArchitectureJS::Helpers.array_to_yml value}\n" if value.is_a? Array
+          conf_file << "#{key}: #{value}\n" if value.is_a? String
         end
       end
 
-      puts ArchitectureJS::Notification.notify "#{@name}.conf created", :added
+      puts ArchitectureJS::Notification.notify "#{@config_file} created", :added
     end
 
     def update
@@ -75,13 +74,16 @@ module ArchitectureJS
       @errors = false
     end
 
-    def get_src_files
+    def get_src_files      
       [*@config[:src_dir]].each do |directory| 
         add_src_files_to_project File.expand_path(directory, @root)
-      end
+      end      
     end
 
     def add_src_files_to_project(directory)
+      puts '-------------------'
+      puts directory
+      puts '-------------------'
       Dir["#{directory}/*.js"].each do |file|
         src_filename = file.gsub(directory, '')
         @src_files << "#{directory}#{src_filename}" unless src_filename.match(/^\/_/)

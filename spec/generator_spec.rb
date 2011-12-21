@@ -28,7 +28,7 @@ describe ArchitectureJS::Generator do
   end
 
   it 'should render a template' do
-    project = ArchitectureJS::Project.new root: TMP_DIR
+    project = ArchitectureJS::Project.new { name: 'myapp' }, { root: TMP_DIR }
     @gen.render_template('test_template', project).should == File.open("#{FIXTURES}/test_template.js").read
   end
 

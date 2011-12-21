@@ -5,7 +5,7 @@ describe ArchitectureJS::Command do
   context 'API' do
     before :each do
       suppress_output do
-        @project = ArchitectureJS::Project.new('myapp', root: TMP_DIR)
+        @project = ArchitectureJS::Project.new({ name: 'myapp' }, TMP_DIR)
         @project.create
       end
     end
@@ -39,21 +39,21 @@ describe ArchitectureJS::Command do
     it 'should create a new application' do
       suppress_output { ArchitectureJS::Command.create({ name: 'myapp', root: TMP_DIR }) }
 
-      "#{TMP_DIR}/myapp.conf".should be_same_file_as "#{FIXTURES}/myapp.conf"
+      "#{TMP_DIR}/myapp.architecture".should be_same_file_as "#{FIXTURES}/myapp.architecture"
       File.directory?("#{TMP_DIR}/lib").should be_true
       File.directory?("#{TMP_DIR}/src").should be_true
     end
 
     it 'should compile the application' do
       suppress_output { ArchitectureJS::Command.create({ name: 'myapp', root: TMP_DIR }) }
-      FileUtils.cp "#{FIXTURES}/lib1.js", "#{TMP_DIR}/lib/lib1.js"
-      FileUtils.cp "#{FIXTURES}/lib2.js", "#{TMP_DIR}/lib/lib2.js"
+      FileUtils.cp "#{FIXTURES}/lib1.js", "#{TMP_DIR}/src/lib1.js"
+      FileUtils.cp "#{FIXTURES}/lib2.js", "#{TMP_DIR}/src/lib2.js"
       FileUtils.cp "#{FIXTURES}/src_file.js", "#{TMP_DIR}/src/myapp.js"
 
       suppress_output { ArchitectureJS::Command.compile({ path: TMP_DIR }) }
 
-      File.exists?("#{TMP_DIR}/myapp.js").should be_true
-      "#{TMP_DIR}/myapp.js".should be_same_file_as "#{FIXTURES}/compiled_src.js"
+      File.exists?("#{TMP_DIR}/lib/myapp.js").should be_true
+      "#{TMP_DIR}/lib/myapp.js".should be_same_file_as "#{FIXTURES}/compiled_src.js"
     end
     
   end # Usage
