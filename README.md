@@ -2,7 +2,7 @@
 
 ##About
 
-Architecture.js is a suite of tools to help you build and manage complex javascript applications and frameworks.
+Architecture.js is a suite of tools to help you build and manage complex javascript applications and frameworks. With architecture.js you can create project scaffolding, manage third-party packages, compile, and compress your javascript application, all in real time as you write plain old vanilla javascript. In addition to large applications, architecture.js is perfect for developing your own javascript frameworks. 
 
 ###contributing to architecture.js
  

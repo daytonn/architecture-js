@@ -1,0 +1,214 @@
+#!/usr/bin/env ruby
+
+$: << File.expand_path(File.join(File.dirname(__FILE__), "../lib"))
+
+begin
+  require 'architecture-js'
+  require 'optparse'
+rescue LoadError
+  require 'rubygems'
+  require 'architecture-js'
+  require 'optparse'
+end
+
+create = <<-CREATE
+  create    Creates a new architecture-js application in the current working 
+            directory or sub directory within.
+        
+            Arguments:
+            application name - Name of the architecture-js application
+            subdirectory* - Directory where the application will be 
+                            installed (created if non existent)
+                                    
+            examples:
+            arcjs create myapp
+            arcjs create myapp subdirectory
+CREATE
+
+generate = <<-GEN
+  generate  Generates scoffolding for the given component file type. 
+
+            Arguments:
+            type - Type of application scaffold to create (module, elements, model).
+            name* - Name of the module to generate the scaffold for
+
+            Options:
+            -a, --alias name* - Create an alias of the application object
+                                (defaults to "app"), passing a name is optional
+            -e, --elements - Generate an elements file
+            -m, --model - Generate a model file 
+
+            examples:
+            arcjs generate module mymodule -em (generates module, elements and model)
+            arcjs generate module mymodule -a (generates an application alias)
+            arcjs generate elements mymodule -m (generates an elements and a model file)
+            arcjs generate model mymodule (generates an model file)
+GEN
+
+compile = <<-COMP
+  compile   Compiles the architecture-js project in the current working directory.
+  
+            Options:
+            -c, --compress - Compress output with JsMin
+          
+            example:
+            arcjs compile
+COMP
+
+watch = <<-WATCH
+  watch     Watches the current working directory for file changes and
+            compiles when changes are detected.
+          
+            example:
+            arcjs watch
+WATCH
+
+upd = <<-UPDATE
+  update   Updates your application's core files to the latest version.
+UPDATE
+
+footer = <<-FOOTER
+* optional argument
+FOOTER
+
+help = {
+  create: create,
+  generate: generate,
+  compile: compile,
+  watch: watch,
+  update: upd,
+  footer: footer
+}
+
+command = ARGV[0]
+
+options = {
+  alias: nil,
+  elements: false,
+  model: false,
+  help: false,
+  compress: nil
+}
+
+optparse = OptionParser.new do |opts|
+  opts.on( '-h', '--help', 'Display this screen' ) do
+    options[:help] = true
+  end
+  
+  opts.on( '-v', '--version', 'Display the version') do
+    time = Time.now
+    puts ArchitectureJS::Notification.notice 'arcjs ' + ArchitectureJS::VERSION
+    puts ArchitectureJS::Notification.notice "Copyright (c) #{time.year} Dayton Nolan"
+    puts ArchitectureJS::Notification.notice "Released under the MIT License"
+    exit
+  end
+  
+  opts.on( '-a', '--alias [alias]', 'Generate application alias') do |als|
+    options[:alias] = als || "app"
+  end
+  
+  opts.on( '-d', '--dest [dest]', 'Module destination directory') do |dest|
+    options[:dest] = dest
+  end
+  
+  opts.on('-e', '--elements', 'Generate elements file') do
+    options[:elements] = true
+  end
+  
+  opts.on('-m', '--model', 'Generate model file') do
+    options[:model] = true
+  end
+  
+  opts.on('-c', '--compress', 'Compress with JsMin') do
+    options[:compress] = true
+  end
+end
+
+optparse.parse!
+
+case command
+# create
+  when "create"
+    if options[:help]
+      puts help[:create]
+      exit
+    end
+    app_name = ARGV[1]
+    sub_dir = ARGV[2] || nil
+    
+    if app_name.nil?
+      puts "Error! Application name is required (arcjs create app_name)"
+      exit
+    end
+    
+    config = { name: app_name }
+    config[:root] = sub_dir unless sub_dir.nil?
+    ArchitectureJS::Command.create(config)
+# generate
+  when "generate"
+    if options[:help]
+      puts help[:generate]
+      exit
+    end
+    
+    errors = Hash.new
+    type = ARGV[1]
+    name = ARGV[2]
+    als = options[:alias] || nil
+    dest = options[:dest] || nil
+
+    errors[:type] = "Error! Scaffold type is required (arcjs generate module mymodule)" if type.nil?
+    errors[:name] = "Error! Module name is required (arcjs generate module mymodule)" if name.nil?
+    
+    unless errors.empty?
+      errors.each do |error|
+        puts error
+      end
+      exit
+    end
+    
+    dependencies = {
+        model: options[:model],
+        elements: options[:elements]
+    }
+    
+    ArchitectureJS::Command.generate({
+      project: ArchitectureJS::Project.new,
+      type: type,
+      name: name,
+      alias: als,
+      dest: dest,
+      dependencies: dependencies
+    })
+# compile
+  when "compile"
+    if options[:help]
+      puts help[:compile]
+      exit
+    end
+    
+    if options[:compress]
+      ArchitectureJS::Command.compile
+    else
+      ArchitectureJS::Command.compile({ force_compress: options[:compress] })
+    end
+# watch
+  when "watch"
+    if options[:help]
+      puts help[:watch]
+      exit
+    end
+    ArchitectureJS::Command.watch
+# update
+  when "update"
+    if options[:help]
+      puts help[:update]
+      exit
+    end
+    ArchitectureJS::Command.update
+  else
+    help.each do |section|
+      puts section.last + "\n"
+    end
+    exit
+  end
