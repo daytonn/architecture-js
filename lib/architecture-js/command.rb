@@ -45,7 +45,7 @@ module ArchitectureJS
 
       settings.merge!(config) unless config.nil?
 
-      raise 'you must specify a project name: arcjs create ProjectName' if settings[:name].nil?
+      raise 'you must specify a project name: architect create ProjectName' if settings[:name].nil?
 
       project = ArchitectureJS::Project.new({ name: settings[:name] }, settings[:root])# TODO add settings[:framework]
       project.create

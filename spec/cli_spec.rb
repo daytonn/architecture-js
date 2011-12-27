@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'CLI' do
   before :each do
-    @bin = "#{ArchitectureJS::BASE_DIR}/bin/arcjs"
+    @bin = "#{ArchitectureJS::BASE_DIR}/bin/architect"
     FileUtils.mkdir "#{TMP_DIR}" unless File.exists? "#{TMP_DIR}"
     suppress_output { %x(cd #{TMP_DIR}; #{@bin} create myapp) }
     FileUtils.cp "#{FIXTURES}/lib1.js", "#{TMP_DIR}/lib/lib1.js"
