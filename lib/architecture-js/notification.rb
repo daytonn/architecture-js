@@ -11,23 +11,23 @@ module ArchitectureJS
     
     @@indicators = {
       none: "",
-      log: "\e[32m>>>\e[0m",
-      event: "\e[33m<<<\e[0m",
-      added: "\e[32m+++\e[0m",
-      error: "\e[0;31m!!!\e[0m"
+      log: "\e[32m>>>\e[0m ",
+      event: "\e[33m<<<\e[0m ",
+      added: "\e[32m+++\e[0m ",
+      error: "\e[0;31m!!!\e[0m "
     }
 
-    @@indicators.merge! {
+    @@indicators.merge!({
       none: "",
       log: ">>>",
       event: "<<<",
       added: "+++",
       error: "!!!"
-    } if win_platform
+    }) if win_platform
 
     def self.notify(type, message)
       raise "There is no #{type} indicator" unless @@indicators[type]
-      "#{@@indicators[type]} #{message}"
+      "#{@@indicators[type]}#{message}"
     end
     
     def self.notice(message)

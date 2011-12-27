@@ -4,7 +4,10 @@ module ArchitectureJS
                 :src_files,
                 :framework,
                 :config_name,
-                :watch_directories
+                :watch_directories,
+                :directories,
+                :template_directories,
+                :generator
 
     attr_accessor :config
 
@@ -16,6 +19,7 @@ module ArchitectureJS
       @config_file = "#{config[:name].downcase}.architecture"
       root ||= Dir.getwd
       @root = File.expand_path(root)
+      @template_directories = ["#{ArchitectureJS::BASE_DIR}/templates", "#{@root}/templates"]
       @directories = ['lib', 'src']
       @watch_directories = ['src']
       @src_files = Array.new
@@ -27,6 +31,7 @@ module ArchitectureJS
         output: 'compressed'
       }
       @config.merge! config unless config.nil?
+      @generator = ArchitectureJS::Generator.new self
     end
   
     def read_config
@@ -63,7 +68,7 @@ module ArchitectureJS
         end
       end
 
-      puts ArchitectureJS::Notification.notify "#{@config_file} created", :added
+      puts ArchitectureJS::Notification.added "#{@config_file} created"
     end
 
     def update

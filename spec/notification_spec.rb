@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe ArchitectureJS::Notification do  
   it 'should have a notify method' do
-    ArchitectureJS::Notification.notify('hello', :none).should == 'hello'
+    ArchitectureJS::Notification.notify(:none, 'hello').should == 'hello'
   end
   
   it 'should have a notice method' do

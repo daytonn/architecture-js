@@ -15,14 +15,14 @@ describe 'CLI' do
   end
 
   it 'should create a new application' do
-    "#{TMP_DIR}/myapp.conf".should be_same_file_as "#{FIXTURES}/myapp.conf"
+    "#{TMP_DIR}/myapp.architecture".should be_same_file_as "#{FIXTURES}/myapp.architecture"
     File.directory? "#{TMP_DIR}/lib"
     File.directory? "#{TMP_DIR}/src"
   end
   
   it 'should create a new application in a subdirectory' do
     suppress_output { %x(cd #{TMP_DIR}; #{@bin} create myapp sub) }
-    "#{TMP_DIR}/sub/myapp.conf".should be_same_file_as "#{FIXTURES}/myapp.conf"
+    "#{TMP_DIR}/sub/myapp.architecture".should be_same_file_as "#{FIXTURES}/myapp.architecture"
     File.directory? "#{TMP_DIR}/sub/lib"
     File.directory? "#{TMP_DIR}/sub/src"
     File.exists? "#{TMP_DIR}/sub/myapp.js"
@@ -31,8 +31,8 @@ describe 'CLI' do
 
   it 'should compile the application' do
     suppress_output { %x(cd #{TMP_DIR}; #{@bin} compile) }
-    File.exists?("#{TMP_DIR}/myapp.js").should be_true
-    "#{TMP_DIR}/myapp.js".should be_same_file_as "#{FIXTURES}/compiled_src.js"
+    File.exists?("#{TMP_DIR}/lib/myapp.js").should be_true
+    "#{TMP_DIR}/lib/myapp.js".should be_same_file_as "#{FIXTURES}/compiled_src.js"
   end
 
 end

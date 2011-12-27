@@ -34,10 +34,21 @@ describe ArchitectureJS::Project do
       @project.respond_to?("write_config").should be_true
     end
 
+    it "should have directories" do
+      @project.directories.should == ['lib', 'src']
+    end
+
+    it "should have template_directories" do
+      @project.template_directories.should == ["#{ArchitectureJS::BASE_DIR}/templates", "#{TMP_DIR}/templates"]
+    end
+
     it "should have a watch_directories array" do
       @project.watch_directories.should == ['src']
     end
 
+    it "should have a generator" do
+      @project.generator.should_not be_nil
+    end
   end # Instantiation
 
   context "Project Creation" do
