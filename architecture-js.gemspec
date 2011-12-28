@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "architecture-js"
-  s.version = "0.1.0"
+  s.version = "0.1.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Dayton Nolan"]
-  s.date = "2011-12-27"
+  s.date = "2011-12-28"
   s.description = "Architecture.js helps you generate scaffolding, manage third-party packages, compile, and compress your application."
   s.email = "daytonn@gmail.com"
   s.executables = ["architect"]
