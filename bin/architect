@@ -21,8 +21,8 @@ create = <<-CREATE
                             installed (created if non existent)
                                     
             examples:
-            arcjs create myapp
-            arcjs create myapp subdirectory
+            architect create myapp
+            architect create myapp subdirectory
 CREATE
 
 generate = <<-GEN
@@ -39,10 +39,10 @@ generate = <<-GEN
             -m, --model - Generate a model file 
 
             examples:
-            arcjs generate module mymodule -em (generates module, elements and model)
-            arcjs generate module mymodule -a (generates an application alias)
-            arcjs generate elements mymodule -m (generates an elements and a model file)
-            arcjs generate model mymodule (generates an model file)
+            architect generate module mymodule -em (generates module, elements and model)
+            architect generate module mymodule -a (generates an application alias)
+            architect generate elements mymodule -m (generates an elements and a model file)
+            architect generate model mymodule (generates an model file)
 GEN
 
 compile = <<-COMP
@@ -52,7 +52,7 @@ compile = <<-COMP
             -c, --compress - Compress output with JsMin
           
             example:
-            arcjs compile
+            architect compile
 COMP
 
 watch = <<-WATCH
@@ -60,7 +60,7 @@ watch = <<-WATCH
             compiles when changes are detected.
           
             example:
-            arcjs watch
+            architect watch
 WATCH
 
 upd = <<-UPDATE
@@ -97,7 +97,7 @@ optparse = OptionParser.new do |opts|
   
   opts.on( '-v', '--version', 'Display the version') do
     time = Time.now
-    puts ArchitectureJS::Notification.notice 'arcjs ' + ArchitectureJS::VERSION
+    puts ArchitectureJS::Notification.notice 'architect ' + ArchitectureJS::VERSION
     puts ArchitectureJS::Notification.notice "Copyright (c) #{time.year} Dayton Nolan"
     puts ArchitectureJS::Notification.notice "Released under the MIT License"
     exit
@@ -137,7 +137,7 @@ case command
     sub_dir = ARGV[2] || nil
     
     if app_name.nil?
-      puts "Error! Application name is required (arcjs create app_name)"
+      puts "Error! Application name is required (architect create app_name)"
       exit
     end
     
@@ -157,8 +157,8 @@ case command
     als = options[:alias] || nil
     dest = options[:dest] || nil
 
-    errors[:type] = "Error! Scaffold type is required (arcjs generate module mymodule)" if type.nil?
-    errors[:name] = "Error! Module name is required (arcjs generate module mymodule)" if name.nil?
+    errors[:type] = "Error! Scaffold type is required (architect generate module mymodule)" if type.nil?
+    errors[:name] = "Error! Module name is required (architect generate module mymodule)" if name.nil?
     
     unless errors.empty?
       errors.each do |error|

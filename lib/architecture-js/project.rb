@@ -49,6 +49,7 @@ module ArchitectureJS
       puts ArchitectureJS::Notification.notice "Creating the #{@config[:name]} project in #{@root}" 
       create_project_scaffold
       write_config
+      create_application_file
     end
 
     def create_project_scaffold
@@ -71,6 +72,11 @@ module ArchitectureJS
       puts ArchitectureJS::Notification.added "#{@config_file} created"
     end
 
+    def create_application_file
+      puts "#{@root}/#{@config[:src_dir]}/#{@config[:name]}.js"
+      FileUtils.touch("#{@root}/#{@config[:src_dir]}/#{@config[:name]}.js")
+    end
+
     def update
       get_src_files
       compile_src_files
@@ -86,9 +92,6 @@ module ArchitectureJS
     end
 
     def add_src_files_to_project(directory)
-      puts '-------------------'
-      puts directory
-      puts '-------------------'
       Dir["#{directory}/*.js"].each do |file|
         src_filename = file.gsub(directory, '')
         @src_files << "#{directory}#{src_filename}" unless src_filename.match(/^\/_/)

@@ -74,6 +74,9 @@ describe ArchitectureJS::Project do
      "#{TMP_DIR}/myapp.architecture".should be_same_file_as "#{FIXTURES}/myapp.architecture"
    end
 
+   it "should create an application source file" do     
+     File.exists?("#{TMP_DIR}/src/myapp.js").should be_true
+   end
   end # Project Creation
 
   context "Project Update" do
