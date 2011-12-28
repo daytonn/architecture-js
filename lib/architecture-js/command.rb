@@ -6,7 +6,8 @@ module ArchitectureJS
       path ||= File.expand_path(Dir.getwd)
 
       puts ArchitectureJS::Notification.log "ArchitectureJS are watching for changes. Press Ctrl-C to stop."
-      project = ArchitectureJS::Project.init_with_config
+      project = ArchitectureJS::Project.new({ name: 'unknown' }, path)
+      project.read_config
       project.update
       watch_hash = Hash.new
 
@@ -15,7 +16,7 @@ module ArchitectureJS
       end
 
       watch_hash[path] = "**/*.conf"
-      watch_hash["#{ArchitectureJS::BASE_DIR}/repository"] = "**/*.js"
+      watch_hash["#{ArchitectureJS::BASE_DIR}/repository"] = "**/*.js" # check changes to the repository as well
 
       FSSM.monitor do
         watch_hash.each do |dir, g|
