@@ -73,7 +73,6 @@ module ArchitectureJS
     end
 
     def create_application_file
-      puts "#{@root}/#{@config[:src_dir]}/#{@config[:name]}.js"
       FileUtils.touch("#{@root}/#{@config[:src_dir]}/#{@config[:name]}.js")
     end
 
