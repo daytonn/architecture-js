@@ -6,8 +6,7 @@ module ArchitectureJS
       path ||= File.expand_path(Dir.getwd)
 
       puts ArchitectureJS::Notification.log "ArchitectureJS are watching for changes. Press Ctrl-C to stop."
-      project = ArchitectureJS::Project.new({ name: 'unknown' }, path)
-      project.read_config
+      project = ArchitectureJS::Project::new_from_config(path)
       project.update
       watch_hash = Hash.new
 

@@ -26,23 +26,21 @@ create = <<-CREATE
 CREATE
 
 generate = <<-GEN
-  generate  Generates scoffolding for the given component file type. 
+  generate  Generates scoffolding from a template. 
 
             Arguments:
-            type - Type of application scaffold to create (module, elements, model).
-            name* - Name of the module to generate the scaffold for
+            name - Name of the template to generate
 
             Options:
-            -a, --alias name* - Create an alias of the application object
-                                (defaults to "app"), passing a name is optional
-            -e, --elements - Generate an elements file
-            -m, --model - Generate a model file 
-
+            *Options are arbitrary (optional) arguments specific to templates
+            There are two types of options: boolean and named attributes
+            
             examples:
-            architect generate module mymodule -em (generates module, elements and model)
-            architect generate module mymodule -a (generates an application alias)
-            architect generate elements mymodule -m (generates an elements and a model file)
-            architect generate model mymodule (generates an model file)
+            architect generate mytemplate -f (boolean arguments use a single "-" and one or two letters ie:)
+            architect generate mytemplate --foo "some value" (named arguments use two "--" and a name/value pair:)
+            architect generate mytemplate --foo (named arguments can be boolean by passing no value)
+            architect genreate mymodule -f --foo "some value" (combined to generate complex templates)
+
 GEN
 
 compile = <<-COMP
@@ -63,10 +61,6 @@ watch = <<-WATCH
             architect watch
 WATCH
 
-upd = <<-UPDATE
-  update   Updates your application's core files to the latest version.
-UPDATE
-
 footer = <<-FOOTER
 * optional argument
 FOOTER
@@ -76,7 +70,6 @@ help = {
   generate: generate,
   compile: compile,
   watch: watch,
-  update: upd,
   footer: footer
 }
 

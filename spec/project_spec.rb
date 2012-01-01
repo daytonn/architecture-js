@@ -14,12 +14,12 @@ describe ArchitectureJS::Project do
       end
     end
 
-    it "should add the 'none' framework to ArchitectureJS" do
-      ArchitectureJS::FRAMEWORKS['none'].should == ArchitectureJS::Project
-    end
-
     after :each do
       FileUtils.rm_rf "#{TMP_DIR}" if File.exists? "#{TMP_DIR}"
+    end
+
+    it "should add the 'none' framework to ArchitectureJS" do
+      ArchitectureJS::FRAMEWORKS['none'].should == ArchitectureJS::Project
     end
 
     it 'should have an empty src_files array' do
@@ -48,6 +48,19 @@ describe ArchitectureJS::Project do
 
     it "should have a generator" do
       @project.generator.should_not be_nil
+    end
+
+    context "with existing project" do
+      before(:each) do
+        FileUtils.cp("#{FIXTURES}/myapp.architecture", "#{TMP_DIR}/myapp.architecture")
+      end
+
+      it "should initialize with a config path" do
+        @existing = ArchitectureJS::Project.new_from_config TMP_DIR
+        @existing.config.should_not be_empty
+        @existing.config[:name].should == 'myapp'
+      end
+
     end
   end # Instantiation
 

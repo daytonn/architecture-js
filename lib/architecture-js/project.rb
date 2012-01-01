@@ -14,6 +14,19 @@ module ArchitectureJS
     # this line adds the default framework to ArchitectureJS
     ArchitectureJS::register_framework 'none', self
 
+    def self.new_from_config(path)
+      config_file = Dir.entries(path).select {|f| f =~ /\.architecture$/ }.first
+
+      raise ".architecture file was not found in #{path}" if config_file.nil?
+
+      config = YAML::load_file "#{path}/#{config_file}"
+      config = ArchitectureJS::Helpers::symbolize_keys config
+
+      raise "#{config[:framework]} is unavailable or not installed" if ArchitectureJS::FRAMEWORKS[config[:framework]].nil?
+
+      project = ArchitectureJS::FRAMEWORKS[config[:framework]].new config, path
+    end
+
     def initialize(config, root = nil)
       raise "#{self.class}.new({ name: 'myapp' }, options): config[:name] is undefined" unless config[:name]
       @config_file = "#{config[:name].downcase}.architecture"
@@ -35,7 +48,7 @@ module ArchitectureJS
     end
   
     def read_config
-      config = YAML.load_file("#{@root}/#{@config_file}")
+      config = YAML::load_file("#{@root}/#{@config_file}")
       assign_config_variables config
     end
 
