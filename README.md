@@ -1,4 +1,4 @@
-# architecture-js
+# architecture-js [![Build Status](https://secure.travis-ci.org/daytonn/architecture-js.png)](http://travis-ci.org/daytonn/architecture-js)
 
 ##About
 
