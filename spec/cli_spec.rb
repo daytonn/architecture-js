@@ -1,5 +1,5 @@
 require 'spec_helper'
-
+# TODO write tests for CLI
 describe 'CLI' do
   before :each do
     @bin = "#{ArchitectureJS::BASE_DIR}/bin/architect"

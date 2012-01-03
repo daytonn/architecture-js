@@ -23,7 +23,7 @@ describe ArchitectureJS::Generator do
   end
 
   it "should get a template name" do
-    @gen.get_template_name("/Volumes/Storage/Development/architecture-js/spec/tmp/templates/ejs_template.ejs").should == 'ejs'
+    @gen.get_template_name("/Volumes/Storage/Development/architecture-j s/spec/tmp/templates/ejs_template.ejs").should == 'ejs'
     @gen.get_template_name("/Volumes/Storage/Development/architecture-js/spec/tmp/templates/test_template.erb").should == 'test'
   end
 
