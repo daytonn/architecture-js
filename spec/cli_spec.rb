@@ -35,4 +35,8 @@ describe 'CLI' do
     "#{TMP_DIR}/lib/myapp.js".should be_same_file_as "#{FIXTURES}/compiled_src.js"
   end
 
+  it 'should generate a template' do
+    #suppress_output { %x`cd #{TMP_DIR}; #{@bin} generate blank test` }
+    #File.exists?("#{TMP_DIR}/test.js").should be_true
+  end
 end

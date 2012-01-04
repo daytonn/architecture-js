@@ -1,15 +1,14 @@
 module ArchitectureJS
-  class Project # TODO make generator belong to project to have default templates hooked up to generator
-    attr_reader :root,
-                :src_files,
-                :framework,
-                :config_name,
-                :watch_directories,
-                :directories,
-                :template_directories,
-                :generator
-
-    attr_accessor :config
+  class Project
+    attr_accessor :root,
+                  :src_files,
+                  :framework,
+                  :config_name,
+                  :watch_directories,
+                  :directories,
+                  :template_directories,
+                  :generator,
+                  :config
 
     # this line adds the default framework to ArchitectureJS
     ArchitectureJS::register_framework 'none', self

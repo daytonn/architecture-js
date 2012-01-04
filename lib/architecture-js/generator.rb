@@ -1,9 +1,9 @@
 module ArchitectureJS
   class Generator
 
-    attr_reader :template_paths,
-                :templates,
-                :project
+    attr_accessor :template_paths,
+                  :templates,
+                  :project
 
     def initialize(project)
       @project = project
@@ -14,24 +14,39 @@ module ArchitectureJS
 
     def find_templates(paths)
       paths.each do |path|
-        Dir["#{path}/*_template*"].each do |file|
-          template_name = get_template_name file
-          @templates[template_name] = get_template(file)
+        Dir["#{path}/*"].each do |file|
+          add_file_to_templates file          
         end
       end
     end
 
-    def get_template_name(file)
-      file.split(/\/|\\/).last.gsub(/_template\.\w*/, '')
+    def add_file_to_templates(file)
+      ext = File.extname(file)
+      template_name = File.basename(file, ext)
+      @templates[template_name] = {
+        erb: read_template(file),
+        ext: ext
+      }
     end
 
-    def get_template(file)
+    def read_template(file)
       ERB.new File.read(file)
+    end
+
+    def generate(template, filename, options)
+      filename = "#{filename}#{@templates[template][:ext]}"
+      generate_file(filename, render_template(template, options), path)
+    end
+
+    def generate_file(filename, template, path = nil)
+      puts "generate_file #{filename}, template, #{path}"
+      path ||= File.expand_path(Dir.getwd)
+      File.open("#{path}/#{filename}", "w+") { |f| f.write template }
     end
 
     def render_template(template, options = nil)
       project = @project
-      @templates[template].result(binding)
+      @templates[template][:erb].result(binding)
     end
   end
 end
