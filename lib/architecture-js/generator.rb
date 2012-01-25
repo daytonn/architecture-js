@@ -39,7 +39,6 @@ module ArchitectureJS
     end
 
     def generate_file(filename, template, path = nil)
-      puts "generate_file #{filename}, template, #{path}"
       path ||= File.expand_path(Dir.getwd)
       File.open("#{path}/#{filename}", "w+") { |f| f.write template }
     end
