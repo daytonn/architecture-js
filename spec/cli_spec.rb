@@ -32,7 +32,7 @@ describe 'CLI' do
   it 'should compile the application' do
     suppress_output { %x(cd #{TMP_DIR}; #{@bin} compile) }
     File.exists?("#{TMP_DIR}/lib/myapp.js").should be_true
-    "#{TMP_DIR}/lib/myapp.js".should be_same_file_as "#{FIXTURES}/compiled_src.js"
+    "#{TMP_DIR}/lib/myapp.js".should be_same_file_as "#{FIXTURES}/compressed.js"
   end
 
   it 'should generate a template' do

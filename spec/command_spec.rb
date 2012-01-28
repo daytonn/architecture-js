@@ -53,7 +53,7 @@ describe ArchitectureJS::Command do
       suppress_output { ArchitectureJS::Command.compile({ path: TMP_DIR }) }
 
       File.exists?("#{TMP_DIR}/lib/myapp.js").should be_true
-      "#{TMP_DIR}/lib/myapp.js".should be_same_file_as "#{FIXTURES}/compiled_src.js"
+      "#{TMP_DIR}/lib/myapp.js".should be_same_file_as "#{FIXTURES}/compressed.js"
     end
     
   end # Usage
