@@ -120,7 +120,7 @@ module Architect
                       Arguments:
                       application name - Name of the architecture-js application
                       subdirectory* - Directory where the application will be 
-                                      installed (created if non existent)
+                                      installed (created if nonexistent)
 
                       examples:
                       architect create myapp
