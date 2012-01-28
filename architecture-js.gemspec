@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "architecture-js"
-  s.version = "0.1.3"
+  s.version = "0.1.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Dayton Nolan"]
-  s.date = "2011-12-28"
+  s.date = "2012-01-28"
   s.description = "Architecture.js helps you generate scaffolding, manage third-party packages, compile, and compress your application."
   s.email = "daytonn@gmail.com"
   s.executables = ["architect"]
@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
   s.files = [
     ".DS_Store",
     ".document",
+    ".travis.yml",
     "Gemfile",
     "Gemfile.lock",
     "LICENSE.txt",
@@ -29,6 +30,7 @@ Gem::Specification.new do |s|
     "architecture-js.gemspec",
     "bin/architect",
     "lib/architecture-js.rb",
+    "lib/architecture-js/architect.rb",
     "lib/architecture-js/command.rb",
     "lib/architecture-js/dependencies.rb",
     "lib/architecture-js/generator.rb",
@@ -39,21 +41,26 @@ Gem::Specification.new do |s|
     "spec/architecture-js_spec.rb",
     "spec/cli_spec.rb",
     "spec/command_spec.rb",
+    "spec/fixtures/.DS_Store",
     "spec/fixtures/compiled_src.js",
-    "spec/fixtures/ejs_template.ejs",
+    "spec/fixtures/compressed.architecture",
+    "spec/fixtures/compressed.js",
+    "spec/fixtures/ejs.ejs",
     "spec/fixtures/existing.architecture",
     "spec/fixtures/lib1.js",
     "spec/fixtures/lib2.js",
     "spec/fixtures/myapp.architecture",
     "spec/fixtures/src_file.js",
-    "spec/fixtures/test_template.erb",
-    "spec/fixtures/test_template.js",
+    "spec/fixtures/templates/test_template_one.js",
+    "spec/fixtures/templates/test_template_two.js",
     "spec/fixtures/test_template_options.js",
+    "spec/fixtures/test_template_two.js",
     "spec/generator_spec.rb",
     "spec/helpers_spec.rb",
     "spec/notification_spec.rb",
     "spec/project_spec.rb",
-    "spec/spec_helper.rb"
+    "spec/spec_helper.rb",
+    "templates/blank.js"
   ]
   s.homepage = "http://github.com/daytonn/architecture.js"
   s.licenses = ["MIT"]
