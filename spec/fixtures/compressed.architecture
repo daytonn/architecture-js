@@ -1,0 +1,6 @@
+framework: none
+src_dir: src
+build_dir: lib
+asset_root: ../
+output: compressed
+name: myapp

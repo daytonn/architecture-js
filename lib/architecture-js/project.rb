@@ -91,7 +91,7 @@ module ArchitectureJS
     def update
       get_src_files
       compile_src_files
-      compress_application if @output == 'compressed'
+      compress_application if @config[:output] == 'compressed'
       puts ArchitectureJS::Notification.log "application updated" unless @errors
       @errors = false
     end
@@ -135,15 +135,14 @@ module ArchitectureJS
     end
 
     def compress_application
-      app_root = File.expand_path "#{@config[:build_dir]}"
-      src_files = Dir.entries(app_root)
-      src_files.reject! { |file| file =~ /^\./ }
+      app_root = File.expand_path "#{@root}/#{@config[:build_dir]}"
+      src_files = Dir.entries(app_root).reject! { |file| file =~ /^\./ }
 
-      src_files.each do |module_file|
-        full_path = "#{app_root}/#{module_file}"
+      src_files.each do |file|
+        full_path = "#{app_root}/#{file}"
         uncompressed = File.open(full_path, "r").read
-        File.open(full_path, "w+") do |module_file|
-          module_file << JSMin.minify(uncompressed)
+        File.open(full_path, "w+") do |file|
+          file << JSMin.minify(uncompressed).gsub(/\n?/, '')
         end
       end
     end

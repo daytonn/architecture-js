@@ -64,7 +64,7 @@ describe ArchitectureJS::Project do
     end
   end # Instantiation
 
-  context "Project Creation" do
+  context "- Creation -" do
    before :each do
      FileUtils.mkdir("#{TMP_DIR}")
      suppress_output do
@@ -92,7 +92,7 @@ describe ArchitectureJS::Project do
    end
   end # Project Creation
 
-  context "Project Update" do
+  context "- Update -" do
     before :each do
       FileUtils.mkdir("#{TMP_DIR}")
       suppress_output do
@@ -111,9 +111,13 @@ describe ArchitectureJS::Project do
 
     it 'should compile the source files into the destination folder' do
       File.exists?("#{TMP_DIR}/lib/myapp.js").should be_true
-      "#{TMP_DIR}/lib/myapp.js".should be_same_file_as "#{FIXTURES}/compiled_src.js"
+      "#{TMP_DIR}/lib/myapp.js".should be_same_file_as "#{FIXTURES}/compressed.js"
     end
 
+    it 'should compress the application file' do
+      FileUtils.cp "#{FIXTURES}/compressed.architecture", "#{TMP_DIR}/myapp.architecture"
+      @project.config[:output].should == 'compressed'
+    end
   end # Project Update
 
 end
