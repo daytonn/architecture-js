@@ -9,7 +9,7 @@ module ArchitectureJS
       project = ArchitectureJS::Project::new_from_config(path)
       project.update
       watch_hash = Hash.new
-      puts project.watch_directories
+
       project.watch_directories.each do |dir|
         watch_hash["#{path}/#{dir}"] = "**/*.js"
       end
