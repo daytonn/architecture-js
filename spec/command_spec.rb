@@ -32,20 +32,21 @@ describe ArchitectureJS::Command do
   end
   
   context 'Usage' do
+    before :each do
+      suppress_output { ArchitectureJS::Command.create({ name: 'myapp', root: TMP_DIR }) }
+    end
+
     after :each do
       FileUtils.rm_rf TMP_DIR
     end
 
     it 'should create a new application' do
-      suppress_output { ArchitectureJS::Command.create({ name: 'myapp', root: TMP_DIR }) }
-
       "#{TMP_DIR}/myapp.architecture".should be_same_file_as "#{FIXTURES}/myapp.architecture"
       File.directory?("#{TMP_DIR}/lib").should be_true
       File.directory?("#{TMP_DIR}/src").should be_true
     end
 
     it 'should compile the application' do
-      suppress_output { ArchitectureJS::Command.create({ name: 'myapp', root: TMP_DIR }) }
       FileUtils.cp "#{FIXTURES}/lib1.js", "#{TMP_DIR}/src/lib1.js"
       FileUtils.cp "#{FIXTURES}/lib2.js", "#{TMP_DIR}/src/lib2.js"
       FileUtils.cp "#{FIXTURES}/src_file.js", "#{TMP_DIR}/src/myapp.js"
@@ -55,6 +56,6 @@ describe ArchitectureJS::Command do
       File.exists?("#{TMP_DIR}/lib/myapp.js").should be_true
       "#{TMP_DIR}/lib/myapp.js".should be_same_file_as "#{FIXTURES}/compressed.js"
     end
-    
+
   end # Usage
 end

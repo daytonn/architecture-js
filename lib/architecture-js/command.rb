@@ -2,16 +2,20 @@ module ArchitectureJS
   module Command
     def watch(path = nil)
       require "fssm"
-
-      path ||= File.expand_path(Dir.getwd)
+      path ||= Dir.getwd
+      path = File.expand_path(path)
 
       puts ArchitectureJS::Notification.log "ArchitectureJS are watching for changes. Press Ctrl-C to stop."
       project = ArchitectureJS::Project::new_from_config(path)
       project.update
       watch_hash = Hash.new
+      watch_files = Dir["#{path}/**/"]
+      watch_files.shift # remove the project root
+      # remove the build_dir
+      watch_files.reject! { |dir| dir.match(/#{path}\/#{project.config[:build_dir]}/) }
 
-      project.watch_directories.each do |dir|
-        watch_hash["#{path}/#{dir}"] = "**/*.js"
+      watch_files.each do |dir|
+        watch_hash[dir] = "**/*.js"
       end
 
       watch_hash[path] = "**/*.architecture"
@@ -30,6 +34,11 @@ module ArchitectureJS
 
             create do |base, relative|
               puts ArchitectureJS::Notification.event "#{relative} created"
+              project.update
+            end
+
+            delete do |base, relative|
+              puts ArchitectureJS::Notification.event "#{relative} deleted"
               project.update
             end
           end

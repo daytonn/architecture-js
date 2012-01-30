@@ -4,7 +4,6 @@ module ArchitectureJS
                   :src_files,
                   :framework,
                   :config_name,
-                  :watch_directories,
                   :directories,
                   :template_directories,
                   :generator,
@@ -33,7 +32,6 @@ module ArchitectureJS
       @root = File.expand_path(root)
       @template_directories = ["#{ArchitectureJS::BASE_DIR}/templates", "#{@root}/templates"]
       @directories = ['lib', 'src']
-      @watch_directories = ['src']
       @src_files = Array.new
       @config = {
         framework: 'none',
