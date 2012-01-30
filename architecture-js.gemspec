@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "architecture-js"
-  s.version = "0.1.6"
+  s.version = "0.1.7"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Dayton Nolan"]
@@ -37,6 +37,7 @@ Gem::Specification.new do |s|
     "lib/architecture-js/helpers.rb",
     "lib/architecture-js/notification.rb",
     "lib/architecture-js/project.rb",
+    "repository/modjs/plugins/jquery-elements.js",
     "spec/.DS_Store",
     "spec/architecture-js_spec.rb",
     "spec/cli_spec.rb",
