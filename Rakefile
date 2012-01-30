@@ -24,7 +24,6 @@ Jeweler::Tasks.new do |gem|
   gem.add_runtime_dependency 'jsmin'
   gem.add_runtime_dependency 'fssm'
   gem.add_runtime_dependency 'sprockets', '1.0.2'
-  gem.files.include 'repository'
   #  gem.add_development_dependency 'rspec', '> 1.2.3'
 end
 Jeweler::RubygemsDotOrgTasks.new
