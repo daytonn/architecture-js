@@ -14,7 +14,7 @@ module ArchitectureJS
         watch_hash["#{path}/#{dir}"] = "**/*.js"
       end
 
-      watch_hash[path] = "**/*.conf"
+      watch_hash[path] = "**/*.architecture"
       watch_hash["#{ArchitectureJS::BASE_DIR}/repository"] = "**/*.js" # check changes to the repository as well
 
       FSSM.monitor do
