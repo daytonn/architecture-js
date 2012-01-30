@@ -24,6 +24,7 @@ Jeweler::Tasks.new do |gem|
   gem.add_runtime_dependency 'jsmin'
   gem.add_runtime_dependency 'fssm'
   gem.add_runtime_dependency 'sprockets', '1.0.2'
+  gem.files.include 'repository'
   #  gem.add_development_dependency 'rspec', '> 1.2.3'
 end
 Jeweler::RubygemsDotOrgTasks.new
@@ -41,12 +42,12 @@ end
 
 task :default => :spec
 
-require 'rake/rdoctask'
+require 'rdoc/task'
 Rake::RDocTask.new do |rdoc|
   version = File.exist?('VERSION') ? File.read('VERSION') : ""
 
   rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "foo #{version}"
+  rdoc.title = "architecture-js #{version}"
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
