@@ -5,8 +5,8 @@ describe 'CLI' do
     @bin = "#{ArchitectureJS::BASE_DIR}/bin/architect"
     FileUtils.mkdir "#{TMP_DIR}" unless File.exists? "#{TMP_DIR}"
     suppress_output { %x(cd #{TMP_DIR}; #{@bin} create myapp) }
-    FileUtils.cp "#{FIXTURES}/lib1.js", "#{TMP_DIR}/lib/lib1.js"
-    FileUtils.cp "#{FIXTURES}/lib2.js", "#{TMP_DIR}/lib/lib2.js"
+    FileUtils.cp "#{FIXTURES}/lib1.js", "#{TMP_DIR}/src/lib1.js"
+    FileUtils.cp "#{FIXTURES}/lib2.js", "#{TMP_DIR}/src/lib2.js"
     FileUtils.cp "#{FIXTURES}/src_file.js", "#{TMP_DIR}/src/myapp.js"
   end
 

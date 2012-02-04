@@ -111,9 +111,14 @@ module ArchitectureJS
 
     def compile_src_files
       @src_files.each do |file_path|
-        file_name = ArchitectureJS::Helpers.get_file_name file_path
+        file_name = get_file_name file_path
         compile_src_file file_path, file_name
       end
+    end
+
+    def get_file_name(module_path)
+      module_file = module_path.split(/[\\\/]/).last
+      module_filename = module_file.gsub(/\.js$/, '')
     end
 
     def compile_src_file(file_path, file_name)

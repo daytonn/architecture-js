@@ -63,9 +63,9 @@ module Architect
 
     def compile
       if options[:c] || options[:compress]
-        ArchitectureJS::Command.compile
-      else
         ArchitectureJS::Command.compile({ force_compress: true })
+      else
+        ArchitectureJS::Command.compile
       end
     end
 
