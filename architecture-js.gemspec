@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "architecture-js"
-  s.version = "0.1.9"
+  s.version = "0.1.10"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Dayton Nolan"]
-  s.date = "2012-01-30"
+  s.date = "2012-02-04"
   s.description = "Architecture.js helps you generate scaffolding, manage third-party packages, compile, and compress your application."
   s.email = "daytonn@gmail.com"
   s.executables = ["architect"]
@@ -43,19 +43,24 @@ Gem::Specification.new do |s|
     "spec/cli_spec.rb",
     "spec/command_spec.rb",
     "spec/fixtures/.DS_Store",
+    "spec/fixtures/_hidden.js",
     "spec/fixtures/compiled_src.js",
     "spec/fixtures/compressed.architecture",
     "spec/fixtures/compressed.js",
     "spec/fixtures/ejs.ejs",
     "spec/fixtures/existing.architecture",
     "spec/fixtures/lib1.js",
+    "spec/fixtures/lib1_compressed.js",
     "spec/fixtures/lib2.js",
+    "spec/fixtures/lib2_compressed.js",
     "spec/fixtures/myapp.architecture",
     "spec/fixtures/src_file.js",
     "spec/fixtures/templates/test_template_one.js",
     "spec/fixtures/templates/test_template_two.js",
     "spec/fixtures/test_template_options.js",
     "spec/fixtures/test_template_two.js",
+    "spec/fixtures/update.architecture",
+    "spec/fixtures/update.js",
     "spec/generator_spec.rb",
     "spec/helpers_spec.rb",
     "spec/notification_spec.rb",
@@ -63,7 +68,7 @@ Gem::Specification.new do |s|
     "spec/spec_helper.rb",
     "templates/blank.js"
   ]
-  s.homepage = "http://github.com/daytonn/architecture.js"
+  s.homepage = "https://github.com/daytonn/architecture-js"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
   s.rubygems_version = "1.8.10"
