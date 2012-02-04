@@ -13,7 +13,7 @@ require 'jeweler'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
   gem.name = "architecture-js"
-  gem.homepage = "http://github.com/daytonn/architecture.js"
+  gem.homepage = "https://github.com/daytonn/architecture-js"
   gem.license = "MIT"
   gem.summary = %Q{architecture.js is a command line application to dynamically build and manage complex javascript applications.}
   gem.description = %Q{Architecture.js helps you generate scaffolding, manage third-party packages, compile, and compress your application.}

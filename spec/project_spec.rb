@@ -94,9 +94,10 @@ describe ArchitectureJS::Project do
       suppress_output do
         @project = ArchitectureJS::Project.new({ name: 'myapp' },TMP_DIR)
         @project.create
-        FileUtils.cp "#{FIXTURES}/lib1.js", "#{TMP_DIR}/lib/lib1.js"
-        FileUtils.cp "#{FIXTURES}/lib2.js", "#{TMP_DIR}/lib/lib2.js"
+        FileUtils.cp "#{FIXTURES}/lib1.js", "#{TMP_DIR}/src/lib1.js"
+        FileUtils.cp "#{FIXTURES}/lib2.js", "#{TMP_DIR}/src/lib2.js"
         FileUtils.cp "#{FIXTURES}/src_file.js", "#{TMP_DIR}/src/myapp.js"
+        FileUtils.cp "#{FIXTURES}/_hidden.js", "#{TMP_DIR}/src/"
         @project.update
       end
     end
@@ -108,12 +109,47 @@ describe ArchitectureJS::Project do
     it 'should compile the source files into the destination folder' do
       File.exists?("#{TMP_DIR}/lib/myapp.js").should be_true
       "#{TMP_DIR}/lib/myapp.js".should be_same_file_as "#{FIXTURES}/compressed.js"
+
+      File.exists?("#{TMP_DIR}/lib/lib1.js").should be_true
+      "#{TMP_DIR}/lib/lib1.js".should be_same_file_as "#{FIXTURES}/lib1_compressed.js"
+
+      File.exists?("#{TMP_DIR}/lib/lib2.js").should be_true
+      "#{TMP_DIR}/lib/lib2.js".should be_same_file_as "#{FIXTURES}/lib2_compressed.js"
     end
 
     it 'should compress the application file' do
       FileUtils.cp "#{FIXTURES}/compressed.architecture", "#{TMP_DIR}/myapp.architecture"
       @project.config[:output].should == 'compressed'
     end
+
+    it 'should not compile src files begining with _' do
+      File.exists?("#{TMP_DIR}/lib/_hidden.js").should_not be_true
+    end
+
   end # Project Update
+
+  context "- Config Update -" do
+    before :each do
+      FileUtils.mkdir("#{TMP_DIR}")
+      suppress_output do
+        @project = ArchitectureJS::Project.new({ name: 'myapp' },TMP_DIR)
+        @project.create
+        FileUtils.cp "#{FIXTURES}/update.architecture", "#{TMP_DIR}/myapp.architecture"
+        FileUtils.cp "#{FIXTURES}/lib1.js", "#{TMP_DIR}/src/lib1.js"
+        FileUtils.cp "#{FIXTURES}/lib2.js", "#{TMP_DIR}/src/lib2.js"
+        FileUtils.cp "#{FIXTURES}/src_file.js", "#{TMP_DIR}/src/myapp.js"
+        FileUtils.cp "#{FIXTURES}/_hidden.js", "#{TMP_DIR}/src/"
+        @project.update
+      end
+    end
+
+    after :each do
+      FileUtils.rm_rf "#{TMP_DIR}" if File.exists? "#{TMP_DIR}"
+    end
+
+    it 'should update with fresh config values' do
+      "#{TMP_DIR}/lib/myapp.js".should be_same_file_as "#{FIXTURES}/update.js"
+    end
+  end
 
 end

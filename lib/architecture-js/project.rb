@@ -66,7 +66,7 @@ module ArchitectureJS
       Dir.mkdir "#{@root}" unless File.exists? "#{@root}"
 
       @directories.each do |dir|
-        puts ArchitectureJS::Notification.added "#{dir} created" unless File.exists? "#{@root}/#{dir}"
+        puts ArchitectureJS::Notification.added "#{dir}/ created" unless File.exists? "#{@root}/#{dir}"
         Dir.mkdir "#{@root}/#{dir}" unless File.exists? "#{@root}/#{dir}"
       end
     end
@@ -84,9 +84,11 @@ module ArchitectureJS
 
     def create_application_file
       FileUtils.touch("#{@root}/#{@config[:src_dir]}/#{@config[:name]}.js")
+      puts ArchitectureJS::Notification.added "#{@config[:src_dir]}/#{@config[:name]}.js created"
     end
 
     def update
+      read_config
       get_src_files
       compile_src_files
       compress_application if @config[:output] == 'compressed'
@@ -116,15 +118,16 @@ module ArchitectureJS
 
     def compile_src_file(file_path, file_name)
       sprockets = Sprockets::Secretary.new(
-        :root         => "#{ArchitectureJS::BASE_DIR}",
-        :asset_root   => File.expand_path(@config[:asset_root], @root),
-        :load_path    => ["repository"],
-        source_files: ["#{file_path}"]
+        root: ArchitectureJS::BASE_DIR,
+        asset_root: @config[:asset_root],
+        load_path: ['repository'],
+        source_files: [file_path]
       )
 
       compiled_file = sprockets.concatenation
-      message = File.exists?("#{@root}/#{@config[:build_dir]}/#{file_name}.js") ? "\e[32m>>>\e[0m #{@config[:build_dir]}/#{file_name}.js updated" : "\e[32m>>>\e[0m #{@config[:build_dir]}/#{file_name}.js created"
+      message = File.exists?("#{@root}/#{@config[:build_dir]}/#{file_name}.js") ? "#{@config[:build_dir]}/#{file_name}.js updated" : "#{@config[:build_dir]}/#{file_name}.js created"
       compiled_file.save_to "#{@root}/#{@config[:build_dir]}/#{file_name}.js"
+      ArchitectureJS::Notification.log message
       sprockets.install_assets
 
     rescue Exception => error

@@ -1,2 +1,2 @@
-//= require "../lib/lib1"
-//= require "../lib/lib2"
+//= require "lib1"
+//= require "lib2"
