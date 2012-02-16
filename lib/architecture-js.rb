@@ -1,14 +1,23 @@
-require "#{File.dirname(__FILE__)}/architecture-js/helpers"
+module ArchitectureJS
+end
+
+require "architecture-js/helpers"
 
 module ArchitectureJS
-  BASE_DIR = File.expand_path(File.join(File.dirname(__FILE__), '..'))
-  LIB_DIR = File.expand_path(File.join(File.dirname(__FILE__)))
-  ROOT_DIR = Dir.getwd
-  VERSION = File.read("#{BASE_DIR}/VERSION")
-  FRAMEWORKS = Hash.new
+  def base_directory
+    File.expand_path(File.join(File.dirname(__FILE__), '..'))
+  end
+
+  def lib_directory
+    File.expand_path(File.join(File.dirname(__FILE__)))
+  end
+
+  def root_directory
+    File.expand_path(File.join(File.dirname(Dir.getwd)))
+  end
 
   def register_framework(name, constructor)
-    FRAMEWORKS[name] = constructor
+    ArchitectureJS::FRAMEWORKS[name] = constructor
   end
 
   def create_project_from_config(project_dir = nil)
@@ -25,8 +34,17 @@ module ArchitectureJS
     project = ArchitectureJS::FRAMEWORKS[config[:framework]].new(config, project_dir)
   end
 
-  module_function :register_framework,
+  module_function :base_directory,
+                  :lib_directory,
+                  :register_framework,
                   :create_project_from_config
 end
 
-Dir.glob(File.dirname(__FILE__) + '/architecture-js/*') { |file| require file }
+module ArchitectureJS
+  VERSION = File.read("#{base_directory}/VERSION")
+  FRAMEWORKS = Hash.new
+end
+
+%w(dependencies generator notification project command architect).each do |lib|
+  require "architecture-js/#{lib}"
+end

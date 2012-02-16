@@ -4,6 +4,7 @@ require 'architecture-js'
 require 'fileutils'
 require 'rspec'
 require 'digest/md5'
+require 'fixtures/test_framework.rb'
 
 RSpec.configure do |config|
   config.color_enabled = true
@@ -32,6 +33,6 @@ def suppress_output(&block)
   fake.string
 end
 
-SPEC_DIR = "#{ArchitectureJS::BASE_DIR}/spec"
+SPEC_DIR = "#{ArchitectureJS::base_directory}/spec"
 TMP_DIR = "#{SPEC_DIR}/tmp"
 FIXTURES = "#{SPEC_DIR}/fixtures"

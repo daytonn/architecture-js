@@ -24,6 +24,9 @@ module Architect
       @subcommands = {}
       @commands = [:create, :generate, :compile, :watch]
       @help = create_help
+      @aliases = {
+        :framework => :f
+      }
     end
 
     def run
@@ -45,16 +48,18 @@ module Architect
 
     def create
       app_name = @args[0]
-      sub_dir = @args[1] || nil
+      # default root to nil or sub directory
+      root = @args[1] || nil unless @args[1] =~ /^\-/
+      framework = @options[:f] ? @args[@options[:f] + 1] : 'none'
 
       if app_name.nil?
         puts "Error! Application name is required (architect create app_name)"
         exit
       end
-    
-      config = { name: app_name }
-      config[:root] = sub_dir unless sub_dir.nil?
-      ArchitectureJS::Command.create(config)
+
+      config = { name: app_name, framework: framework }
+
+      ArchitectureJS::Command.create(config, root)
     end
 
     def generate
@@ -77,7 +82,7 @@ module Architect
       def parse_args
         @args.each_index do |i|
           if @args[i] =~ /^\-/
-            parse_flag @args[i]
+            parse_flag i
           elsif args[i] =~ /\:/
             parse_key_value_pair @args[i]
           else
@@ -86,10 +91,16 @@ module Architect
         end
       end
 
-      def parse_flag(arg)
-        key = arg.gsub(/^\-+/, '')
-        @options[key] = true
-        @options[key.to_sym] = true
+      def parse_flag(i)
+        key = @args[i].gsub(/^\-+/, '')
+
+        if short_key = @aliases[key.to_sym]
+          @options[short_key.to_s] = i
+          @options[short_key] = i
+        end
+
+        @options[key] = i
+        @options[key.to_sym] = i
       end
 
       def parse_key_value_pair(arg)

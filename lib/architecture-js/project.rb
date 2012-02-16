@@ -1,4 +1,5 @@
 module ArchitectureJS
+
   class Project
     attr_accessor :root,
                   :src_files,
@@ -8,9 +9,6 @@ module ArchitectureJS
                   :template_directories,
                   :generator,
                   :config
-
-    # this line adds the default framework to ArchitectureJS
-    ArchitectureJS::register_framework 'none', self
 
     def self.new_from_config(path)
       config_file = Dir.entries(path).select {|f| f =~ /\.architecture$/ }.first
@@ -30,7 +28,7 @@ module ArchitectureJS
       @config_file = "#{config[:name].downcase}.architecture"
       root ||= Dir.getwd
       @root = File.expand_path(root)
-      @template_directories = ["#{ArchitectureJS::BASE_DIR}/templates", "#{@root}/templates"]
+      @template_directories = ["#{ArchitectureJS::base_directory}/templates", "#{@root}/templates"]
       @directories = ['lib', 'src']
       @src_files = Array.new
       @config = {
@@ -123,7 +121,7 @@ module ArchitectureJS
 
     def compile_src_file(file_path, file_name)
       sprockets = Sprockets::Secretary.new(
-        root: ArchitectureJS::BASE_DIR,
+        root: ArchitectureJS::base_directory,
         asset_root: @config[:asset_root],
         load_path: ['repository'],
         source_files: [file_path]
@@ -155,3 +153,6 @@ module ArchitectureJS
 
   end # class Project
 end # module ArchitectureJS
+
+# this line adds the default framework to ArchitectureJS
+ArchitectureJS::register_framework('none', ArchitectureJS::Project)

@@ -4,6 +4,8 @@ describe ArchitectureJS::Command do
   
   context 'API' do
     before :each do
+      FileUtils.mkdir TMP_DIR
+
       suppress_output do
         @project = ArchitectureJS::Project.new({ name: 'myapp' }, TMP_DIR)
         @project.create
@@ -11,7 +13,7 @@ describe ArchitectureJS::Command do
     end
 
     after :each do
-      FileUtils.rm_rf TMP_DIR
+      FileUtils.rm_rf TMP_DIR if File.exists? TMP_DIR
     end
 
     it 'should have a watch command' do
@@ -32,12 +34,14 @@ describe ArchitectureJS::Command do
   end
   
   context 'Usage' do
+
     before :each do
-      suppress_output { ArchitectureJS::Command.create({ name: 'myapp', root: TMP_DIR }) }
+      FileUtils.mkdir TMP_DIR
+      suppress_output { ArchitectureJS::Command.create({ name: 'myapp' }, TMP_DIR) }
     end
 
     after :each do
-      FileUtils.rm_rf TMP_DIR
+      FileUtils.rm_rf TMP_DIR if File.exists? TMP_DIR
     end
 
     it 'should create a new application' do

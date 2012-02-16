@@ -5,7 +5,7 @@ module ArchitectureJS
       path ||= Dir.getwd
       path = File.expand_path(path)
 
-      puts ArchitectureJS::Notification.log "ArchitectureJS are watching for changes. Press Ctrl-C to stop."
+      puts ArchitectureJS::Notification.log "architect is watching for changes. Press Ctrl-C to stop."
       project = ArchitectureJS::Project::new_from_config(path)
       project.update
       watch_hash = Hash.new
@@ -19,7 +19,7 @@ module ArchitectureJS
       end
 
       watch_hash[path] = "**/*.architecture"
-      watch_hash["#{ArchitectureJS::BASE_DIR}/repository"] = "**/*.js" # check changes to the repository as well
+      watch_hash["#{ArchitectureJS::base_directory}/repository"] = "**/*.js" # check changes to the repository as well
 
       FSSM.monitor do
         watch_hash.each do |dir, g|
@@ -46,17 +46,17 @@ module ArchitectureJS
       end
     end # watch
 
-    def create(config = nil)
+    def create(config = nil, root = nil)
       settings = {
         name: nil,
-        root: File.expand_path(Dir.getwd)
+        framework: 'none'
       }
-
+      root ||= File.expand_path(Dir.getwd)
       settings.merge!(config) unless config.nil?
 
-      raise 'you must specify a project name: architect create ProjectName' if settings[:name].nil?
+      raise 'you must specify a project name: architect create [project_name]' if settings[:name].nil?
 
-      project = ArchitectureJS::Project.new({ name: settings[:name] }, settings[:root])# TODO add settings[:framework]
+      project = ArchitectureJS::FRAMEWORKS[settings[:framework]].new(settings, root)
       project.create
     end
 

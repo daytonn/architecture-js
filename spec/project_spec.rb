@@ -39,7 +39,7 @@ describe ArchitectureJS::Project do
     end
 
     it "should have template_directories" do
-      @project.template_directories.should == ["#{ArchitectureJS::BASE_DIR}/templates", "#{TMP_DIR}/templates"]
+      @project.template_directories.should == ["#{ArchitectureJS::base_directory}/templates", "#{TMP_DIR}/templates"]
     end
 
     it "should have a generator" do
