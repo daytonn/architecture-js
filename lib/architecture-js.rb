@@ -45,6 +45,6 @@ module ArchitectureJS
   FRAMEWORKS = Hash.new
 end
 
-%w(dependencies generator notification project command architect).each do |lib|
+%w(dependencies generator notification project architect).each do |lib|
   require "architecture-js/#{lib}"
 end

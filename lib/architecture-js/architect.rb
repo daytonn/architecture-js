@@ -1,3 +1,5 @@
+require 'optparse'
+
 module Architect
 
   class << self
@@ -12,107 +14,129 @@ module Architect
 
     attr_reader :args,
                 :command,
-                :commands,
-                :options,
-                :subcommands
+                :options
 
-    def initialize
-      @command = ARGV[0].to_sym if ARGV[0]
-      @args = Array.try_convert(ARGV)
-      @args.shift
-      @options = {}
-      @subcommands = {}
-      @commands = [:create, :generate, :compile, :watch]
-      @help = create_help
-      @aliases = {
-        :framework => :f
-      }
+    def initialize(path = nil)
+      if path
+        @root = File.expand_path(path)
+      else
+        @root = File.expand_path(Dir.getwd)
+      end
     end
 
     def run
-      parse_args unless @args.empty?
-      if @command
-        if options[:h]
-          help @command
-        else
-          if @commands.include? @command
-            self.send @command
-          else
-            puts ArchitectureJS::Notification.error "#{@command} is not a valid command"
-          end
-        end
-      else
-        help
-      end
+      parse_options
+      self.send(@command)
     end
 
     def create
-      app_name = @args[0]
-      # default root to nil or sub directory
-      root = @args[1] || nil unless @args[1] =~ /^\-/
-      framework = @options[:f] ? @args[@options[:f] + 1] : 'none'
-
-      if app_name.nil?
-        puts "Error! Application name is required (architect create app_name)"
-        exit
+      app_name = @args.first
+      if @args[1]
+        sub_dir = @args[1] unless @args[1].match /^-/
       end
+      framework = @options[:framework]
 
+      raise 'you must specify a project name: architect create [project_name]' if args[0].nil?
+
+      @root = File.expand_path sub_dir if sub_dir
       config = { name: app_name, framework: framework }
 
-      ArchitectureJS::Command.create(config, root)
+      require "#{framework}-architecture" unless framework == 'none'
+
+      project = ArchitectureJS::FRAMEWORKS[framework].new(config, @root)
+      project.create
     end
 
     def generate
       puts 'To be implemented'
+
+      #conf_path = "#{config[:project].root}/ninjs.conf"
+      #raise "ninjs.conf was not located in #{conf_path}" unless File.exists? conf_path
+      #generator = ArchitectureJS::Generator.new(config)
+      #generator.generate
     end
 
     def compile
-      if options[:c] || options[:compress]
-        ArchitectureJS::Command.compile({ force_compress: true })
-      else
-        ArchitectureJS::Command.compile
-      end
+      project = ArchitectureJS::create_project_from_config(File.expand_path(Dir.getwd))
+      project.config[:output] = 'compressed' if options[:c] || options[:compress]
+      project.update
     end
 
     def watch
-      ArchitectureJS::Command.watch
-    end
+      require "fssm"
+      path ||= Dir.getwd
+      path = File.expand_path(path)
 
-    private
-      def parse_args
-        @args.each_index do |i|
-          if @args[i] =~ /^\-/
-            parse_flag i
-          elsif args[i] =~ /\:/
-            parse_key_value_pair @args[i]
-          else
-            add_subcommand @args[i], i
+      puts ArchitectureJS::Notification.log "architect is watching for changes. Press Ctrl-C to stop."
+      project = ArchitectureJS::Project::new_from_config(path)
+      project.update
+      watch_hash = Hash.new
+      watch_files = Dir["#{path}/**/"]
+      watch_files.shift # remove the project root
+       remove the build_dir
+      watch_files.reject! { |dir| dir.match(/#{path}\/#{project.config[:build_dir]}/) }
+
+      watch_files.each do |dir|
+        watch_hash[dir] = "**/*.js"
+      end
+
+      watch_hash[path] = "**/*.architecture"
+      watch_hash["#{ArchitectureJS::base_directory}/repository"] = "**/*.js" # check changes to the repository as well
+
+      FSSM.monitor do
+        watch_hash.each do |dir, g|
+          path "#{dir}" do
+            glob g
+
+            update do |base, relative|
+              puts ArchitectureJS::Notification.event "change detected in #{relative}"
+              project.config.read if relative.match(/conf$/)
+              project.update
+            end
+
+            create do |base, relative|
+              puts ArchitectureJS::Notification.event "#{relative} created"
+              project.update
+            end
+
+            delete do |base, relative|
+              puts ArchitectureJS::Notification.event "#{relative} deleted"
+              project.update
+            end
           end
         end
       end
+    end
 
-      def parse_flag(i)
-        key = @args[i].gsub(/^\-+/, '')
+    private
+      def parse_options
+        @options = {}
+        OptionParser.new do |opts|
+          opts.banner = "Usage: example.rb [options]"
 
-        if short_key = @aliases[key.to_sym]
-          @options[short_key.to_s] = i
-          @options[short_key] = i
-        end
+          options[:version] = false
+          opts.on("-v", "--version", "Version info") do
+            @options[:version] = true
+          end
 
-        @options[key] = i
-        @options[key.to_sym] = i
-      end
+          options[:framework] = 'none'
+          opts.on('-f', '--framework FRAMEWORK', 'with framework') do |framework|
+            @options[:framework] = framework
+          end
 
-      def parse_key_value_pair(arg)
-        m = arg.match(/([\w|\-|]+)\:(\"|\')?(.*)(\"|\')?/)
-        key = m.captures[0]
-        value = m.captures[2]
-        @options[key] = value
-        @options[key.to_sym] = value
-      end
+          @options[:compress] = false
+          opts.on('-c', '--compress', 'with compression') do
+            @options[:compress] = true
+          end
 
-      def add_subcommand(arg, index)
-        #@subcommands[arg] = [sub args]
+          opts.on('-h', '--help', 'Display help') do
+            puts 'Show help'
+          end
+        end.parse!
+
+        @command = ARGV[0].to_sym
+        @args = Array.try_convert(ARGV)
+        @args.shift # remove command
       end
 
       def help(command = nil)
