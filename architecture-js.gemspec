@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "architecture-js"
-  s.version = "0.1.11"
+  s.version = "0.1.12"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Dayton Nolan"]
-  s.date = "2012-02-04"
+  s.date = "2012-02-17"
   s.description = "Architecture.js helps you generate scaffolding, manage third-party packages, compile, and compress your application."
   s.email = "daytonn@gmail.com"
   s.executables = ["architect"]
@@ -31,7 +31,6 @@ Gem::Specification.new do |s|
     "bin/architect",
     "lib/architecture-js.rb",
     "lib/architecture-js/architect.rb",
-    "lib/architecture-js/command.rb",
     "lib/architecture-js/dependencies.rb",
     "lib/architecture-js/generator.rb",
     "lib/architecture-js/helpers.rb",
@@ -39,9 +38,8 @@ Gem::Specification.new do |s|
     "lib/architecture-js/project.rb",
     "repository/modjs/plugins/jquery-elements.js",
     "spec/.DS_Store",
+    "spec/architect_spec.rb",
     "spec/architecture-js_spec.rb",
-    "spec/cli_spec.rb",
-    "spec/command_spec.rb",
     "spec/fixtures/.DS_Store",
     "spec/fixtures/_hidden.js",
     "spec/fixtures/compiled_src.js",
@@ -57,6 +55,7 @@ Gem::Specification.new do |s|
     "spec/fixtures/src_file.js",
     "spec/fixtures/templates/test_template_one.js",
     "spec/fixtures/templates/test_template_two.js",
+    "spec/fixtures/test_framework.rb",
     "spec/fixtures/test_template_options.js",
     "spec/fixtures/test_template_two.js",
     "spec/fixtures/update.architecture",
@@ -81,6 +80,7 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<fssm>, ["~> 0.2.8.1"])
       s.add_runtime_dependency(%q<jsmin>, ["~> 1.0.1"])
       s.add_runtime_dependency(%q<sprockets>, ["= 1.0.2"])
+      s.add_runtime_dependency(%q<modjs-architecture>, [">= 0"])
       s.add_development_dependency(%q<rspec>, ["~> 2.8.0"])
       s.add_development_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.8.3"])
@@ -93,6 +93,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<fssm>, ["~> 0.2.8.1"])
       s.add_dependency(%q<jsmin>, ["~> 1.0.1"])
       s.add_dependency(%q<sprockets>, ["= 1.0.2"])
+      s.add_dependency(%q<modjs-architecture>, [">= 0"])
       s.add_dependency(%q<rspec>, ["~> 2.8.0"])
       s.add_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_dependency(%q<jeweler>, ["~> 1.8.3"])
@@ -106,6 +107,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<fssm>, ["~> 0.2.8.1"])
     s.add_dependency(%q<jsmin>, ["~> 1.0.1"])
     s.add_dependency(%q<sprockets>, ["= 1.0.2"])
+    s.add_dependency(%q<modjs-architecture>, [">= 0"])
     s.add_dependency(%q<rspec>, ["~> 2.8.0"])
     s.add_dependency(%q<bundler>, ["~> 1.0.0"])
     s.add_dependency(%q<jeweler>, ["~> 1.8.3"])
