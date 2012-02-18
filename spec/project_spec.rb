@@ -152,4 +152,26 @@ describe ArchitectureJS::Project do
     end
   end
 
+  context "when compiling underscore template patterns" do
+    before :each do
+      FileUtils.mkdir("#{TMP_DIR}")
+      suppress_output do
+        @project = ArchitectureJS::Project.new({ name: 'myapp' },TMP_DIR)
+        @project.raise_errors = true
+        @project.create
+        FileUtils.cp "#{FIXTURES}/underscore_template.js", "#{TMP_DIR}/src/underscore_template.js"
+      end
+    end
+
+    after :each do
+      FileUtils.rm_rf "#{TMP_DIR}" if File.exists? "#{TMP_DIR}"
+    end
+
+    it 'should compile underscore.js template patterns' do
+      lambda {
+        suppress_output { @project.update }
+      }.should_not raise_error
+    end
+  end
+
 end

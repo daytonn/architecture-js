@@ -8,7 +8,8 @@ module ArchitectureJS
                   :directories,
                   :template_directories,
                   :generator,
-                  :config
+                  :config,
+                  :raise_errors
 
     def self.new_from_config(path)
       config_file = Dir.entries(path).select {|f| f =~ /\.architecture$/ }.first
@@ -25,6 +26,7 @@ module ArchitectureJS
 
     def initialize(config, root = nil)
       raise "#{self.class}.new({ name: 'myapp' }, options): config[:name] is undefined" unless config[:name]
+      @raise_errors = false
       @config_file = "#{config[:name].downcase}.architecture"
       root ||= Dir.getwd
       @root = File.expand_path(root)
@@ -136,6 +138,7 @@ module ArchitectureJS
     rescue Exception => error
       @errors = true
       puts ArchitectureJS::Notification.error "Sprockets error: #{error.message}"
+      raise if @raise_errors
     end
 
     def compress_application
