@@ -29,7 +29,6 @@ GEM
       multi_json (~> 1.0.3)
       simplecov-html (~> 0.5.3)
     simplecov-html (0.5.3)
-    sprockets (1.0.2)
 
 PLATFORMS
   ruby
@@ -43,4 +42,3 @@ DEPENDENCIES
   jsmin (~> 1.0.1)
   rspec (~> 2.8.0)
   simplecov (~> 0.5.4)
-  sprockets (= 1.0.2)
