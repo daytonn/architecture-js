@@ -10,7 +10,25 @@ ArchitectureJS is a suite of tools to help you build and manage complex javascri
 * Custom local JavaScript package management
 * Realtime file monitoring utility to compile your application while you code
 * Project-specific configuration to manage defaults and dependencies
+
+## Installation
+ArchitectureJS requires ruby version 1.9 or higher. The best way to get architecture-js is using rubygems:
+
+    gem install architecture-js
+
+For development simply clone this repository and run bundle install
+
+    git clone git@github.com:daytonn/architecture-js.git
+    cd architecture-js
+    bundle
+
+## Getting Started
+ArchitectureJS comes with a small command line utility named "architect" to manage your architecture projects. To be sure architecture-js is installed correctly, type this command:
+
+    architect -h
  
+If architect is installed, this command will display the help menu. You will see there are only a few simple commands: create, compile, watch, and generate
+
 ##Contributing to architecture.js
  
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet

@@ -134,7 +134,7 @@ module Architect
           end
         end.parse!
 
-        @command = ARGV[0].to_sym
+        @command = ARGV[0].to_sym if ARGV[0]
         @args = Array.try_convert(ARGV)
         @args.shift # remove command
       end
