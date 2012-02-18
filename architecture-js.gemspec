@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "architecture-js"
-  s.version = "0.1.13"
+  s.version = "0.1.14"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Dayton Nolan"]
-  s.date = "2012-02-17"
+  s.date = "2012-02-18"
   s.description = "Architecture.js helps you generate scaffolding, manage third-party packages, compile, and compress your application."
   s.email = "daytonn@gmail.com"
   s.executables = ["architect"]
@@ -36,6 +36,44 @@ Gem::Specification.new do |s|
     "lib/architecture-js/helpers.rb",
     "lib/architecture-js/notification.rb",
     "lib/architecture-js/project.rb",
+    "lib/sprockets/CHANGELOG",
+    "lib/sprockets/LICENSE",
+    "lib/sprockets/README.markdown",
+    "lib/sprockets/lib/sprockets.rb",
+    "lib/sprockets/lib/sprockets/concatenation.rb",
+    "lib/sprockets/lib/sprockets/environment.rb",
+    "lib/sprockets/lib/sprockets/error.rb",
+    "lib/sprockets/lib/sprockets/pathname.rb",
+    "lib/sprockets/lib/sprockets/preprocessor.rb",
+    "lib/sprockets/lib/sprockets/secretary.rb",
+    "lib/sprockets/lib/sprockets/source_file.rb",
+    "lib/sprockets/lib/sprockets/source_line.rb",
+    "lib/sprockets/lib/sprockets/version.rb",
+    "lib/sprockets/test/fixtures/assets/images/script_with_assets/one.png",
+    "lib/sprockets/test/fixtures/assets/images/script_with_assets/two.png",
+    "lib/sprockets/test/fixtures/assets/stylesheets/script_with_assets.css",
+    "lib/sprockets/test/fixtures/constants.yml",
+    "lib/sprockets/test/fixtures/double_slash_comments_that_are_not_requires_should_be_ignored_when_strip_comments_is_false.js",
+    "lib/sprockets/test/fixtures/double_slash_comments_that_are_not_requires_should_be_removed_by_default.js",
+    "lib/sprockets/test/fixtures/multiline_comments_should_be_removed_by_default.js",
+    "lib/sprockets/test/fixtures/requiring_a_file_after_it_has_already_been_required_should_do_nothing.js",
+    "lib/sprockets/test/fixtures/requiring_a_file_that_does_not_exist_should_raise_an_error.js",
+    "lib/sprockets/test/fixtures/requiring_a_single_file_should_replace_the_require_comment_with_the_file_contents.js",
+    "lib/sprockets/test/fixtures/requiring_the_current_file_should_do_nothing.js",
+    "lib/sprockets/test/fixtures/src/constants.yml",
+    "lib/sprockets/test/fixtures/src/foo.js",
+    "lib/sprockets/test/fixtures/src/foo/bar.js",
+    "lib/sprockets/test/fixtures/src/foo/foo.js",
+    "lib/sprockets/test/fixtures/src/script_with_assets.js",
+    "lib/sprockets/test/fixtures/src/script_with_comments.js",
+    "lib/sprockets/test/test_concatenation.rb",
+    "lib/sprockets/test/test_environment.rb",
+    "lib/sprockets/test/test_helper.rb",
+    "lib/sprockets/test/test_pathname.rb",
+    "lib/sprockets/test/test_preprocessor.rb",
+    "lib/sprockets/test/test_secretary.rb",
+    "lib/sprockets/test/test_source_file.rb",
+    "lib/sprockets/test/test_source_line.rb",
     "repository/modjs/plugins/jquery-elements.js",
     "spec/.DS_Store",
     "spec/architect_spec.rb",
@@ -58,6 +96,7 @@ Gem::Specification.new do |s|
     "spec/fixtures/test_framework.rb",
     "spec/fixtures/test_template_options.js",
     "spec/fixtures/test_template_two.js",
+    "spec/fixtures/underscore_template.js",
     "spec/fixtures/update.architecture",
     "spec/fixtures/update.js",
     "spec/generator_spec.rb",
@@ -79,7 +118,6 @@ Gem::Specification.new do |s|
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<fssm>, ["~> 0.2.8.1"])
       s.add_runtime_dependency(%q<jsmin>, ["~> 1.0.1"])
-      s.add_runtime_dependency(%q<sprockets>, ["= 1.0.2"])
       s.add_development_dependency(%q<rspec>, ["~> 2.8.0"])
       s.add_development_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.8.3"])
@@ -87,11 +125,9 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<autotest-growl>, ["~> 0.2.16"])
       s.add_runtime_dependency(%q<jsmin>, [">= 0"])
       s.add_runtime_dependency(%q<fssm>, [">= 0"])
-      s.add_runtime_dependency(%q<sprockets>, ["= 1.0.2"])
     else
       s.add_dependency(%q<fssm>, ["~> 0.2.8.1"])
       s.add_dependency(%q<jsmin>, ["~> 1.0.1"])
-      s.add_dependency(%q<sprockets>, ["= 1.0.2"])
       s.add_dependency(%q<rspec>, ["~> 2.8.0"])
       s.add_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_dependency(%q<jeweler>, ["~> 1.8.3"])
@@ -99,12 +135,10 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<autotest-growl>, ["~> 0.2.16"])
       s.add_dependency(%q<jsmin>, [">= 0"])
       s.add_dependency(%q<fssm>, [">= 0"])
-      s.add_dependency(%q<sprockets>, ["= 1.0.2"])
     end
   else
     s.add_dependency(%q<fssm>, ["~> 0.2.8.1"])
     s.add_dependency(%q<jsmin>, ["~> 1.0.1"])
-    s.add_dependency(%q<sprockets>, ["= 1.0.2"])
     s.add_dependency(%q<rspec>, ["~> 2.8.0"])
     s.add_dependency(%q<bundler>, ["~> 1.0.0"])
     s.add_dependency(%q<jeweler>, ["~> 1.8.3"])
@@ -112,7 +146,6 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<autotest-growl>, ["~> 0.2.16"])
     s.add_dependency(%q<jsmin>, [">= 0"])
     s.add_dependency(%q<fssm>, [">= 0"])
-    s.add_dependency(%q<sprockets>, ["= 1.0.2"])
   end
 end
 
