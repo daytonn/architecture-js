@@ -45,6 +45,8 @@ module ArchitectureJS
   FRAMEWORKS = Hash.new
 end
 
+require "sprockets/lib/sprockets"
+
 %w(dependencies generator notification project architect).each do |lib|
   require "architecture-js/#{lib}"
 end

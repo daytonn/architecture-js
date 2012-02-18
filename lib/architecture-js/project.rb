@@ -126,7 +126,8 @@ module ArchitectureJS
         root: ArchitectureJS::base_directory,
         asset_root: @config[:asset_root],
         load_path: ['repository'],
-        source_files: [file_path]
+        source_files: [file_path],
+        interpolate_constants: false
       )
 
       compiled_file = sprockets.concatenation
