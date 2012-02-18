@@ -1,0 +1,41 @@
+create    Creates a new architecture-js application in the
+          current working directory or sub directory within.
+
+          Arguments:
+            application name - Name of the architecture-js application
+            subdirectory* - Directory where the application will be
+                          installed (created if nonexistent)
+
+          examples:
+            architect create myapp
+            architect create myapp subdirectory
+
+compile   Compiles the architecture-js project in the current working directory.
+
+            Options:
+                -c, --compress - Compress output with JsMin
+
+            example:
+                architect compile
+
+generate  Generates scoffolding from a template.
+
+          Arguments:
+            name - Name of the template to generate
+
+          Options:
+            *Options are arbitrary (optional) arguments specific to templates
+            There are two types of options: boolean and named attributes
+
+          examples:
+            architect generate mytemplate -f (boolean arguments use a single "-")
+            architect generate mytemplate foo:"Hello" (named arguments can be boolean by passing no value)
+            architect genreate mymodule -f foo:"Hello" (combined to generate complex templates)
+
+watch     Watches the current working directory for file
+          changes and compiles when changes are detected.
+
+            example:
+                architect watch
+
+* optional argument

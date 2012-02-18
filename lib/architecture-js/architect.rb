@@ -26,7 +26,8 @@ module Architect
 
     def run
       parse_options
-      self.send(@command)
+      self.send(@command) if @command and not @options[:help]
+      help unless @command or @options[:help]
     end
 
     def create
@@ -61,7 +62,7 @@ module Architect
       project.config[:output] = 'compressed' if options[:c] || options[:compress]
       project.update
     end
-
+    #compile
     def watch
       require "fssm"
       path ||= Dir.getwd
@@ -107,7 +108,7 @@ module Architect
         end
       end
     end
-
+    #watch
     private
       def parse_options
         @options = {}
@@ -130,7 +131,8 @@ module Architect
           end
 
           opts.on('-h', '--help', 'Display help') do
-            puts 'Show help'
+            @options[:help] = true
+            help
           end
         end.parse!
 
@@ -139,71 +141,10 @@ module Architect
         @args.shift # remove command
       end
 
-      def help(command = nil)
-        help = command || [*@commands, :footer]
-        [*help].each do |command|
-          puts @help[command]
-        end
+      def help
+        puts File.read("#{ArchitectureJS::base_directory}/HELP")
       end
 
-      def create_help
-        help = {}
-        help[:create] = <<-CREATE
-            create    Creates a new architecture-js application in the current working 
-                      directory or sub directory within.
-
-                      Arguments:
-                      application name - Name of the architecture-js application
-                      subdirectory* - Directory where the application will be 
-                                      installed (created if nonexistent)
-
-                      examples:
-                      architect create myapp
-                      architect create myapp subdirectory
-        CREATE
-      
-        help[:generate] = <<-GEN
-            generate  Generates scoffolding from a template. 
-
-                      Arguments:
-                      name - Name of the template to generate
-
-                      Options:
-                      *Options are arbitrary (optional) arguments specific to templates
-                      There are two types of options: boolean and named attributes
-
-                      examples:
-                      architect generate mytemplate -f (boolean arguments use a single "-")
-                      architect generate mytemplate foo:"Hello" (named arguments can be boolean by passing no value)
-                      architect genreate mymodule -f foo:"Hello" (combined to generate complex templates)
-        GEN
-
-        help[:compile] = <<-COMP
-          compile   Compiles the architecture-js project in the current working directory.
-
-                    Options:
-                    -c, --compress - Compress output with JsMin
-
-                    example:
-                    architect compile
-        COMP
-
-        help[:watch] = <<-WATCH
-          watch     Watches the current working directory for file changes and
-                    compiles when changes are detected.
-          
-                    example:
-                    architect watch
-        WATCH
-
-        help[:footer] = <<-FOOTER
-
-        * optional argument
-        
-        FOOTER
-
-        help
-      end
   end
 
 end
