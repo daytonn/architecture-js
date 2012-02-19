@@ -4,7 +4,7 @@ require 'architecture-js'
 require 'fileutils'
 require 'rspec'
 require 'digest/md5'
-require 'fixtures/test_framework.rb'
+require 'fixtures/test_blueprint.rb'
 
 RSpec.configure do |config|
   config.color_enabled = true

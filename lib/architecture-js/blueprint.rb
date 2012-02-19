@@ -1,9 +1,9 @@
 module ArchitectureJS
 
-  class Project
+  class Blueprint
     attr_accessor :root,
                   :src_files,
-                  :framework,
+                  :blueprint,
                   :config_name,
                   :directories,
                   :template_directories,
@@ -19,9 +19,9 @@ module ArchitectureJS
       config = YAML::load_file "#{path}/#{config_file}"
       config = ArchitectureJS::Helpers::symbolize_keys config
 
-      raise "#{config[:framework]} is unavailable or not installed" if ArchitectureJS::FRAMEWORKS[config[:framework]].nil?
+      raise "#{config[:blueprint]} is unavailable or not installed" if ArchitectureJS::BLUEPRINTS[config[:blueprint]].nil?
 
-      project = ArchitectureJS::FRAMEWORKS[config[:framework]].new config, path
+      project = ArchitectureJS::BLUEPRINTS[config[:blueprint]].new config, path
     end
 
     def initialize(config, root = nil)
@@ -34,7 +34,7 @@ module ArchitectureJS
       @directories = ['lib', 'src']
       @src_files = Array.new
       @config = {
-        framework: 'none',
+        blueprint: 'default',
         src_dir: 'src',
         build_dir: 'lib',
         asset_root: '../',
@@ -155,8 +155,8 @@ module ArchitectureJS
       end
     end
 
-  end # class Project
+  end # class Blueprint
 end # module ArchitectureJS
 
-# this line adds the default framework to ArchitectureJS
-ArchitectureJS::register_framework('none', ArchitectureJS::Project)
+# this line adds the default blueprint to ArchitectureJS
+ArchitectureJS::register_blueprint('default', ArchitectureJS::Blueprint)

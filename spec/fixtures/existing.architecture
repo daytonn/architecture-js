@@ -1,5 +1,5 @@
 name: test
-framework: none
+blueprint: default
 src_dir: source
 build_dir: dest
 asset_root: ../

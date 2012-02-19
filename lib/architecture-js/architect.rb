@@ -35,16 +35,16 @@ module Architect
       if @args[1]
         sub_dir = @args[1] unless @args[1].match /^-/
       end
-      framework = @options[:framework]
+      blueprint = @options[:blueprint]
 
       raise 'you must specify a project name: architect create [project_name]' if args[0].nil?
 
       @root = File.expand_path sub_dir if sub_dir
-      config = { name: app_name, framework: framework }
+      config = { name: app_name, blueprint: blueprint }
 
-      require "#{framework}-architecture" unless framework == 'none'
+      require "#{blueprint}-architecture" unless blueprint == 'default'
 
-      project = ArchitectureJS::FRAMEWORKS[framework].new(config, @root)
+      project = ArchitectureJS::BLUEPRINTS[blueprint].new(config, @root)
       project.create
     end
 
@@ -70,7 +70,7 @@ module Architect
       path = File.expand_path(path)
 
       puts ArchitectureJS::Notification.log "architect is watching for changes. Press Ctrl-C to stop."
-      project = ArchitectureJS::Project::new_from_config(path)
+      project = ArchitectureJS::Blueprint::new_from_config(path)
       project.update
       watch_hash = Hash.new
       watch_files = Dir["#{path}/**/"]
@@ -121,9 +121,9 @@ module Architect
             @options[:version] = true
           end
 
-          options[:framework] = 'none'
-          opts.on('-f', '--framework FRAMEWORK', 'with framework') do |framework|
-            @options[:framework] = framework
+          options[:blueprint] = 'default'
+          opts.on('-f', '--blueprint FRAMEWORK', 'with blueprint') do |blueprint|
+            @options[:blueprint] = blueprint
           end
 
           @options[:compress] = false

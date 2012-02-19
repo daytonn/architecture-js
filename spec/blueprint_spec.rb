@@ -1,16 +1,16 @@
 require "spec_helper.rb"
 
-describe ArchitectureJS::Project do
+describe ArchitectureJS::Blueprint do
 
   it "should exist" do
-    ArchitectureJS::Project.should_not be_nil
+    ArchitectureJS::Blueprint.should_not be_nil
   end
 
   context 'Instantiation' do
     before :each do
       FileUtils.mkdir TMP_DIR
       suppress_output do
-        @project = ArchitectureJS::Project.new({ name: 'myapp' }, TMP_DIR)
+        @project = ArchitectureJS::Blueprint.new({ name: 'myapp' }, TMP_DIR)
       end
     end
 
@@ -18,8 +18,8 @@ describe ArchitectureJS::Project do
       FileUtils.rm_rf "#{TMP_DIR}" if File.exists? "#{TMP_DIR}"
     end
 
-    it "should add the 'none' framework to ArchitectureJS" do
-      ArchitectureJS::FRAMEWORKS['none'].should == ArchitectureJS::Project
+    it "should add the 'default' blueprint to ArchitectureJS" do
+      ArchitectureJS::BLUEPRINTS['default'].should == ArchitectureJS::Blueprint
     end
 
     it 'should have an empty src_files array' do
@@ -52,7 +52,7 @@ describe ArchitectureJS::Project do
       end
 
       it "should initialize with a config path" do
-        @existing = ArchitectureJS::Project.new_from_config TMP_DIR
+        @existing = ArchitectureJS::Blueprint.new_from_config TMP_DIR
         @existing.config.should_not be_empty
         @existing.config[:name].should == 'myapp'
       end
@@ -64,7 +64,7 @@ describe ArchitectureJS::Project do
    before :each do
      FileUtils.mkdir("#{TMP_DIR}")
      suppress_output do
-       @project = ArchitectureJS::Project.new({ name: 'myapp' }, TMP_DIR)
+       @project = ArchitectureJS::Blueprint.new({ name: 'myapp' }, TMP_DIR)
        @project.create
      end
    end
@@ -92,7 +92,7 @@ describe ArchitectureJS::Project do
     before :each do
       FileUtils.mkdir("#{TMP_DIR}")
       suppress_output do
-        @project = ArchitectureJS::Project.new({ name: 'myapp' },TMP_DIR)
+        @project = ArchitectureJS::Blueprint.new({ name: 'myapp' },TMP_DIR)
         @project.create
         FileUtils.cp "#{FIXTURES}/lib1.js", "#{TMP_DIR}/src/lib1.js"
         FileUtils.cp "#{FIXTURES}/lib2.js", "#{TMP_DIR}/src/lib2.js"
@@ -132,7 +132,7 @@ describe ArchitectureJS::Project do
     before :each do
       FileUtils.mkdir("#{TMP_DIR}")
       suppress_output do
-        @project = ArchitectureJS::Project.new({ name: 'myapp' },TMP_DIR)
+        @project = ArchitectureJS::Blueprint.new({ name: 'myapp' },TMP_DIR)
         @project.create
         FileUtils.cp "#{FIXTURES}/update.architecture", "#{TMP_DIR}/myapp.architecture"
         FileUtils.cp "#{FIXTURES}/lib1.js", "#{TMP_DIR}/src/lib1.js"
@@ -156,7 +156,7 @@ describe ArchitectureJS::Project do
     before :each do
       FileUtils.mkdir("#{TMP_DIR}")
       suppress_output do
-        @project = ArchitectureJS::Project.new({ name: 'myapp' },TMP_DIR)
+        @project = ArchitectureJS::Blueprint.new({ name: 'myapp' },TMP_DIR)
         @project.raise_errors = true
         @project.create
         FileUtils.cp "#{FIXTURES}/underscore_template.js", "#{TMP_DIR}/src/underscore_template.js"

@@ -38,7 +38,7 @@ describe 'architect' do
     end
   end
 =begin
-  context 'alternate framework' do
+  context 'alternate blueprint' do
 
     before :each do
       @bin = "#{ArchitectureJS::base_directory}/bin/architect"
@@ -49,7 +49,7 @@ describe 'architect' do
       FileUtils.rm_rf TMP_DIR if File.exists? TMP_DIR
     end
 
-    it 'should create a new application with an alternate framework' do
+    it 'should create a new application with an alternate blueprint' do
       puts `cd #{TMP_DIR}; #{@bin} create myapp -f modjs`
 
       File.directory?("#{TMP_DIR}/application").should be_true
@@ -61,7 +61,7 @@ describe 'architect' do
       File.directory?("#{TMP_DIR}/spec").should be_true
     end
 
-    it 'should create a new application in a subdirectory with an alternate framework' do
+    it 'should create a new application in a subdirectory with an alternate blueprint' do
       puts `cd #{TMP_DIR}; #{@bin} create myapp sub -f modjs`
 
       File.directory?("#{TMP_DIR}/sub/application").should be_true

@@ -1,9 +1,9 @@
 module TestFramework
-  class Project < ArchitectureJS::Project
+  class Project < ArchitectureJS::Blueprint
 
     def initialize(config, root = nil)
       @config = {
-        framework: 'test',
+        blueprint: 'test',
         src_dir: 'modules',
         build_dir: 'application',
         dependencies: [],
@@ -17,5 +17,5 @@ module TestFramework
   end
 end
 
-# this line adds the default framework to ArchitectureJS
-ArchitectureJS::register_framework('test', TestFramework::Project)
+# this line adds the default blueprint to ArchitectureJS
+ArchitectureJS::register_blueprint('test', TestFramework::Project)

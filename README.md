@@ -41,15 +41,15 @@ This will create the default project scaffold:
 ## Default Configurtaion
 The `myapp.architecture` file contains the configuration for your architecture project. These few simple settings will give you a great amount of control over the compilation of your project. The default config file looks something like this
 
-    framework: none
+    blueprint: default
     src_dir: src
     build_dir: lib
     asset_root: ../
     output: compressed
     name: myapp
 
-### framework
-The `framework` is what determines the application scaffold and configuration settings. It defaults to `none` which is a bare bones project layout for simple javascript libraries. It has one directory for source files (src), and a build directory named "lib" for distributable code. Other frameworks can be plugged in to support any architecture. These frameworks can extend the basic architecture project including the scaffolding, templates, compilation tasks, and default templates. All frameworks will share the default configuration options (although some frameworks may treat them differently).
+### blueprint
+The `blueprint` is what determines the application scaffold and configuration settings. It defaults to `default` which is a bare bones project layout for simple javascript libraries. It has one directory for source files (src), and a build directory named "lib" for distributable code. Other blueprints can be plugged in to support any architecture. These blueprints can extend the basic architecture project including the scaffolding, templates, compilation tasks, and default templates. All blueprints will share the default configuration options (although some blueprints may treat them differently).
 
 ### src_dir
 The `src_dir` is the directory or directories where the source files that will be compiled into the build directory (`build_dir`) are kept. By default the `src_dir` is usually a single directory represented as a string:
@@ -74,7 +74,7 @@ The `asset_root` is where stylesheet and image assets will be installed by the `
 The `output` determines whether the compiled javascript will be `compressed` or `expanded`, which are the two possible values. The JSMin engine is used for compression.
 
 ### name
-The `name` is the name of your architecture project. The name value can be used by the framework in a variety of ways. By default the name is used to create the main application file in the /src directory.
+The `name` is the name of your architecture project. The name value can be used by the blueprint in a variety of ways. By default the name is used to create the main application file in the /src directory.
 
 <a id="sprockets"></a>
 ## Sprockets
@@ -161,7 +161,7 @@ This will watch the project directory and compile the project every time a file 
 ## Scaffolds
 
 ### generate _(Not Yet Implemented)_
-The `generate` command will create a new file based on a predefined template. Default template files are defined by the `framework` or in the `framework`'s user template directory. To generate a file named foo.js using the blank template of the default framework, type:
+The `generate` command will create a new file based on a predefined template. Default template files are defined by the `blueprint` or in the `blueprint`'s user template directory. To generate a file named foo.js using the blank template of the default blueprint, type:
 
     architect generate blank test
 

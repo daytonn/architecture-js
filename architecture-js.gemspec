@@ -36,7 +36,7 @@ Gem::Specification.new do |s|
     "lib/architecture-js/generator.rb",
     "lib/architecture-js/helpers.rb",
     "lib/architecture-js/notification.rb",
-    "lib/architecture-js/project.rb",
+    "lib/architecture-js/blueprint.rb",
     "lib/sprockets/CHANGELOG",
     "lib/sprockets/LICENSE",
     "lib/sprockets/README.markdown",
@@ -94,7 +94,7 @@ Gem::Specification.new do |s|
     "spec/fixtures/src_file.js",
     "spec/fixtures/templates/test_template_one.js",
     "spec/fixtures/templates/test_template_two.js",
-    "spec/fixtures/test_framework.rb",
+    "spec/fixtures/test_blueprint.rb",
     "spec/fixtures/test_template_options.js",
     "spec/fixtures/test_template_two.js",
     "spec/fixtures/underscore_template.js",
@@ -103,7 +103,7 @@ Gem::Specification.new do |s|
     "spec/generator_spec.rb",
     "spec/helpers_spec.rb",
     "spec/notification_spec.rb",
-    "spec/project_spec.rb",
+    "spec/blueprint_spec.rb",
     "spec/spec_helper.rb",
     "templates/blank.js"
   ]

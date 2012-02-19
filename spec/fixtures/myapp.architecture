@@ -1,4 +1,4 @@
-framework: none
+blueprint: default
 src_dir: src
 build_dir: lib
 asset_root: ../

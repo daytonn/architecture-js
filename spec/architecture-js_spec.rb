@@ -18,8 +18,8 @@ describe ArchitectureJS do
     ArchitectureJS::VERSION.should === version
   end
 
-  it 'should have a FRAMEWORKS constant' do
-    ArchitectureJS::FRAMEWORKS.should_not be_nil
+  it 'should have a BLUEPRINTS constant' do
+    ArchitectureJS::BLUEPRINTS.should_not be_nil
   end
 
   context "Instantiation with a config file" do
@@ -41,7 +41,7 @@ describe ArchitectureJS do
 
    it 'should set defaults from config file' do
      @project.config.should == {
-       framework: 'none',
+       blueprint: 'default',
        src_dir: 'source',
        build_dir: 'dest',
        asset_root: '../',

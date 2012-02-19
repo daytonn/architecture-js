@@ -16,8 +16,8 @@ module ArchitectureJS
     File.expand_path(File.join(File.dirname(Dir.getwd)))
   end
 
-  def register_framework(name, constructor)
-    ArchitectureJS::FRAMEWORKS[name] = constructor
+  def register_blueprint(name, constructor)
+    ArchitectureJS::BLUEPRINTS[name] = constructor
   end
 
   def create_project_from_config(project_dir = nil)
@@ -29,24 +29,24 @@ module ArchitectureJS
     config = ArchitectureJS::Helpers::symbolize_keys config
 
     raise "The config file does not contain a project name" if config[:name].nil?
-    raise "#{config[:framework]} is not isntalled. Try gem install #{config[:framework]}-architecture" if ArchitectureJS::FRAMEWORKS[config[:framework]].nil?
+    raise "#{config[:blueprint]} is not isntalled. Try gem install #{config[:blueprint]}-architecture" if ArchitectureJS::BLUEPRINTS[config[:blueprint]].nil?
 
-    project = ArchitectureJS::FRAMEWORKS[config[:framework]].new(config, project_dir)
+    project = ArchitectureJS::BLUEPRINTS[config[:blueprint]].new(config, project_dir)
   end
 
   module_function :base_directory,
                   :lib_directory,
-                  :register_framework,
+                  :register_blueprint,
                   :create_project_from_config
 end
 
 module ArchitectureJS
   VERSION = File.read("#{base_directory}/VERSION")
-  FRAMEWORKS = Hash.new
+  BLUEPRINTS = Hash.new
 end
 
 require "sprockets/lib/sprockets"
 
-%w(dependencies generator notification project architect).each do |lib|
+%w(dependencies generator notification blueprint architect).each do |lib|
   require "architecture-js/#{lib}"
 end
