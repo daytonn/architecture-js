@@ -63,6 +63,7 @@ module Architect
       project.update
     end
     #compile
+
     def watch
       require "fssm"
       path ||= Dir.getwd
@@ -142,7 +143,7 @@ module Architect
       end
 
       def help
-        puts File.read("#{ArchitectureJS::base_directory}/HELP")
+        puts File.read("#{ArchitectureJS::base_directory}/bin/HELP")
       end
 
   end

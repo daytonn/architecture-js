@@ -15,7 +15,7 @@ module ArchitectureJS
     def find_templates(paths)
       paths.each do |path|
         Dir["#{path}/*"].each do |file|
-          add_file_to_templates file          
+          add_file_to_templates file
         end
       end
     end
