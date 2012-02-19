@@ -3,12 +3,12 @@
 ##About
 ArchitectureJS is a suite of tools to help you build and manage complex javascript applications and frameworks. With ArchitectureJS you can create project scaffolding, manage third-party and custom packages, compile, and compress your javascript application, all in real time as you write plain old vanilla javascript. In addition to large applications, ArchitectureJS is perfect for developing your own javascript frameworks and libraries. ArchitectureJS contains the following tools to help you build modern javascript applications and frameworks:
 
-* [Project-specific configuration to manage defaults and dependencies](#configuration)
-* [JavaScript Compiler (Sprockets 1.0.2)](#sprockets)
-* [JavaScript Compression (JSMin)](#output)
-* [Scaffold generation using editable templates](#scaffolds)
-* [Custom local JavaScript package management](#package-management)
-* [Realtime file monitoring utility to compile your application while you code](#watch)
+* Project-specific configuration to manage defaults and dependencies
+* JavaScript Compiler (Sprockets 1.0.2)
+* JavaScript Compression (JSMin)
+* Scaffold generation using editable templates
+* Custom local JavaScript package management
+* Realtime file monitoring utility to compile your application while you code
 
 ## Installation
 Requires ruby version 1.9 or higher. The best way is using rubygems:
