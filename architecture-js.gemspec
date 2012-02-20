@@ -5,14 +5,14 @@
 
 Gem::Specification.new do |s|
   s.name = "architecture-js"
-  s.version = "0.1.16"
+  s.version = "0.1.17"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Dayton Nolan"]
-  s.date = "2012-02-18"
+  s.date = "2012-02-20"
   s.description = "Architecture.js helps you generate scaffolding, manage third-party packages, compile, and compress your application."
   s.email = "daytonn@gmail.com"
-  s.executables = ["architect"]
+  s.executables = ["HELP", "architect"]
   s.extra_rdoc_files = [
     "LICENSE.txt",
     "README.md"
@@ -23,20 +23,20 @@ Gem::Specification.new do |s|
     ".travis.yml",
     "Gemfile",
     "Gemfile.lock",
-    "HELP",
     "LICENSE.txt",
     "README.md",
     "Rakefile",
     "VERSION",
     "architecture-js.gemspec",
+    "bin/HELP",
     "bin/architect",
     "lib/architecture-js.rb",
     "lib/architecture-js/architect.rb",
+    "lib/architecture-js/blueprint.rb",
     "lib/architecture-js/dependencies.rb",
     "lib/architecture-js/generator.rb",
     "lib/architecture-js/helpers.rb",
     "lib/architecture-js/notification.rb",
-    "lib/architecture-js/blueprint.rb",
     "lib/sprockets/CHANGELOG",
     "lib/sprockets/LICENSE",
     "lib/sprockets/README.markdown",
@@ -79,6 +79,7 @@ Gem::Specification.new do |s|
     "spec/.DS_Store",
     "spec/architect_spec.rb",
     "spec/architecture-js_spec.rb",
+    "spec/blueprint_spec.rb",
     "spec/fixtures/.DS_Store",
     "spec/fixtures/_hidden.js",
     "spec/fixtures/compiled_src.js",
@@ -103,7 +104,6 @@ Gem::Specification.new do |s|
     "spec/generator_spec.rb",
     "spec/helpers_spec.rb",
     "spec/notification_spec.rb",
-    "spec/blueprint_spec.rb",
     "spec/spec_helper.rb",
     "templates/blank.js"
   ]
