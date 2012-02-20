@@ -21,6 +21,7 @@ module ArchitectureJS
 
       raise "#{config[:blueprint]} is unavailable or not installed" if ArchitectureJS::BLUEPRINTS[config[:blueprint]].nil?
 
+      require "#{config[:blueprint]}-architecture" unless config[:blueprint] == 'default'
       project = ArchitectureJS::BLUEPRINTS[config[:blueprint]].new config, path
     end
 
