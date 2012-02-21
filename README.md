@@ -213,7 +213,7 @@ Which generates:
 This is a slightly contrived but not wholly unrealistic example of how you can use the architect template generator. Some blueprints contain default templates which work without the presence of a `/templates` folder. 
 
 ## Package Management
-_Not Yet Implemented_
+_(Not Yet Implemented)_
 
 ##Contributing to architecture.js
  
