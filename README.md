@@ -17,7 +17,7 @@ Requires ruby version 1.9 or higher. The best way is using rubygems:
 
 Or include it in your projects `Gemfile` with Bundler:
 
-    gem 'architecture-js', '~> 0.1.16'
+    gem 'architecture-js', '~> 0.2.0'
 
 ## Getting Started
 ArchitectureJS comes with a small command line utility named `architect` to manage your architecture projects. To be sure architecture-js is installed correctly, type this command:
