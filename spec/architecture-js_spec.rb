@@ -26,7 +26,7 @@ describe ArchitectureJS do
 
    before :each do
      FileUtils.mkdir("#{TMP_DIR}")
-     FileUtils.cp "#{FIXTURES}/existing.architecture", "#{TMP_DIR}/myapp.architecture"
+     FileUtils.cp "#{FIXTURES}/existing.blueprint", "#{TMP_DIR}/myapp.blueprint"
      suppress_output { @project = ArchitectureJS::create_project_from_config(TMP_DIR) }
    end
 
@@ -34,8 +34,8 @@ describe ArchitectureJS do
      FileUtils.rm_rf "#{TMP_DIR}" if File.exists? "#{TMP_DIR}"
    end
 
-   it "should raise an error if there is no .architecture file" do
-     FileUtils.rm_rf "#{TMP_DIR}/myapp.architecture"
+   it "should raise an error if there is no .blueprint file" do
+     FileUtils.rm_rf "#{TMP_DIR}/myapp.blueprint"
      lambda { ArchitectureJS::create_project_from_config TMP_DIR }.should raise_error
    end
 

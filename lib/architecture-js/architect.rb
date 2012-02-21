@@ -25,7 +25,15 @@ module Architect
     end
 
     def run
-      parse_options
+      parse_command
+      parse_arguments
+
+      if @command == :generate
+        parse_generate_options
+      else
+        parse_options
+      end
+
       self.send(@command) if @command and not @options[:help]
       help unless @command or @options[:help]
     end
@@ -49,12 +57,30 @@ module Architect
     end
 
     def generate
-      puts 'To be implemented'
+      project_path = File.expand_path(Dir.getwd)
 
-      #conf_path = "#{config[:project].root}/ninjs.conf"
-      #raise "ninjs.conf was not located in #{conf_path}" unless File.exists? conf_path
-      #generator = ArchitectureJS::Generator.new(config)
-      #generator.generate
+      # Go up to 10 levels up to look for the project config file
+      # This is not optimal but is probably the easiest way to allow
+      # generating templates in project sub-folders given we need to
+      # read the blueprint file to get the templates
+      10.times do
+        config_file = ArchitectureJS::get_config_file(project_path)
+
+        unless config_file
+          path_array = project_path.split(File::SEPARATOR)
+          path_array.pop # push the last dir off the stack
+          project_path = path_array.join(File::SEPARATOR)
+        else
+          break
+        end
+      end
+
+      project = ArchitectureJS::create_project_from_config(project_path)
+      template = @args.first
+      filename = @args[1]
+      options = @template_options
+
+      project.generator.generate(template, filename, options)
     end
 
     def compile
@@ -82,7 +108,7 @@ module Architect
         watch_hash[dir] = "**/*.js"
       end
 
-      watch_hash[path] = "**/*.architecture"
+      watch_hash[path] = "**/*.blueprint"
       watch_hash["#{ArchitectureJS::base_directory}/repository"] = "**/*.js" # check changes to the repository as well
 
       FSSM.monitor do
@@ -110,6 +136,7 @@ module Architect
       end
     end
     #watch
+
     private
       def parse_options
         @options = {}
@@ -136,14 +163,46 @@ module Architect
             help
           end
         end.parse!
+      end
 
-        @command = ARGV[0].to_sym if ARGV[0]
+      def parse_generate_options
+        @options = {
+          help: false
+        }
+        @template_options = {}
+
+        @args.each_with_index do |arg, i|
+          # double dash options contain variables
+          if arg.match(/^--/)
+            option_key = arg.gsub(/^--/, '')
+            option_value = @args[i + 1]
+
+            if (option_value && option_value.match(/^-/) || option_value.nil?)
+              # no option value
+              @template_options[option_key.to_sym] = false
+            else
+              # option has a value
+              @template_options[option_key.to_sym] = option_value
+            end
+          # single dash options are flags
+          elsif arg.match(/^-/)
+            @template_options[arg.gsub(/^-/, '').to_sym] = true
+          end
+        end
+        # each_with_index
+      end
+
+      def parse_arguments
         @args = Array.try_convert(ARGV)
         @args.shift # remove command
       end
 
+      def parse_command
+        @command = ARGV[0].to_sym if ARGV[0]
+      end
+
       def help
-        puts File.read("#{ArchitectureJS::base_directory}/bin/HELP")
+        puts File.read("#{ArchitectureJS::base_directory}/HELP")
       end
 
   end

@@ -12,9 +12,9 @@ module ArchitectureJS
                   :raise_errors
 
     def self.new_from_config(path)
-      config_file = Dir.entries(path).select {|f| f =~ /\.architecture$/ }.first
+      config_file = Dir.entries(path).select {|f| f =~ /\.blueprint$/ }.first
 
-      raise ".architecture file was not found in #{path}" if config_file.nil?
+      raise ".blueprint file was not found in #{path}" if config_file.nil?
 
       config = YAML::load_file "#{path}/#{config_file}"
       config = ArchitectureJS::Helpers::symbolize_keys config
@@ -28,7 +28,7 @@ module ArchitectureJS
     def initialize(config, root = nil)
       raise "#{self.class}.new({ name: 'myapp' }, options): config[:name] is undefined" unless config[:name]
       @raise_errors = false
-      @config_file = "#{config[:name].downcase}.architecture"
+      @config_file = "#{config[:name].downcase}.blueprint"
       root ||= Dir.getwd
       @root = File.expand_path(root)
       @template_directories = ["#{ArchitectureJS::base_directory}/templates", "#{@root}/templates"]

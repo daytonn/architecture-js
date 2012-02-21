@@ -20,6 +20,10 @@ describe ArchitectureJS::Generator do
     @gen.project.class.should == ArchitectureJS::Blueprint
   end
 
+  it 'should have a blueprint' do
+    @gen.blueprint.class.should_not be_nil
+  end
+
   it 'should have template_paths' do
     @gen.template_paths.should == ["#{FIXTURES}/templates"]
   end

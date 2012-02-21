@@ -35,11 +35,11 @@ This will create the default project scaffold:
     /lib
     /src/
         myapp.js
-    myapp.architecture
+    myapp.blueprint
 
 <a id="configuration"></a>
 ## Default Configurtaion
-The `myapp.architecture` file contains the configuration for your architecture project. These few simple settings will give you a great amount of control over the compilation of your project. The default config file looks something like this
+The `myapp.blueprint` file contains the configuration for your architecture project. These few simple settings will give you a great amount of control over the compilation of your project. The default config file looks something like this
 
     blueprint: default
     src_dir: src
@@ -146,7 +146,7 @@ You can compile your architecture project manually with the compile command:
 
     architect compile
 
-This will get the requirements of every file in your `src_dir`(s) and compile them into your `build_dir` using the settings found in the `.architecture` file in the current directory.
+This will get the requirements of every file in your `src_dir`(s) and compile them into your `build_dir` using the settings found in the `.blueprint` file in the current directory.
 
 <a id="watch"></a>
 ### watch

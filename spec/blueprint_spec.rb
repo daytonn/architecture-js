@@ -48,7 +48,7 @@ describe ArchitectureJS::Blueprint do
 
     context "with existing project" do
       before(:each) do
-        FileUtils.cp("#{FIXTURES}/myapp.architecture", "#{TMP_DIR}/myapp.architecture")
+        FileUtils.cp("#{FIXTURES}/myapp.blueprint", "#{TMP_DIR}/myapp.blueprint")
       end
 
       it "should initialize with a config path" do
@@ -79,8 +79,8 @@ describe ArchitectureJS::Blueprint do
    end
 
    it 'should create a config file' do
-     File.exists?("#{TMP_DIR}/myapp.architecture").should be_true
-     "#{TMP_DIR}/myapp.architecture".should be_same_file_as "#{FIXTURES}/myapp.architecture"
+     File.exists?("#{TMP_DIR}/myapp.blueprint").should be_true
+     "#{TMP_DIR}/myapp.blueprint".should be_same_file_as "#{FIXTURES}/myapp.blueprint"
    end
 
    it "should create an application source file" do     
@@ -118,7 +118,7 @@ describe ArchitectureJS::Blueprint do
     end
 
     it 'should compress the application file' do
-      FileUtils.cp "#{FIXTURES}/compressed.architecture", "#{TMP_DIR}/myapp.architecture"
+      FileUtils.cp "#{FIXTURES}/compressed.blueprint", "#{TMP_DIR}/myapp.blueprint"
       @project.config[:output].should == 'compressed'
     end
 
@@ -134,7 +134,7 @@ describe ArchitectureJS::Blueprint do
       suppress_output do
         @project = ArchitectureJS::Blueprint.new({ name: 'myapp' },TMP_DIR)
         @project.create
-        FileUtils.cp "#{FIXTURES}/update.architecture", "#{TMP_DIR}/myapp.architecture"
+        FileUtils.cp "#{FIXTURES}/update.blueprint", "#{TMP_DIR}/myapp.blueprint"
         FileUtils.cp "#{FIXTURES}/lib1.js", "#{TMP_DIR}/src/lib1.js"
         FileUtils.cp "#{FIXTURES}/lib2.js", "#{TMP_DIR}/src/lib2.js"
         FileUtils.cp "#{FIXTURES}/src_file.js", "#{TMP_DIR}/src/myapp.js"

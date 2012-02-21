@@ -3,10 +3,12 @@ module ArchitectureJS
 
     attr_accessor :template_paths,
                   :templates,
+                  :blueprint,
                   :project
 
-    def initialize(project)
-      @project = project
+    def initialize(blueprint)
+      @project = blueprint
+      @blueprint = @project.config
       @template_paths = @project.template_directories
       @templates = Hash.new
       find_templates @template_paths
@@ -34,8 +36,9 @@ module ArchitectureJS
     end
 
     def generate(template, filename, options)
+      raise "There is no template named #{template} in the #{@blueprint[:name]} project" if @templates[template].nil?
       filename = "#{filename}#{@templates[template][:ext]}"
-      generate_file(filename, render_template(template, options), path)
+      generate_file(filename, render_template(template, options))
     end
 
     def generate_file(filename, template, path = nil)
@@ -44,6 +47,7 @@ module ArchitectureJS
     end
 
     def render_template(template, options = nil)
+      blueprint = @blueprint
       project = @project
       @templates[template][:erb].result(binding)
     end
