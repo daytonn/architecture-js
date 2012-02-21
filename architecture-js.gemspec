@@ -5,14 +5,14 @@
 
 Gem::Specification.new do |s|
   s.name = "architecture-js"
-  s.version = "0.1.17"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Dayton Nolan"]
-  s.date = "2012-02-20"
+  s.date = "2012-02-21"
   s.description = "Architecture.js helps you generate scaffolding, manage third-party packages, compile, and compress your application."
   s.email = "daytonn@gmail.com"
-  s.executables = ["HELP", "architect"]
+  s.executables = ["architect"]
   s.extra_rdoc_files = [
     "LICENSE.txt",
     "README.md"
@@ -23,12 +23,12 @@ Gem::Specification.new do |s|
     ".travis.yml",
     "Gemfile",
     "Gemfile.lock",
+    "HELP",
     "LICENSE.txt",
     "README.md",
     "Rakefile",
     "VERSION",
     "architecture-js.gemspec",
-    "bin/HELP",
     "bin/architect",
     "lib/architecture-js.rb",
     "lib/architecture-js/architect.rb",
