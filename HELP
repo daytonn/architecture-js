@@ -6,9 +6,13 @@ create    Creates a new architecture-js application in the
             subdirectory* - Directory where the application will be
                           installed (created if nonexistent)
 
+         Options:
+            -b, --blueprint - Optional Blueprint framework to create
+
           examples:
             architect create myapp
             architect create myapp subdirectory
+            architect create myapp -b modjs
 
 compile   Compiles the architecture-js project in the current working directory.
 
@@ -28,9 +32,9 @@ generate  Generates scoffolding from a template.
             There are two types of options: boolean and named attributes
 
           examples:
-            architect generate mytemplate -f (boolean arguments use a single "-")
-            architect generate mytemplate foo:"Hello" (named arguments can be boolean by passing no value)
-            architect genreate mymodule -f foo:"Hello" (combined to generate complex templates)
+            architect generate mytemplate foo -f (boolean arguments use a single "-")
+            architect generate mytemplate foo --test "Hello" (named arguments can be boolean by passing no value `false`)
+            architect genreate mytemplate foo -f --test "Hello" (combined to generate complex templates)
 
 watch     Watches the current working directory for file
           changes and compiles when changes are detected.

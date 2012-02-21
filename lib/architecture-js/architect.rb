@@ -149,7 +149,7 @@ module Architect
           end
 
           options[:blueprint] = 'default'
-          opts.on('-f', '--blueprint FRAMEWORK', 'with blueprint') do |blueprint|
+          opts.on('-b', '--blueprint FRAMEWORK', 'with blueprint') do |blueprint|
             @options[:blueprint] = blueprint
           end
 
