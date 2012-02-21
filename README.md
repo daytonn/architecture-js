@@ -1,7 +1,7 @@
 # architecture-js [![Build Status](https://secure.travis-ci.org/daytonn/architecture-js.png)](http://travis-ci.org/daytonn/architecture-js)
 
 ##About
-ArchitectureJS is a suite of tools to help you build and manage complex javascript applications and frameworks. With ArchitectureJS you can create project scaffolding, manage third-party and custom packages, compile, and compress your javascript application, all in real time as you write plain old vanilla javascript. In addition to large applications, ArchitectureJS is perfect for developing your own javascript frameworks and libraries. ArchitectureJS contains the following tools to help you build modern javascript applications and frameworks:
+ArchitectureJS is a suite of tools to help you build and manage complex javascript applications and frameworks. With ArchitectureJS you can compile, and compress your javascript application all in real time as you write plain old vanilla javascript, create project scaffolding and generate dynamic templates, manage third-party and custom libraries. In addition to large applications, ArchitectureJS is perfect for developing your own javascript frameworks and libraries. ArchitectureJS contains the following tools to help you build modern javascript applications and frameworks:
 
 * Project-specific configuration to manage defaults and dependencies
 * JavaScript Compiler (Sprockets 1.0.2)
