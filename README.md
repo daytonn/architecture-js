@@ -160,14 +160,16 @@ This will watch the project directory and compile the project every time a file 
 <a id="scaffolds"></a>
 ## Scaffolds
 
-### generate _(Not Yet Implemented)_
-The `generate` command will create a new file based on a predefined template. Default template files are defined by the `blueprint` or in the `blueprint`'s user template directory. To generate a file named foo.js using the blank template of the default blueprint, type:
+### generate
+The `generate` command will create a new file based on a predefined template. Default template files are defined by the blueprint the project is using. The `default` blueprint only has one template named `blank`:
 
     architect generate blank test
 
-This will create a blank js file in the current directory. You can also create your own templates in a directory named templates in your project root.
+This will create a blank javascript file in the current directory. This doesn't really do much, the only reason it's there is the test the template generator. However, You can add your own template by putting files inside a templates directory inside your project root. For example, if you created a `/templates/class.js` file, you could generate a class template with the following line:
 
+    architect generate class Widget
 
+This would create a file named `Widget.js` in the current directory based on the contents of `/templates/class.js`
 
 <a id="package-management"></a>
 ## Package Management
