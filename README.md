@@ -157,21 +157,61 @@ Having to do this manually every time you change a file and want to see it in yo
 
 This will watch the project directory and compile the project every time a file changes. Even rather large applications compile instantly, so you can work without ever having to wait for it to build.
 
-<a id="scaffolds"></a>
 ## Scaffolds
+
+The ArchitectureJS scaffolding allows you to generate custom script templates dynamically. This system is a great way to share common boilerplate code in one easy to maintain place. 
 
 ### generate
 The `generate` command will create a new file based on a predefined template. Default template files are defined by the blueprint the project is using. The `default` blueprint only has one template named `blank`:
 
     architect generate blank test
 
-This will create a blank javascript file in the current directory. This doesn't really do much, the only reason it's there is the test the template generator. However, You can add your own template by putting files inside a templates directory inside your project root. For example, if you created a `/templates/class.js` file, you could generate a class template with the following line:
+This will create a blank javascript file named `test.js` in the current directory. This doesn't really do much, the only reason it's there is to test the template generator. However, You can add your own templates by putting files inside a `/templates` directory inside your project root. For example, if you created a `/templates/class.js` file, you could generate a class template with the following command:
 
-    architect generate class Widget
+    architect generate class widget
 
-This would create a file named `Widget.js` in the current directory based on the contents of `/templates/class.js`
+This would create a file named `widget.js` in the current directory based on the contents of `/templates/class.js`. At this point the file is just an empty file. Let's make a more practical template. We'll edit the `class.js` template to take advantage of the command line options:
 
-<a id="package-management"></a>
+```ruby
+    <%= options[:name] %> = (function() {
+    <% if options[:f] %>
+        function <%= options[:name] %>() {};
+        return new <%= options[:name] %>();
+    <% else %>
+        var <%= options[:name] %> = function() {};
+        return <%= options[:name] %>;
+    <% end %>
+    })();
+```
+
+The syntax may be a little strange if you've never worked with ERB but this template gives us a great way to generate template files via the command line with `architect`. There are two types of variable you can pass to a template via the generate command: named variables and flags. Named variables allow you to set variables with values. To pass a named variable you use the double dash syntax `architect generate class widget --name "Widget"`, passing the value as the next argument. Flags are simple boolean switches that turn on a flag. To pass a flag, use the single dash syntax `architect generate class widget -f`. All arguments passed will be available through the options variable in the template. Using the `class` template from above we can generate two basic class models using the command options:
+
+    architect generate class widget --name "Foo"
+
+Which would create:
+
+```js
+    Foo = (function() {
+        var Foo = function() {};
+        return Foo;
+    })();
+```
+
+We can generate a slightly different class template using the -f flag:
+
+    architect generate class widget --name "Foo" -f
+
+Which generates:
+
+```js
+    Foo = (function() {
+        function Foo() {};
+        return new Foo();
+    })();
+```
+
+This is a slightly contrived but not wholly unrealistic example of how you can use the architect template generator. Some blueprints contain default templates which work without the presence of a `/templates` folder. 
+
 ## Package Management
 _Not Yet Implemented_
 

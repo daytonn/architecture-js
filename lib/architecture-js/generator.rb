@@ -32,7 +32,7 @@ module ArchitectureJS
     end
 
     def read_template(file)
-      ERB.new File.read(file)
+      ERB.new(File.read(file), nil, '<>')
     end
 
     def generate(template, filename, options)
