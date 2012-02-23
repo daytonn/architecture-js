@@ -101,7 +101,7 @@ module Architect
       watch_hash = Hash.new
       watch_files = Dir["#{path}/**/"]
       watch_files.shift # remove the project root
-       remove the build_dir
+      # remove the build_dir
       watch_files.reject! { |dir| dir.match(/#{path}\/#{project.config[:build_dir]}/) }
 
       watch_files.each do |dir|

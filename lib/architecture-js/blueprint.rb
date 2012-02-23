@@ -19,8 +19,6 @@ module ArchitectureJS
       config = YAML::load_file "#{path}/#{config_file}"
       config = ArchitectureJS::Helpers::symbolize_keys config
 
-      raise "#{config[:blueprint]} is unavailable or not installed" if ArchitectureJS::BLUEPRINTS[config[:blueprint]].nil?
-
       require "#{config[:blueprint]}-architecture" unless config[:blueprint] == 'default'
       project = ArchitectureJS::BLUEPRINTS[config[:blueprint]].new config, path
     end
