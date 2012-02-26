@@ -35,7 +35,7 @@ module ArchitectureJS
       ERB.new(File.read(file), nil, '<>')
     end
 
-    def generate(template, filename, options)
+    def generate(template, filename, options, arguments)
       raise "There is no template named #{template} in the #{@blueprint[:name]} project" if @templates[template].nil?
       filename = "#{filename}#{@templates[template][:ext]}"
       generate_file(filename, render_template(template, options))

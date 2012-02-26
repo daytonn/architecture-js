@@ -79,8 +79,8 @@ module Architect
       template = @args.first
       filename = @args[1]
       options = @template_options
-
-      project.generator.generate(template, filename, options)
+      arguments = @args
+      project.generator.generate(template, filename, options, arguments)
     end
 
     def compile
