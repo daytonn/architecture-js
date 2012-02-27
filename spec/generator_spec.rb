@@ -7,6 +7,8 @@ describe ArchitectureJS::Generator do
     FileUtils.mkdir "#{TMP_DIR}/templates"
     FileUtils.cp "#{FIXTURES}/templates/test_template_one.js", "#{TMP_DIR}/test_template_one.js"
     FileUtils.cp "#{FIXTURES}/templates/test_template_two.js", "#{TMP_DIR}/test_template_two.js"
+    FileUtils.cp "#{FIXTURES}/templates/env_template.js", "#{TMP_DIR}/env_template.js"
+
     project = ArchitectureJS::Blueprint.new({ name: 'myapp' }, TMP_DIR)
     project.template_directories = ["#{FIXTURES}/templates"]
     @gen = ArchitectureJS::Generator.new(project)
@@ -34,17 +36,22 @@ describe ArchitectureJS::Generator do
   end
 
   it 'should render a template' do
-    @gen.render_template('test_template_one').should == File.open("#{FIXTURES}/templates/test_template_one.js").read
-    @gen.render_template('test_template_two').should == File.open("#{FIXTURES}/test_template_two.js").read
+    @gen.render_template('test_template_one', 'test', [], {}).should == File.open("#{FIXTURES}/templates/test_template_one.js").read
+    @gen.render_template('test_template_two', 'test', [], {}).should == File.open("#{FIXTURES}/test_template_two.js").read
   end
 
   it 'should render a template with options' do
-    @gen.render_template('test_template_two', optional_variable: 'true').should == File.open("#{FIXTURES}/test_template_options.js").read
+    @gen.render_template('test_template_two', 'test', [], { optional_variable: 'true' }).should == File.open("#{FIXTURES}/test_template_options.js").read
   end
 
   it 'should generate a file from a template' do
-    @gen.generate_file("test.js", @gen.render_template("test_template_two"), TMP_DIR)
+    @gen.generate_file("test.js", @gen.render_template("test_template_two", "test", [], {}), TMP_DIR)
     File.exists?("#{TMP_DIR}/test.js").should be_true
     File.open("#{TMP_DIR}/test.js").read.should == File.open("#{FIXTURES}/test_template_two.js").read
+  end
+
+  it 'should pass the arguments to the template' do
+    @gen.generate_file("env-test.js", @gen.render_template("env_template", "env-test", ['module', 'foo', '-f', '--name', 'Something'], {}), TMP_DIR)
+    File.open("#{TMP_DIR}/env-test.js").read.should == File.open("#{FIXTURES}/env-test.js").read
   end
 end

@@ -35,10 +35,15 @@ module ArchitectureJS
       ERB.new(File.read(file), nil, '<>')
     end
 
-    def generate(template, filename, options, arguments)
+    def generate(config)
+      template = config[:template]
       raise "There is no template named #{template} in the #{@blueprint[:name]} project" if @templates[template].nil?
-      filename = "#{filename}#{@templates[template][:ext]}"
-      generate_file(filename, render_template(template, options))
+
+      options = config[:options]
+      arguments = config[:arguments]
+      filename = "#{config[:filename]}#{@templates[template][:ext]}"
+
+      generate_file(filename, render_template(template, filename, arguments, options))
     end
 
     def generate_file(filename, template, path = nil)
@@ -46,7 +51,7 @@ module ArchitectureJS
       File.open("#{path}/#{filename}", "w+") { |f| f.write template }
     end
 
-    def render_template(template, options = nil)
+    def render_template(template, filename, arguments, options)
       blueprint = @blueprint
       project = @project
       @templates[template][:erb].result(binding)

@@ -76,11 +76,15 @@ module Architect
       end
 
       project = ArchitectureJS::create_project_from_config(project_path)
-      template = @args.first
-      filename = @args[1]
-      options = @template_options
-      arguments = @args
-      project.generator.generate(template, filename, options, arguments)
+
+      config = {
+        arguments: @args,
+        template: @args.first,
+        filename: @args[1],
+        options: @template_options
+      }
+
+      project.generator.generate config
     end
 
     def compile
