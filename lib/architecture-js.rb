@@ -20,20 +20,6 @@ module ArchitectureJS
     ArchitectureJS::BLUEPRINTS[name] = constructor
   end
 
-  def create_project_from_config(project_dir = nil)
-    project_dir ||= File.expand_path(Dir.getwd)
-    conf_file = get_config_file project_dir
-    raise "<project_name>.blueprint was not found in #{project_dir}" if conf_file.nil?
-
-    config = YAML.load_file("#{project_dir}/#{conf_file}")
-    config = ArchitectureJS::Helpers::symbolize_keys config
-
-    raise "The config file does not contain a project name" if config[:name].nil?
-    raise "#{config[:blueprint]} is not isntalled. Try gem install #{config[:blueprint]}-architecture" if ArchitectureJS::BLUEPRINTS[config[:blueprint]].nil?
-
-    project = ArchitectureJS::BLUEPRINTS[config[:blueprint]].new(config, project_dir)
-  end
-
   def get_config_file(path)
     (Dir.entries(path).select { |f| f.match /\.blueprint$/ })[0]
   end
@@ -41,7 +27,6 @@ module ArchitectureJS
   module_function :base_directory,
                   :lib_directory,
                   :register_blueprint,
-                  :create_project_from_config,
                   :get_config_file
 end
 

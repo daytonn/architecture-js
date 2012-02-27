@@ -75,7 +75,7 @@ module Architect
         end
       end
 
-      project = ArchitectureJS::create_project_from_config(project_path)
+      project = ArchitectureJS::Blueprint.new_from_config(project_path)
 
       config = {
         arguments: @args,
@@ -88,7 +88,7 @@ module Architect
     end
 
     def compile
-      project = ArchitectureJS::create_project_from_config(File.expand_path(Dir.getwd))
+      project = ArchitectureJS::Blueprint.new_from_config(File.expand_path(Dir.getwd))
       project.config[:output] = 'compressed' if options[:c] || options[:compress]
       project.update
     end
