@@ -11,15 +11,19 @@ module ArchitectureJS
       @blueprint = @project.config
       @template_paths = @project.template_directories
       @templates = Hash.new
-      find_templates @template_paths
+      load_templates
     end
 
     def find_templates(paths)
-      paths.each do |path|
+      [*paths].each do |path|
         Dir["#{path}/*"].each do |file|
           add_file_to_templates file
         end
       end
+    end
+
+    def load_templates
+      find_templates @template_paths
     end
 
     def add_file_to_templates(file)

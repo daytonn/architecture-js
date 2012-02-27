@@ -42,7 +42,12 @@ module ArchitectureJS
       @config.merge! config unless config.nil?
       @generator = ArchitectureJS::Generator.new self
     end
-  
+
+    def add_templates(dir)
+      [*dir].each { |d| @template_directories << d }
+      @generator.load_templates
+    end
+
     def read_config
       config = YAML::load_file("#{@root}/#{@config_file}")
       assign_config_variables config

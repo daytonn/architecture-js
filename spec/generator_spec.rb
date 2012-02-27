@@ -10,8 +10,8 @@ describe ArchitectureJS::Generator do
     FileUtils.cp "#{FIXTURES}/templates/env_template.js", "#{TMP_DIR}/env_template.js"
 
     project = ArchitectureJS::Blueprint.new({ name: 'myapp' }, TMP_DIR)
-    project.template_directories = ["#{FIXTURES}/templates"]
-    @gen = ArchitectureJS::Generator.new(project)
+    project.add_templates "#{FIXTURES}/templates"
+    @gen = project.generator
   end
 
   after :each do
@@ -27,7 +27,7 @@ describe ArchitectureJS::Generator do
   end
 
   it 'should have template_paths' do
-    @gen.template_paths.should == ["#{FIXTURES}/templates"]
+    @gen.template_paths.should == ["#{ArchitectureJS::base_directory}/templates", "#{TMP_DIR}/templates", "#{FIXTURES}/templates"]
   end
 
   it 'should find all the templates' do
