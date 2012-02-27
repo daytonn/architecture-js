@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "architecture-js"
-  s.version = "0.3.0"
+  s.version = "0.3.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Dayton Nolan"]
-  s.date = "2012-02-26"
+  s.date = "2012-02-27"
   s.description = "Architecture.js helps you generate scaffolding, manage third-party packages, compile, and compress your application."
   s.email = "daytonn@gmail.com"
   s.executables = ["architect"]
@@ -86,6 +86,7 @@ Gem::Specification.new do |s|
     "spec/fixtures/compressed.blueprint",
     "spec/fixtures/compressed.js",
     "spec/fixtures/ejs.ejs",
+    "spec/fixtures/env-test.js",
     "spec/fixtures/existing.blueprint",
     "spec/fixtures/lib1.js",
     "spec/fixtures/lib1_compressed.js",
@@ -93,6 +94,7 @@ Gem::Specification.new do |s|
     "spec/fixtures/lib2_compressed.js",
     "spec/fixtures/myapp.blueprint",
     "spec/fixtures/src_file.js",
+    "spec/fixtures/templates/env_template.js",
     "spec/fixtures/templates/test_template_one.js",
     "spec/fixtures/templates/test_template_two.js",
     "spec/fixtures/test_blueprint.rb",
