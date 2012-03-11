@@ -7,7 +7,7 @@ ArchitectureJS is a suite of tools to help you build and manage complex javascri
 * JavaScript Compiler (Sprockets 1.0.2)
 * JavaScript Compression (JSMin)
 * Scaffold generation using editable templates
-* Custom local JavaScript package management
+* Custom local JavaScript package management _(not yet implemented)_
 * Realtime file monitoring utility to compile your application while you code
 
 ## Installation
@@ -24,7 +24,7 @@ ArchitectureJS comes with a small command line utility named `architect` to mana
 
     architect -h
  
-If `architect` is installed correctly, this command will display the help menu. You will see there are only a few simple commands: create, compile, watch, and generate _(not implemented)_. These commands are all you need to manage complex javascript applications and frameworks.
+If `architect` is installed correctly, this command will display the help menu. You will see there are only a few simple commands: create, compile, watch, and generate. These commands are all you need to manage complex javascript applications and frameworks.
 
 To create an architect application use the create command (where "myapp" is the name of _your_ application)
 
@@ -210,7 +210,7 @@ Which generates:
     })();
 ```
 
-This is a slightly contrived but not wholly unrealistic example of how you can use the architect template generator. Some blueprints contain default templates which work without the presence of a `/templates` folder. 
+This is obviously a contrived but not wholly unrealistic example of how you can use the architect template generator. Some blueprints contain default templates of their own which are available without the presence of a `/templates` folder. These templates should be documented by the blueprint's authors.
 
 ## Package Management
 _(Not Yet Implemented)_
