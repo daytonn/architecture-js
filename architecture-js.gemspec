@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "architecture-js"
-  s.version = "0.3.3"
+  s.version = "0.3.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Dayton Nolan"]
-  s.date = "2012-02-27"
+  s.date = "2012-04-13"
   s.description = "Architecture.js helps you generate scaffolding, manage third-party packages, compile, and compress your application."
   s.email = "daytonn@gmail.com"
   s.executables = ["architect"]
@@ -20,7 +20,9 @@ Gem::Specification.new do |s|
   s.files = [
     ".DS_Store",
     ".document",
+    ".rvmrc",
     ".travis.yml",
+    "AUTHORS",
     "Gemfile",
     "Gemfile.lock",
     "HELP",
@@ -112,7 +114,7 @@ Gem::Specification.new do |s|
   s.homepage = "https://github.com/daytonn/architecture-js"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
-  s.rubygems_version = "1.8.10"
+  s.rubygems_version = "1.8.21"
   s.summary = "architecture.js is a command line application to dynamically build and manage complex javascript applications."
 
   if s.respond_to? :specification_version then
@@ -122,7 +124,7 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<fssm>, ["~> 0.2.8.1"])
       s.add_runtime_dependency(%q<jsmin>, ["~> 1.0.1"])
       s.add_development_dependency(%q<rspec>, ["~> 2.8.0"])
-      s.add_development_dependency(%q<bundler>, ["~> 1.0.0"])
+      s.add_development_dependency(%q<bundler>, [">= 0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.8.3"])
       s.add_development_dependency(%q<ZenTest>, ["~> 4.6.2"])
       s.add_development_dependency(%q<autotest-growl>, ["~> 0.2.16"])
@@ -132,7 +134,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<fssm>, ["~> 0.2.8.1"])
       s.add_dependency(%q<jsmin>, ["~> 1.0.1"])
       s.add_dependency(%q<rspec>, ["~> 2.8.0"])
-      s.add_dependency(%q<bundler>, ["~> 1.0.0"])
+      s.add_dependency(%q<bundler>, [">= 0"])
       s.add_dependency(%q<jeweler>, ["~> 1.8.3"])
       s.add_dependency(%q<ZenTest>, ["~> 4.6.2"])
       s.add_dependency(%q<autotest-growl>, ["~> 0.2.16"])
@@ -143,7 +145,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<fssm>, ["~> 0.2.8.1"])
     s.add_dependency(%q<jsmin>, ["~> 1.0.1"])
     s.add_dependency(%q<rspec>, ["~> 2.8.0"])
-    s.add_dependency(%q<bundler>, ["~> 1.0.0"])
+    s.add_dependency(%q<bundler>, [">= 0"])
     s.add_dependency(%q<jeweler>, ["~> 1.8.3"])
     s.add_dependency(%q<ZenTest>, ["~> 4.6.2"])
     s.add_dependency(%q<autotest-growl>, ["~> 0.2.16"])
