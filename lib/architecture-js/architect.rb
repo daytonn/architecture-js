@@ -26,16 +26,17 @@ module Architect
 
     def run
       parse_command
-      parse_arguments
-
       if @command == :generate
         parse_generate_options
       else
         parse_options
       end
+      parse_arguments
 
-      self.send(@command) if @command and not @options[:help]
-      help unless @command or @options[:help]
+      if @command
+          self.send @command unless @command =~ /^-/
+      end
+
     end
 
     def create
@@ -145,14 +146,12 @@ module Architect
       def parse_options
         @options = {}
         OptionParser.new do |opts|
-          opts.banner = "Usage: example.rb [options]"
-
-          options[:version] = false
           opts.on("-v", "--version", "Version info") do
             @options[:version] = true
+            version
           end
 
-          options[:blueprint] = 'default'
+          @options[:blueprint] = 'default'
           opts.on('-b', '--blueprint FRAMEWORK', 'with blueprint') do |blueprint|
             @options[:blueprint] = blueprint
           end
@@ -202,13 +201,23 @@ module Architect
       end
 
       def parse_command
-        @command = ARGV[0].to_sym if ARGV[0]
+        unless ARGV[0].nil? && ARGV[0] =~ /^-/
+          @command = ARGV[0].to_sym 
+        end
       end
 
       def help
         puts File.read("#{ArchitectureJS::base_directory}/HELP")
       end
 
+      def version
+        version = File.read("#{ArchitectureJS::base_directory}/VERSION")
+        authors = File.readlines("#{ArchitectureJS::base_directory}/AUTHORS").join(', ')
+        message = "ArchitectureJS #{version}\n"
+        message << "Copyright (c) 2011 #{authors}\n"
+        message << "Released under the MIT License."
+        puts message
+      end
   end
 
 end
