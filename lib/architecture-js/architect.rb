@@ -27,11 +27,12 @@ module Architect
     def run
       parse_command
       if @command == :generate
+        parse_arguments
         parse_generate_options
       else
         parse_options
+        parse_arguments
       end
-      parse_arguments
 
       if @command
           self.send @command unless @command =~ /^-/

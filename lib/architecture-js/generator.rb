@@ -48,6 +48,7 @@ module ArchitectureJS
       filename = "#{config[:filename]}#{@templates[template][:ext]}"
 
       generate_file(filename, render_template(template, filename, arguments, options))
+      puts ArchitectureJS::Notification.added "#{filename} #{template} added"
     end
 
     def generate_file(filename, template, path = nil)
