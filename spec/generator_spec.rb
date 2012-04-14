@@ -45,13 +45,14 @@ describe ArchitectureJS::Generator do
   end
 
   it 'should generate a file from a template' do
-    @gen.generate_file("test.js", @gen.render_template("test_template_two", "test", [], {}), TMP_DIR)
+    suppress_output { @gen.generate_file("test.js", @gen.render_template("test_template_two", "test", [], {}), TMP_DIR) }
     File.exists?("#{TMP_DIR}/test.js").should be_true
     File.open("#{TMP_DIR}/test.js").read.should == File.open("#{FIXTURES}/test_template_two.js").read
   end
 
   it 'should pass the arguments to the template' do
-    @gen.generate_file("env-test.js", @gen.render_template("env_template", "env-test", ['module', 'foo', '-f', '--name', 'Something'], {}), TMP_DIR)
+    suppress_output { @gen.generate_file("env-test.js", @gen.render_template("env_template", "env-test", ['module', 'foo', '-f', '--name', 'Something'], {}), TMP_DIR) }
     File.open("#{TMP_DIR}/env-test.js").read.should == File.open("#{FIXTURES}/env-test.js").read
   end
+
 end
