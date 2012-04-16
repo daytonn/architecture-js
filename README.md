@@ -15,9 +15,9 @@ Requires ruby version 1.9 or higher. The best way is using rubygems:
 
     gem install architecture-js
 
-Or include it in your projects `Gemfile` with Bundler:
+Or include it in your project's `Gemfile` with Bundler:
 
-    gem 'architecture-js', '~> 0.2.0'
+    gem 'architecture-js'
 
 ## Getting Started
 ArchitectureJS comes with a small command line utility named `architect` to manage your architecture projects. To be sure architecture-js is installed correctly, type this command:
@@ -52,11 +52,11 @@ The `myapp.blueprint` file contains the configuration for your architecture proj
 The `blueprint` is what determines the application scaffold and configuration settings. It defaults to `default` which is a bare bones project layout for simple javascript libraries. It has one directory for source files (src), and a build directory named "lib" for distributable code. Other blueprints can be plugged in to support any architecture. These blueprints can extend the basic architecture project including the scaffolding, templates, compilation tasks, and default templates. All blueprints will share the default configuration options (although some blueprints may treat them differently).
 
 ### src_dir
-The `src_dir` is the directory or directories where the source files that will be compiled into the build directory (`build_dir`) are kept. By default the `src_dir` is usually a single directory represented as a string:
+The `src_dir` is the directory or directories where the source files that will be compiled are kept. By default the `src_dir` is usually a single directory represented as a string:
 
     src_dir: src
 
- but can be multiple directories. If you wished to compile the files in the three directories named "classes", "widgets", and "plugins", src_dir would be an array:
+You can also specify multiple src directories. If you wish to compile the files in the three directories named "classes", "widgets", and "plugins", src_dir would be an array:
 
     src_dir: [classes, widgets, plugins]
 
@@ -74,7 +74,7 @@ The `asset_root` is where stylesheet and image assets will be installed by the `
 The `output` determines whether the compiled javascript will be `compressed` or `expanded`, which are the two possible values. The JSMin engine is used for compression.
 
 ### name
-The `name` is the name of your architecture project. The name value can be used by the blueprint in a variety of ways. By default the name is used to create the main application file in the /src directory.
+The `name` is the name of your architecture project. The name value can be used by the blueprint in a variety of ways. By default the name is used to create the main application file in the /src directory and defined your global application namespace.
 
 <a id="sprockets"></a>
 ## Sprockets
