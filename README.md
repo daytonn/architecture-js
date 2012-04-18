@@ -1,13 +1,12 @@
 # architecture-js [![Build Status](https://secure.travis-ci.org/daytonn/architecture-js.png)](http://travis-ci.org/daytonn/architecture-js)
 
 ##About
-ArchitectureJS is a suite of tools to help you build and manage complex javascript applications and frameworks. With ArchitectureJS you can compile, and compress your javascript application all in real time as you write plain old vanilla javascript, create project scaffolding and generate dynamic templates, manage third-party and custom libraries. In addition to large applications, ArchitectureJS is perfect for developing your own javascript frameworks and libraries. ArchitectureJS contains the following tools to help you build modern javascript applications and frameworks:
+ArchitectureJS is javascript build tool that helps you create and manage large-scale javascript applications with one simple command line interface. The goal of Architecturejs is to take the headache out of managing complex javascript code. ArchitectureJS is really a few tools rolled into one that provides a simple but flexible workflow:
 
 * Project-specific configuration to manage defaults and dependencies
 * JavaScript Compiler (Sprockets 1.0.2)
 * JavaScript Compression (JSMin)
 * Scaffold generation using editable templates
-* Custom local JavaScript package management _(not yet implemented)_
 * Realtime file monitoring utility to compile your application while you code
 
 ## Installation
@@ -24,7 +23,7 @@ ArchitectureJS comes with a small command line utility named `architect` to mana
 
     architect -h
  
-If `architect` is installed correctly, this command will display the help menu. You will see there are only a few simple commands: create, compile, watch, and generate. These commands are all you need to manage complex javascript applications and frameworks.
+If `architect` is installed, you should see the help menu. There are only a few simple commands: create, compile, watch, and generate. These commands are all you need to manage your architecture projects.
 
 To create an architect application use the create command (where "myapp" is the name of _your_ application)
 
@@ -39,7 +38,7 @@ This will create the default project scaffold:
 
 <a id="configuration"></a>
 ## Default Configurtaion
-The `myapp.blueprint` file contains the configuration for your architecture project. These few simple settings will give you a great amount of control over the compilation of your project. The default config file looks something like this
+The `myapp.blueprint` file is the configuration file for your project. The default config file looks something like this
 
     blueprint: default
     src_dir: src
@@ -49,14 +48,14 @@ The `myapp.blueprint` file contains the configuration for your architecture proj
     name: myapp
 
 ### blueprint
-The `blueprint` is what determines the application scaffold and configuration settings. It defaults to `default` which is a bare bones project layout for simple javascript libraries. It has one directory for source files (src), and a build directory named "lib" for distributable code. Other blueprints can be plugged in to support any architecture. These blueprints can extend the basic architecture project including the scaffolding, templates, compilation tasks, and default templates. All blueprints will share the default configuration options (although some blueprints may treat them differently).
+The project's `blueprint` is the scaffolding framework your application is based on. The default blueprint is `default` which is a bare bones layout for simple javascript libraries. It has one directory for source files (src), and a build directory named "lib" for distributable code. Other blueprints can be plugged in to support other architectures. These blueprints extend the basic project template and can have their own templates, compilation tasks, and project scaffolding. Third party blueprints may have many of their own properties and layouts, but all ArchitectureJS projects will share this same core properties contained in this default blueprint.
 
 ### src_dir
-The `src_dir` is the directory or directories where the source files that will be compiled into the build directory (`build_dir`) are kept. By default the `src_dir` is usually a single directory represented as a string:
+The `src_dir` is the directory or directories where the source files to be compiled into the `build_dir` are kept. By default the `src_dir` is usually a single directory represented as a string:
 
     src_dir: src
 
- but can be multiple directories. If you wished to compile the files in the three directories named "classes", "widgets", and "plugins", src_dir would be an array:
+However the src_dir can be multiple directories. To compile the files in the three directories named "classes", "widgets", and "plugins", src_dir would be an array:
 
     src_dir: [classes, widgets, plugins]
 
@@ -64,10 +63,10 @@ The `src_dir` is the directory or directories where the source files that will b
 Any files in these three directories would be compiled into the build directory, including their requirements.
 
 ### build_dir
-The `build_dir` is where all your source files will be compiled, including their requirements.
+The `build_dir` is where all your source files will be compiled.
 
 ### asset_root
-The `asset_root` is where stylesheet and image assets will be installed by the `provide` directive. By default the `asset_root` is the project root. Stylesheets and images will be placed in css and images directories respectively.
+The `asset_root` is where stylesheet and image assets will be installed by the `//= provide` directive. By default the `asset_root` is the project root. Stylesheets and images will be placed in css and images directories respectively.
 
 <a id="output"></a>
 ### output
@@ -78,7 +77,7 @@ The `name` is the name of your architecture project. The name value can be used 
 
 <a id="sprockets"></a>
 ## Sprockets
-ArchitectureJS uses the Sprockets javascript compiler under the hood to allow you to create a file system architecture that corresponds to your application architecture. This is the heart of the ArchitectureJS system. In addition to concatenating scripts together with special comments, Sprockets can also include stylesheet and image assets required by script files. It has a basic syntax using javascript comments, gracefully enhancing plain old vanilla javascript.
+ArchitectureJS uses Sprockets under the hood to enable using a file system layout that corresponds to your javascript architecture. This is the heart of the ArchitectureJS system. In addition to concatenating scripts, Sprockets can also include stylesheet and image assets used by scripts. It has a basic syntax using javascript comments, gracefully enhancing plain old vanilla javascript.
 
 Sprockets takes any number of source files and preprocesses them line-by-line in order to build a single concatenation. Specially formatted lines act as directives to the Sprockets preprocessor, telling it to require the contents of another file or library first or to provide a set of asset files to the document root. Sprockets attempts to fulfill required dependencies by searching a set of directories called the load path.
 
@@ -212,8 +211,6 @@ Which generates:
 
 This is obviously a contrived but not wholly unrealistic example of how you can use the architect template generator. Some blueprints contain default templates of their own which are available without the presence of a `/templates` folder. These templates should be documented by the blueprint's authors.
 
-## Package Management
-_(Not Yet Implemented)_
 
 ##Contributing to architecture.js
  
