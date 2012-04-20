@@ -1,4 +1,6 @@
-# architecture-js [![Build Status](https://secure.travis-ci.org/daytonn/architecture-js.png)](http://travis-ci.org/daytonn/architecture-js)
+# architecture-js [![Build Status](https://secure.travis-ci.org/daytonn/architecture-js.png)](http://travis-ci.org/daytonn/architecture-js) #
+
+(Documentation)[daytonn.github.com/architecture-js/]
 
 ##About
 ArchitectureJS is javascript build tool that helps you create and manage large-scale javascript applications with one simple command line interface. The goal of Architecturejs is to take the headache out of managing complex javascript code. ArchitectureJS is really a few tools rolled into one that provides a simple but flexible workflow:
