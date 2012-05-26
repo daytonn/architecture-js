@@ -31,7 +31,7 @@ module ArchitectureJS
       @root = File.expand_path(root)
       @template_directories = ["#{ArchitectureJS::base_directory}/templates", "#{@root}/templates"]
       @directories = ['lib', 'src']
-      @src_files = Array.new
+      @src_files = []
       @config = {
         blueprint: 'default',
         src_dir: 'src',
@@ -100,7 +100,8 @@ module ArchitectureJS
       @errors = false
     end
 
-    def get_src_files      
+    def get_src_files
+      @src_files = []
       [*@config[:src_dir]].each do |directory| 
         add_src_files_to_project File.expand_path(directory, @root)
       end      
