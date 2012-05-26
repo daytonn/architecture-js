@@ -85,7 +85,6 @@ module Architect
       path ||= Dir.getwd
       path = File.expand_path(path)
 
-      #puts ArchitectureJS::Notification.log "architect is watching for changes. Press Ctrl-C to stop."
       project = ArchitectureJS::Blueprint::new_from_config(path)
       project.update
 
