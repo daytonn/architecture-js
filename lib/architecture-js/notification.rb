@@ -14,15 +14,16 @@ module ArchitectureJS
       log: "\e[32m>>>\e[0m ",
       event: "\e[33m<<<\e[0m ",
       added: "\e[32m+++\e[0m ",
-      error: "\e[0;31m!!!\e[0m "
+      error: "\e[0;31m!!!\e[0m ",
+      prompt: ">>> "
     }
 
     @@indicators.merge!({
       none: "",
-      log: ">>>",
-      event: "<<<",
-      added: "+++",
-      error: "!!!"
+      log: ">>> ",
+      event: "<<< ",
+      added: "+++ ",
+      error: "!!! ",
     }) if win_platform
 
     def self.notify(type, message)
@@ -49,6 +50,9 @@ module ArchitectureJS
     def self.error(message)
       self.notify :error, message
     end
-    
+
+    def self.prompt
+      self.notify :prompt, ''
+    end
   end
 end
