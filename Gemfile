@@ -1,6 +1,6 @@
-source "http://rubygems.org"
+source :rubygems
 
-gem "fssm", "~> 0.2.8.1"
+gem "listen"
 gem "jsmin", "~> 1.0.1"
 
 group :test do
@@ -11,6 +11,4 @@ group :development do
   gem "rspec", "~> 2.8.0"
   gem "bundler"
   gem "jeweler", "~> 1.8.3"
-  gem "ZenTest", "~> 4.6.2"
-  gem "autotest-growl", "~> 0.2.16"
 end

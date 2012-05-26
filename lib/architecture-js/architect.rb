@@ -97,49 +97,43 @@ module Architect
     #compile
 
     def watch
-      require "fssm"
       path ||= Dir.getwd
       path = File.expand_path(path)
 
       puts ArchitectureJS::Notification.log "architect is watching for changes. Press Ctrl-C to stop."
       project = ArchitectureJS::Blueprint::new_from_config(path)
       project.update
-      watch_hash = Hash.new
-      watch_files = Dir["#{path}/**/"]
-      watch_files.shift # remove the project root
-      # remove the build_dir
-      watch_files.reject! { |dir| dir.match(/#{path}\/#{project.config[:build_dir]}/) }
+      
+      Listen.to(path, :filter => /\.jst?$/, :ignore => /#{project.config[:build_dir]}|spec|test/) do |modified, added, removed|
+        if modified.length > 0
 
-      watch_files.each do |dir|
-        watch_hash[dir] = "**/*.js"
-      end
+          modified.each do |f|
+            file = File.basename(f)
+            puts ArchitectureJS::Notification.event "change detected in #{file}"
+            project.config.read if f.match(/blueprint$/)
+          end
 
-      watch_hash[path] = "**/*.blueprint"
-      watch_hash["#{ArchitectureJS::base_directory}/repository"] = "**/*.js" # check changes to the repository as well
+          project.update
+        end
 
-      FSSM.monitor do
-        watch_hash.each do |dir, g|
-          path "#{dir}" do
-            glob g
+        if added.length > 0
+          added.each do |f|
+            file = File.basename(f)
+            puts ArchitectureJS::Notification.event "#{file} created"
+          end
 
-            update do |base, relative|
-              puts ArchitectureJS::Notification.event "change detected in #{relative}"
-              project.config.read if relative.match(/conf$/)
-              project.update
-            end
+          project.update
+        end
 
-            create do |base, relative|
-              puts ArchitectureJS::Notification.event "#{relative} created"
-              project.update
-            end
-
-            delete do |base, relative|
-              puts ArchitectureJS::Notification.event "#{relative} deleted"
-              project.update
-            end
+        if removed.length > 0
+          removed.each do |f|
+            file = File.basename(f)
+            puts ArchitectureJS::Notification.event "#{file} deleted"
           end
         end
+
       end
+
     end
     #watch
 
