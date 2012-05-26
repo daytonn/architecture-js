@@ -38,14 +38,14 @@ describe 'architect' do
     end
 
     it 'should generate a template' do
-      `cd #{TMP_DIR}/src; #{@bin} generate blank test`
+      `cd #{TMP_DIR}; #{@bin} generate blank src/test`
       File.exists?("#{TMP_DIR}/src/test.js").should be_true
     end
 
     it 'should generate a template with options' do
       FileUtils.mkdir("#{TMP_DIR}/templates")
       FileUtils.cp("#{FIXTURES}/templates/test_template_two.js", "#{TMP_DIR}/templates/test_template.js")
-      `cd #{TMP_DIR}/src; #{@bin} generate test_template foo --optional_variable true --is_good -g --bool`
+      `cd #{TMP_DIR}; #{@bin} generate test_template src/foo --optional_variable true --is_good -g --bool`
       
       File.exists?("#{TMP_DIR}/src/foo.js").should be_true
       "#{TMP_DIR}/src/foo.js".should be_same_file_as "#{FIXTURES}/test_template_options.js"

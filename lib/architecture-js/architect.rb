@@ -36,6 +36,8 @@ module Architect
 
       if @command
           self.send @command unless @command =~ /^-/
+      else
+        help
       end
 
     end
@@ -60,23 +62,6 @@ module Architect
 
     def generate
       project_path = File.expand_path(Dir.getwd)
-
-      # Go up to 10 levels up to look for the project config file
-      # This is not optimal but is probably the easiest way to allow
-      # generating templates in project sub-folders given we need to
-      # read the blueprint file to get the templates
-      10.times do
-        config_file = ArchitectureJS::get_config_file(project_path)
-
-        unless config_file
-          path_array = project_path.split(File::SEPARATOR)
-          path_array.pop # push the last dir off the stack
-          project_path = path_array.join(File::SEPARATOR)
-        else
-          break
-        end
-      end
-
       project = ArchitectureJS::Blueprint.new_from_config(project_path)
 
       config = {
@@ -100,16 +85,27 @@ module Architect
       path ||= Dir.getwd
       path = File.expand_path(path)
 
-      puts ArchitectureJS::Notification.log "architect is watching for changes. Press Ctrl-C to stop."
+      #puts ArchitectureJS::Notification.log "architect is watching for changes. Press Ctrl-C to stop."
       project = ArchitectureJS::Blueprint::new_from_config(path)
       project.update
-      
-      Listen.to(path, :filter => /\.jst?$/, :ignore => /#{project.config[:build_dir]}|spec|test/) do |modified, added, removed|
+
+      #updater = lambda 
+
+      listener = Listen.to(path)
+      listener = listener.ignore(/#{project.config[:build_dir]}|spec|test/)
+      listener = listener.filter(/\.jst?$/)
+      listener = listener.latency(0.5)
+      listener = listener.force_polling(true)
+      listener = listener.polling_fallback_message(false)
+      listener = listener.change do |modified, added, removed|
+
         if modified.length > 0
 
           modified.each do |f|
             file = File.basename(f)
+            puts
             puts ArchitectureJS::Notification.event "change detected in #{file}"
+            print ArchitectureJS::Notification.prompt
             project.config.read if f.match(/blueprint$/)
           end
 
@@ -119,19 +115,47 @@ module Architect
         if added.length > 0
           added.each do |f|
             file = File.basename(f)
+            puts
             puts ArchitectureJS::Notification.event "#{file} created"
           end
 
           project.update
+          print ArchitectureJS::Notification.prompt
         end
 
         if removed.length > 0
           removed.each do |f|
             file = File.basename(f)
+            puts
             puts ArchitectureJS::Notification.event "#{file} deleted"
+            print ArchitectureJS::Notification.prompt
           end
         end
 
+      end
+      listener.start(false)
+
+      command = 'start'
+      puts ArchitectureJS::Notification.log "architect is watching for changes. Type 'quit' or 'exit' to stop."
+      while not command =~ /exit|quit/
+          print ArchitectureJS::Notification.prompt
+          command = gets.chomp
+          case command
+            when /exit|quit/
+              listener.stop
+            when /src_files/
+              puts project.src_files.join("\n")
+            when /templates/
+              project.generator.templates.each { |k,v| puts k }
+            when /compile|update/
+              project.update
+            when /generate/
+              args = command.split(/\s/)
+              parse_command args
+              parse_arguments args
+              parse_generate_options
+              self.send @command
+          end
       end
 
     end
@@ -190,15 +214,13 @@ module Architect
         # each_with_index
       end
 
-      def parse_arguments
-        @args = Array.try_convert(ARGV)
+      def parse_arguments(args = Array.try_convert(ARGV))
+        @args = args
         @args.shift # remove command
       end
 
-      def parse_command
-        unless ARGV[0].nil? && ARGV[0] =~ /^-/
-          @command = ARGV[0].to_sym 
-        end
+      def parse_command(args = ARGV)
+        @command = args[0].to_sym if args[0].respond_to? :to_sym
       end
 
       def help
