@@ -94,46 +94,53 @@ module Architect
       project = ArchitectureJS::Blueprint::new_from_config(path)
       project.update
       listener = project.watch
-
-      command = 'start'
       puts ArchitectureJS::Notification.log "architect is watching for changes. Type 'quit' or 'exit' to stop."
-      while not command =~ /exit|quit/
-          print ArchitectureJS::Notification.prompt
-          command = gets.chomp
-          case command
-            when /exit|quit/
-              listener.stop
-            when /src_files/
-              puts project.src_files.join("\n")
-            when /templates/
-              project.generator.templates.each { |k,v| puts k }
-            when /compile|update/
-              begin
-                project.update
-              rescue Exception => e
-                puts e.message
-                ArchitectureJS::Notification.prompt
-              end
-            when /generate/
-              begin
-                args = command.split(/\s/)
-                parse_command args
-                parse_arguments args
-                parse_generate_options
-                self.send @command
-              rescue Exception => e
-                puts e.message
-                puts "Available templates:"
-                project.generator.templates.each { |k,v| puts "  - #{k}" }
-                ArchitectureJS::Notification.prompt
-              end
-          end
-      end
-
+      start_interactive_session listener
     end
     #watch
 
     private
+      def start_interactive_session(listener)
+        begin
+          command = ''
+          while not command =~ /exit|quit/
+              print ArchitectureJS::Notification.prompt
+              command = gets.chomp
+              case command
+                when /exit|quit/
+                  listener.stop
+                when /src_files/
+                  puts project.src_files.join("\n")
+                when /templates/
+                  project.generator.templates.each { |k,v| puts k }
+                when /compile|update/
+                  begin
+                    project.update
+                  rescue Exception => e
+                    puts e.message
+                    ArchitectureJS::Notification.prompt
+                  end
+                when /generate/
+                  begin
+                    args = command.split(/\s/)
+                    parse_command args
+                    parse_arguments args
+                    parse_generate_options
+                    self.send @command
+                  rescue Exception => e
+                    puts e.message
+                    puts "Available templates:"
+                    project.generator.templates.each { |k,v| puts "  - #{k}" }
+                    ArchitectureJS::Notification.prompt
+                  end
+              end
+          end
+        rescue SystemExit, Interrupt
+          puts
+          listener.stop
+        end
+      end
+
       def parse_options
         @options = {}
         OptionParser.new do |opts|

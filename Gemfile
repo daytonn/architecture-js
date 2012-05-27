@@ -8,6 +8,7 @@ group :test do
 end
 
 group :development do
+  gem "rocco"
   gem "rspec", "~> 2.8.0"
   gem "bundler"
   gem "jeweler", "~> 1.8.3"
