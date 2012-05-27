@@ -22,7 +22,6 @@ module Architect
       else
         @root = File.expand_path(Dir.getwd)
       end
-      @project = ArchitectureJS::Blueprint.new_from_config(@root)
     end
 
     def run
@@ -62,6 +61,7 @@ module Architect
     end
 
     def generate
+      @project = ArchitectureJS::Blueprint.new_from_config(@root)
       config = {
         arguments: @args,
         template: @args.first,
@@ -77,11 +77,13 @@ module Architect
     end
 
     def compile
+      @project = ArchitectureJS::Blueprint.new_from_config(@root)
       @project.config[:output] = 'compressed' if options[:c] || options[:compress]
       @project.update
     end
 
     def watch
+      @project = ArchitectureJS::Blueprint.new_from_config(@root)
       @project.update
       @watcher = @project.watch
       puts ArchitectureJS::Notification.log "architect is watching for changes. Type 'quit' to stop."
@@ -89,11 +91,13 @@ module Architect
     end
 
     def templates
+      @project = ArchitectureJS::Blueprint.new_from_config(@root)
       puts "Tempaltes:"
       @project.generator.templates.each { |k,v| puts "  - #{k}" }
     end
 
     def src_files
+      @project = ArchitectureJS::Blueprint.new_from_config(@root)
       puts "Source files:"
       @project.src_files.each { |f| puts "  - #{File.basename f}" }
     end
