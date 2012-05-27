@@ -37,6 +37,6 @@ end
 
 require "sprockets/lib/sprockets"
 
-%w(dependencies generator notification blueprint architect).each do |lib|
+%w(dependencies generator notification watcher blueprint architect).each do |lib|
   require "architecture-js/#{lib}"
 end

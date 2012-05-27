@@ -70,8 +70,14 @@ module Architect
         filename: @args[1],
         options: @template_options
       }
-
-      project.generator.generate config
+      begin
+        project.generator.generate config
+      rescue Exception => e
+        puts e.message
+        puts "Be sure you ran the command correctly (architect generate <template> <filename> [options])"
+        puts "Available templates:"
+        project.generator.templates.each { |k,v| puts "  - #{k}" }
+      end
     end
 
     def compile
@@ -87,52 +93,7 @@ module Architect
 
       project = ArchitectureJS::Blueprint::new_from_config(path)
       project.update
-
-      #updater = lambda 
-
-      listener = Listen.to(path)
-      listener = listener.ignore(/#{project.config[:build_dir]}|spec|test/)
-      listener = listener.filter(/\.jst?$/)
-      listener = listener.latency(0.5)
-      listener = listener.force_polling(true)
-      listener = listener.polling_fallback_message(false)
-      listener = listener.change do |modified, added, removed|
-
-        if modified.length > 0
-
-          modified.each do |f|
-            file = File.basename(f)
-            puts
-            puts ArchitectureJS::Notification.event "change detected in #{file}"
-            print ArchitectureJS::Notification.prompt
-            project.config.read if f.match(/blueprint$/)
-          end
-
-          project.update
-        end
-
-        if added.length > 0
-          added.each do |f|
-            file = File.basename(f)
-            puts
-            puts ArchitectureJS::Notification.event "#{file} created"
-          end
-
-          project.update
-          print ArchitectureJS::Notification.prompt
-        end
-
-        if removed.length > 0
-          removed.each do |f|
-            file = File.basename(f)
-            puts
-            puts ArchitectureJS::Notification.event "#{file} deleted"
-            print ArchitectureJS::Notification.prompt
-          end
-        end
-
-      end
-      listener.start(false)
+      listener = project.watch
 
       command = 'start'
       puts ArchitectureJS::Notification.log "architect is watching for changes. Type 'quit' or 'exit' to stop."
@@ -147,13 +108,25 @@ module Architect
             when /templates/
               project.generator.templates.each { |k,v| puts k }
             when /compile|update/
-              project.update
+              begin
+                project.update
+              rescue Exception => e
+                puts e.message
+                ArchitectureJS::Notification.prompt
+              end
             when /generate/
-              args = command.split(/\s/)
-              parse_command args
-              parse_arguments args
-              parse_generate_options
-              self.send @command
+              begin
+                args = command.split(/\s/)
+                parse_command args
+                parse_arguments args
+                parse_generate_options
+                self.send @command
+              rescue Exception => e
+                puts e.message
+                puts "Available templates:"
+                project.generator.templates.each { |k,v| puts "  - #{k}" }
+                ArchitectureJS::Notification.prompt
+              end
           end
       end
 

@@ -160,6 +160,11 @@ module ArchitectureJS
       end
     end
 
+    def watch
+      watcher = ArchitectureJS::Watcher.new self
+      watcher.watch
+    end
+
   end # class Blueprint
 end # module ArchitectureJS
 
