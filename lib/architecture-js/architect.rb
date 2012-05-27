@@ -94,7 +94,7 @@ module Architect
       project = ArchitectureJS::Blueprint::new_from_config(path)
       project.update
       watcher = project.watch
-      puts ArchitectureJS::Notification.log "architect is watching for changes. Type 'quit' or 'exit' to stop."
+      puts ArchitectureJS::Notification.log "architect is watching for changes. Type 'quit' to stop."
       start_interactive_session watcher
     end
     #watch
@@ -103,11 +103,11 @@ module Architect
       def start_interactive_session(watcher)
         begin
           command = ''
-          while not command =~ /exit|quit/
+          while not command =~ /^quit$/
               print ArchitectureJS::Notification.prompt
               command = gets.chomp
               case command
-                when /exit|quit/
+                when /^quit$/
                   watcher.stop
                 when /src_files/
                   puts watcher.project.src_files.join("\n")
