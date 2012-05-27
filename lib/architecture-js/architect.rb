@@ -71,15 +71,19 @@ module Architect
       begin
         @project.generator.generate config
       rescue Exception => e
-        puts e.message
+        puts ArchitectureJS::Notification.error e.message
         templates
       end
     end
 
     def compile
-      @project = ArchitectureJS::Blueprint.new_from_config(@root)
-      @project.config[:output] = 'compressed' if options[:c] || options[:compress]
-      @project.update
+      begin
+        @project = ArchitectureJS::Blueprint.new_from_config(@root)
+        compress = @options[:c] || @options[:compress]
+        @project.update(compress)
+      rescue Exception => e
+        puts ArchitectureJS::Notification.error e.message
+      end
     end
 
     def watch
@@ -92,7 +96,7 @@ module Architect
 
     def templates
       @project = ArchitectureJS::Blueprint.new_from_config(@root)
-      puts "Tempaltes:"
+      puts "Templates:"
       @project.generator.templates.each { |k,v| puts "  - #{k}" }
     end
 
@@ -109,46 +113,50 @@ module Architect
           while not command =~ /^quit$/
               print ArchitectureJS::Notification.prompt
               command = gets.chomp
-              case command
-                when /^quit$/
-                  @watcher.stop
-                when /src_files/
-                  src_files
-                when /templates/
-                  templates
-                when /compile/
-                  begin
-                    @project.update
-                  rescue Exception => e
-                    puts e.message
-                  end
-                when /generate/
-                  begin
-                    args = command.split(/\s/)
-                    parse_command args
-                    parse_arguments args
-                    parse_generate_options
-                    self.send @command
-                  rescue Exception => e
-                    puts e.message
-                    puts "Available templates:"
-                    @project.generator.templates.each { |k,v| puts "  - #{k}" }
-                  end
-                when /help/
-                  puts 'Interactive commands:'
-                  puts '  compile - compile the application'
-                  puts '  generate - generate a template'
-                  puts '  templates - list available templates to generate'
-                  puts '  src_files - list source files to be compiled into the build_dir'
-                  puts '  help - show this menu'
-                  puts '  quit - stop watching for changes'
+              args = command.split(/\s/)
+              parse_command args
+              case @command
+              when /^quit$/
+                @watcher.stop
+              when /help/
+                puts 'Interactive commands:'
+                puts '  compile - compile the application'
+                puts '  generate - generate a template'
+                puts '  templates - list available templates to generate'
+                puts '  src_files - list source files to be compiled into the build_dir'
+                puts '  help - show this menu'
+                puts '  quit - stop watching for changes'
+              when /compile|generate|templates|src_files/
+
+                if @command == :generate
+                  parse_arguments args
+                  parse_generate_options args
                 else
+                  args = args.drop 1
+                  parse_interactive_options(args)
+                  parse_arguments args
+                end
+
+                self.send @command
+              else
                   puts ArchitectureJS::Notification.error "Unrecognized command `#{command}`. Try `help` or `quit`."
               end
           end
         rescue SystemExit, Interrupt
           puts
           @watcher.stop
+        end
+      end
+
+      def parse_interactive_options(args = [])
+        @options = {}
+        
+        args.each do |option|
+          case option
+          when /\-c|\-\-compress/
+            @options[:compress] = true
+            @options[:c] = true
+          end
         end
       end
 

@@ -91,11 +91,11 @@ module ArchitectureJS
       puts ArchitectureJS::Notification.added "#{@config[:src_dir]}/#{@config[:name]}.js created"
     end
 
-    def update
+    def update(compress = false)
       read_config
       get_src_files
       compile_src_files
-      compress_application if @config[:output] == 'compressed'
+      compress_application if compress || @config[:output] == 'compressed'
       puts ArchitectureJS::Notification.log "application updated" unless @errors
       @errors = false
     end
