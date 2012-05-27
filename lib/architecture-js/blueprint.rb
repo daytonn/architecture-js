@@ -14,7 +14,7 @@ module ArchitectureJS
     def self.new_from_config(path)
       config_file = Dir.entries(path).select {|f| f =~ /\.blueprint$/ }.first
 
-      raise ".blueprint file was not found in #{path}" if config_file.nil?
+      raise ".blueprint file was not found in #{path}/" if config_file.nil?
 
       config = YAML::load_file "#{path}/#{config_file}"
       config = ArchitectureJS::Helpers::symbolize_keys config

@@ -49,7 +49,7 @@ module Architect
       end
       blueprint = @options[:blueprint]
 
-      raise 'you must specify a project name: architect create [project_name]' if args[0].nil?
+      raise 'You must specify a project name: architect create [project_name]' if args[0].nil?
 
       @root = File.expand_path sub_dir if sub_dir
       config = { name: app_name, blueprint: blueprint }
@@ -58,6 +58,8 @@ module Architect
 
       @project = ArchitectureJS::BLUEPRINTS[blueprint].new(config, @root)
       @project.create
+    rescue Exception => e
+      puts ArchitectureJS::Notification.error e.message
     end
 
     def generate
@@ -68,22 +70,18 @@ module Architect
         filename: @args[1],
         options: @template_options
       }
-      begin
-        @project.generator.generate config
-      rescue Exception => e
-        puts ArchitectureJS::Notification.error e.message
-        templates
-      end
+      @project.generator.generate config
+    rescue Exception => e
+      puts ArchitectureJS::Notification.error e.message
+      templates if @project
     end
 
     def compile
-      begin
-        @project = ArchitectureJS::Blueprint.new_from_config(@root)
-        compress = @options[:c] || @options[:compress]
-        @project.update(compress)
-      rescue Exception => e
-        puts ArchitectureJS::Notification.error e.message
-      end
+      @project = ArchitectureJS::Blueprint.new_from_config(@root)
+      compress = @options[:c] || @options[:compress]
+      @project.update(compress)
+    rescue Exception => e
+      puts ArchitectureJS::Notification.error e.message
     end
 
     def watch
@@ -92,60 +90,66 @@ module Architect
       @watcher = @project.watch
       puts ArchitectureJS::Notification.log "architect is watching for changes. Type 'quit' to stop."
       start_interactive_session
+    rescue Exception => e
+      puts ArchitectureJS::Notification.error e.message
     end
 
     def templates
       @project = ArchitectureJS::Blueprint.new_from_config(@root)
       puts "Templates:"
       @project.generator.templates.each { |k,v| puts "  - #{k}" }
+    rescue Exception => e
+      puts ArchitectureJS::Notification.error e.message
     end
 
     def src_files
       @project = ArchitectureJS::Blueprint.new_from_config(@root)
       puts "Source files:"
       @project.src_files.each { |f| puts "  - #{File.basename f}" }
+    rescue Exception => e
+      puts ArchitectureJS::Notification.error e.message
     end
 
     private
       def start_interactive_session
-        begin
-          command = ''
-          while not command =~ /^quit$/
-              print ArchitectureJS::Notification.prompt
-              command = gets.chomp
-              args = command.split(/\s/)
-              parse_command args
-              case @command
-              when /^quit$/
-                @watcher.stop
-              when /help/
-                puts 'Interactive commands:'
-                puts '  compile - compile the application'
-                puts '  generate - generate a template'
-                puts '  templates - list available templates to generate'
-                puts '  src_files - list source files to be compiled into the build_dir'
-                puts '  help - show this menu'
-                puts '  quit - stop watching for changes'
-              when /compile|generate|templates|src_files/
+        command = ''
 
-                if @command == :generate
-                  parse_arguments args
-                  parse_generate_options args
-                else
-                  args = args.drop 1
-                  parse_interactive_options(args)
-                  parse_arguments args
-                end
+        while not command =~ /^quit$/
+          print ArchitectureJS::Notification.prompt
+          command = gets.chomp
+          args = command.split(/\s/)
+          parse_command args
 
-                self.send @command
-              else
-                  puts ArchitectureJS::Notification.error "Unrecognized command `#{command}`. Try `help` or `quit`."
-              end
+          case @command
+          when /^quit$/
+            @watcher.stop
+          when /help/
+            puts 'Interactive commands:'
+            puts '  compile - compile the application'
+            puts '  generate - generate a template'
+            puts '  templates - list available templates to generate'
+            puts '  src_files - list source files to be compiled into the build_dir'
+            puts '  help - show this menu'
+            puts '  quit - stop watching for changes'
+          when /compile|generate|templates|src_files/
+
+            if @command == :generate
+              parse_arguments args
+              parse_generate_options args
+            else
+              args = args.drop 1
+              parse_interactive_options(args)
+              parse_arguments args
+            end
+
+            self.send @command
+          else
+              puts ArchitectureJS::Notification.error "Unrecognized command `#{command}`. Try `help` or `quit`."
           end
-        rescue SystemExit, Interrupt
-          puts
-          @watcher.stop
         end
+      rescue SystemExit, Interrupt
+        puts
+        @watcher.stop
       end
 
       def parse_interactive_options(args = [])
