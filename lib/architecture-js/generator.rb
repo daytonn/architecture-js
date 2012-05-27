@@ -53,7 +53,7 @@ module ArchitectureJS
     def generate_file(filename, template, path = nil)
       path ||= File.expand_path(Dir.getwd)
       File.open("#{path}/#{filename}", "w+") { |f| f.write template }
-      puts ArchitectureJS::Notification.added "#{filename} added" if File.exists?("#{path}/#{filename}")
+      puts ArchitectureJS::Notification.added "#{filename} generated" if File.exists?("#{path}/#{filename}")
     end
 
     def render_template(template, filename, arguments, options)
