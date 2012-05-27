@@ -71,9 +71,9 @@ module Architect
         options: @template_options
       }
       @project.generator.generate config
-    rescue Exception => e
-      puts ArchitectureJS::Notification.error e.message
-      templates if @project
+    #rescue Exception => e
+    #  puts ArchitectureJS::Notification.error e.message
+    #  templates if @project
     end
 
     def compile
@@ -135,10 +135,10 @@ module Architect
 
             if @command == :generate
               parse_arguments args
-              parse_generate_options args
+              parse_generate_options
             else
               args = args.drop 1
-              parse_interactive_options(args)
+              parse_interactive_options args
               parse_arguments args
             end
 

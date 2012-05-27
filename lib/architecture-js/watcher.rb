@@ -7,7 +7,7 @@ module ArchitectureJS
       @project = project
       @listener = Listen.to(@project.root)
       @listener.ignore(/#{@project.config[:build_dir]}|spec|test/)
-               .filter(/\.jst?$/)
+               .filter(/\.jst?|\.blueprint$/)
                .change do |modified, added, removed|
                  update_files(modified, "modified") if modified.length > 0 
                  update_files(added, "added") if added.length > 0
@@ -30,6 +30,7 @@ module ArchitectureJS
         files.each do |f|
           f = File.basename f
           if action == "deleted"
+            puts "#{@project.root}/#{f}"
             FileUtils.rm_rf("#{@project.root}/#{f}")
             puts "remove #{@project.root}/#{f}"
           end
