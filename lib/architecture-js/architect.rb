@@ -71,9 +71,9 @@ module Architect
         options: @template_options
       }
       @project.generator.generate config
-    #rescue Exception => e
-    #  puts ArchitectureJS::Notification.error e.message
-    #  templates if @project
+    rescue Exception => e
+      puts ArchitectureJS::Notification.error e.message
+      templates if @project
     end
 
     def compile
@@ -87,8 +87,7 @@ module Architect
     def watch
       @project = ArchitectureJS::Blueprint.new_from_config(@root)
       @project.update
-      @watcher = @project.watch
-      puts ArchitectureJS::Notification.log "architect is watching for changes. Type 'quit' to stop."
+      @watcher = @project.watch("architect is watching for changes. Type 'quit' to stop.")
       start_interactive_session
     rescue Exception => e
       puts ArchitectureJS::Notification.error e.message
@@ -112,12 +111,12 @@ module Architect
 
     private
       def start_interactive_session
-        command = ''
+        @command = ''
 
-        while not command =~ /^quit$/
+        while not @command =~ /^quit$/
           print ArchitectureJS::Notification.prompt
-          command = gets.chomp
-          args = command.split(/\s/)
+          @command = gets.chomp
+          args = @command.split(/\s/)
           parse_command args
 
           case @command
@@ -132,7 +131,6 @@ module Architect
             puts '  help - show this menu'
             puts '  quit - stop watching for changes'
           when /compile|generate|templates|src_files/
-
             if @command == :generate
               parse_arguments args
               parse_generate_options
