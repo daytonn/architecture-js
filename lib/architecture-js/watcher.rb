@@ -20,6 +20,10 @@ module ArchitectureJS
       self
     end
 
+    def stop
+      @listener.stop
+    end
+
     private
 
       def update_files(files, message)
