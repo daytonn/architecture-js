@@ -31,7 +31,6 @@ module ArchitectureJS
       @root = File.expand_path(root)
       @template_directories = ["#{ArchitectureJS::base_directory}/templates", "#{@root}/templates"]
       @directories = ['lib', 'src']
-      @src_files = []
       @config = {
         blueprint: 'default',
         src_dir: 'src',
@@ -40,6 +39,7 @@ module ArchitectureJS
         output: 'compressed'
       }
       @config.merge! config unless config.nil?
+      get_src_files
       @generator = ArchitectureJS::Generator.new self
     end
 

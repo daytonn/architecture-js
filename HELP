@@ -1,28 +1,33 @@
 create    Creates a new architecture-js application in the
           current working directory or sub directory within.
 
-          Arguments:
-            application name - Name of the architecture-js application
-            subdirectory* - Directory where the application will be
-                          installed (created if nonexistent)
-
-         Options:
-            -b, --blueprint - Optional Blueprint framework to create
-
           examples:
             architect create myapp
             architect create myapp subdirectory
             architect create myapp -b modjs
 
+          Arguments:
+            application name - Name of the architecture-js application
+            subdirectory* - Directory where the application will be
+                            installed (created if nonexistent)
+
+          Options:
+            -b, --blueprint - Optional Blueprint framework to create
+
 compile   Compiles the architecture-js project in the current working directory.
 
-            Options:
-                -c, --compress - Compress output with JsMin
+          example:
+            architect compile
 
-            example:
-                architect compile
+          Options:
+            -c, --compress - Compress output with JsMin
 
 generate  Generates scoffolding from a template.
+
+          examples:
+            architect generate mytemplate foo -f (boolean arguments use a single "-")
+            architect generate mytemplate foo --test "Hello" (named arguments can be boolean by passing no value `false`)
+            architect genreate mytemplate foo -f --test "Hello" (combined to generate complex templates)
 
           Arguments:
             name - Name of the template to generate
@@ -31,15 +36,10 @@ generate  Generates scoffolding from a template.
             *Options are arbitrary (optional) arguments specific to templates
             There are two types of options: boolean and named attributes
 
-          examples:
-            architect generate mytemplate foo -f (boolean arguments use a single "-")
-            architect generate mytemplate foo --test "Hello" (named arguments can be boolean by passing no value `false`)
-            architect genreate mytemplate foo -f --test "Hello" (combined to generate complex templates)
-
 watch     Watches the current working directory for file
           changes and compiles when changes are detected.
 
-            example:
-                architect watch
+          example:
+            architect watch
 
 * optional argument

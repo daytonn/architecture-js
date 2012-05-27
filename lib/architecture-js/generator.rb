@@ -40,9 +40,10 @@ module ArchitectureJS
     end
 
     def generate(config)
-      template = config[:template]
-      raise "There is no template named #{template} in the #{@blueprint[:name]} project" if @templates[template].nil?
+      raise "You must provide a template to generate:\n  - architect generate <template>" unless config[:template]
+      raise "There is no template named '#{template}' in the #{@blueprint[:name]} project" unless @templates[config[:template]]
 
+      template = config[:template]
       options = config[:options]
       arguments = config[:arguments]
       filename = "#{config[:filename]}#{@templates[template][:ext]}"

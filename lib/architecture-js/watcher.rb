@@ -9,9 +9,9 @@ module ArchitectureJS
       @listener.ignore(/#{@project.config[:build_dir]}|spec|test/)
                .filter(/\.jst?$/)
                .change do |modified, added, removed|
-                 update_files(modified, "was modified") if modified.length > 0 
-                 update_files(added, "was added") if added.length > 0
-                 update_files(removed, "was deleted") if removed.length > 0
+                 update_files(modified, "modified") if modified.length > 0 
+                 update_files(added, "added") if added.length > 0
+                 update_files(removed, "deleted") if removed.length > 0
                end
     end
 
@@ -26,11 +26,15 @@ module ArchitectureJS
 
     private
 
-      def update_files(files, message)
+      def update_files(files, action)
         files.each do |f|
           f = File.basename f
+          if action == "deleted"
+            FileUtils.rm_rf("#{@project.root}/#{f}")
+            puts "remove #{@project.root}/#{f}"
+          end
 
-          puts "\n" << ArchitectureJS::Notification.event("#{f} #{message}")
+          puts "\n" << ArchitectureJS::Notification.event("#{f} was #{action}")
         end
 
         @project.read_config

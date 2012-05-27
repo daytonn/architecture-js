@@ -22,6 +22,7 @@ module Architect
       else
         @root = File.expand_path(Dir.getwd)
       end
+      @project = ArchitectureJS::Blueprint.new_from_config(@root)
     end
 
     def run
@@ -56,14 +57,11 @@ module Architect
 
       require "#{blueprint}-architecture" unless blueprint == 'default'
 
-      project = ArchitectureJS::BLUEPRINTS[blueprint].new(config, @root)
-      project.create
+      @project = ArchitectureJS::BLUEPRINTS[blueprint].new(config, @root)
+      @project.create
     end
 
     def generate
-      project_path = File.expand_path(Dir.getwd)
-      project = ArchitectureJS::Blueprint.new_from_config(project_path)
-
       config = {
         arguments: @args,
         template: @args.first,
@@ -71,36 +69,37 @@ module Architect
         options: @template_options
       }
       begin
-        project.generator.generate config
+        @project.generator.generate config
       rescue Exception => e
         puts e.message
-        puts "Be sure you ran the command correctly (architect generate <template> <filename> [options])"
-        puts "Available templates:"
-        project.generator.templates.each { |k,v| puts "  - #{k}" }
+        templates
       end
     end
 
     def compile
-      project = ArchitectureJS::Blueprint.new_from_config(File.expand_path(Dir.getwd))
-      project.config[:output] = 'compressed' if options[:c] || options[:compress]
-      project.update
+      @project.config[:output] = 'compressed' if options[:c] || options[:compress]
+      @project.update
     end
-    #compile
 
     def watch
-      path ||= Dir.getwd
-      path = File.expand_path(path)
-
-      project = ArchitectureJS::Blueprint::new_from_config(path)
-      project.update
-      watcher = project.watch
+      @project.update
+      @watcher = @project.watch
       puts ArchitectureJS::Notification.log "architect is watching for changes. Type 'quit' to stop."
-      start_interactive_session watcher
+      start_interactive_session
     end
-    #watch
+
+    def templates
+      puts "Tempaltes:"
+      @project.generator.templates.each { |k,v| puts "  - #{k}" }
+    end
+
+    def src_files
+      puts "Source files:"
+      @project.src_files.each { |f| puts "  - #{File.basename f}" }
+    end
 
     private
-      def start_interactive_session(watcher)
+      def start_interactive_session
         begin
           command = ''
           while not command =~ /^quit$/
@@ -108,17 +107,16 @@ module Architect
               command = gets.chomp
               case command
                 when /^quit$/
-                  watcher.stop
+                  @watcher.stop
                 when /src_files/
-                  puts watcher.project.src_files.join("\n")
+                  src_files
                 when /templates/
-                  watcher.project.generator.templates.each { |k,v| puts k }
+                  templates
                 when /compile/
                   begin
-                    watcher.project.update
+                    @project.update
                   rescue Exception => e
                     puts e.message
-                    ArchitectureJS::Notification.prompt
                   end
                 when /generate/
                   begin
@@ -130,8 +128,7 @@ module Architect
                   rescue Exception => e
                     puts e.message
                     puts "Available templates:"
-                    watcher.project.generator.templates.each { |k,v| puts "  - #{k}" }
-                    ArchitectureJS::Notification.prompt
+                    @project.generator.templates.each { |k,v| puts "  - #{k}" }
                   end
                 when /help/
                   puts 'Interactive commands:'
@@ -140,11 +137,14 @@ module Architect
                   puts '  templates - list available templates to generate'
                   puts '  src_files - list source files to be compiled into the build_dir'
                   puts '  help - show this menu'
+                  puts '  quit - stop watching for changes'
+                else
+                  puts ArchitectureJS::Notification.error "Unrecognized command `#{command}`. Try `help` or `quit`."
               end
           end
         rescue SystemExit, Interrupt
           puts
-          watcher.stop
+          @watcher.stop
         end
       end
 
