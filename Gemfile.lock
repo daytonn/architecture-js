@@ -16,6 +16,7 @@ GEM
       rb-fsevent (~> 0.9.1)
       rb-inotify (~> 0.8.8)
     multi_json (1.0.4)
+    mustache (0.99.4)
     rake (0.9.2.2)
     rb-fchange (0.0.5)
       ffi
@@ -24,6 +25,10 @@ GEM
       ffi (>= 0.5.0)
     rdoc (3.12)
       json (~> 1.4)
+    redcarpet (2.1.1)
+    rocco (0.8.2)
+      mustache
+      redcarpet
     rspec (2.8.0)
       rspec-core (~> 2.8.0)
       rspec-expectations (~> 2.8.0)
@@ -45,5 +50,6 @@ DEPENDENCIES
   jeweler (~> 1.8.3)
   jsmin (~> 1.0.1)
   listen
+  rocco
   rspec (~> 2.8.0)
   simplecov (~> 0.5.4)
