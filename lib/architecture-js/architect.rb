@@ -93,14 +93,14 @@ module Architect
 
       project = ArchitectureJS::Blueprint::new_from_config(path)
       project.update
-      listener = project.watch
+      watcher = project.watch
       puts ArchitectureJS::Notification.log "architect is watching for changes. Type 'quit' or 'exit' to stop."
-      start_interactive_session listener
+      start_interactive_session watcher
     end
     #watch
 
     private
-      def start_interactive_session(listener)
+      def start_interactive_session(watcher)
         begin
           command = ''
           while not command =~ /exit|quit/
@@ -108,14 +108,14 @@ module Architect
               command = gets.chomp
               case command
                 when /exit|quit/
-                  listener.stop
+                  watcher.stop
                 when /src_files/
-                  puts project.src_files.join("\n")
+                  puts watcher.project.src_files.join("\n")
                 when /templates/
-                  project.generator.templates.each { |k,v| puts k }
-                when /compile|update/
+                  watcher.project.generator.templates.each { |k,v| puts k }
+                when /compile/
                   begin
-                    project.update
+                    watcher.project.update
                   rescue Exception => e
                     puts e.message
                     ArchitectureJS::Notification.prompt
@@ -130,14 +130,21 @@ module Architect
                   rescue Exception => e
                     puts e.message
                     puts "Available templates:"
-                    project.generator.templates.each { |k,v| puts "  - #{k}" }
+                    watcher.project.generator.templates.each { |k,v| puts "  - #{k}" }
                     ArchitectureJS::Notification.prompt
                   end
+                when /help/
+                  puts 'Interactive commands:'
+                  puts '  compile - compile the application'
+                  puts '  generate - generate a template'
+                  puts '  templates - list available templates to generate'
+                  puts '  src_files - list source files to be compiled into the build_dir'
+                  puts '  help - show this menu'
               end
           end
         rescue SystemExit, Interrupt
           puts
-          listener.stop
+          watcher.stop
         end
       end
 

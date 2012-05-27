@@ -1,6 +1,8 @@
 module ArchitectureJS
   class Watcher
 
+    attr_accessor :project, :listener
+
     def initialize(project)
       @project = project
       @listener = Listen.to(@project.root)
@@ -15,7 +17,7 @@ module ArchitectureJS
 
     def watch
       @listener.start(false)
-      @listener
+      self
     end
 
     private
