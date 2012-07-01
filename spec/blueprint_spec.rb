@@ -39,11 +39,7 @@ describe ArchitectureJS::Blueprint do
     end
 
     it "should have template_directories" do
-      @project.template_directories.should == ["#{ArchitectureJS::base_directory}/templates", "#{TMP_DIR}/templates"]
-    end
-
-    it "should have a generator" do
-      @project.generator.should_not be_nil
+      @project.template_directories.should == ["#{TMP_DIR}/templates"]
     end
 
     context "with existing project" do
@@ -52,7 +48,7 @@ describe ArchitectureJS::Blueprint do
       end
 
       it "should initialize with a config path" do
-        @existing = ArchitectureJS::Blueprint.new_from_config TMP_DIR
+        @existing = ArchitectureJS::Blueprint.init_with_config TMP_DIR
         @existing.config.should_not be_empty
         @existing.config[:name].should == 'myapp'
       end

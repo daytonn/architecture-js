@@ -30,25 +30,11 @@ describe 'architect' do
       File.exists?("#{TMP_DIR}/sub/src/myapp.js").should be_true
       FileUtils.rm_rf "#{TMP_DIR}/sub"
     end
-
+    
     it 'should compile the application' do
       `cd #{TMP_DIR}; #{@bin} compile`
       File.exists?("#{TMP_DIR}/lib/myapp.js").should be_true
       "#{TMP_DIR}/lib/myapp.js".should be_same_file_as "#{FIXTURES}/compressed.js"
-    end
-
-    it 'should generate a template' do
-      `cd #{TMP_DIR}; #{@bin} generate blank src/test`
-      File.exists?("#{TMP_DIR}/src/test.js").should be_true
-    end
-
-    it 'should generate a template with options' do
-      FileUtils.mkdir("#{TMP_DIR}/templates")
-      FileUtils.cp("#{FIXTURES}/templates/test_template_two.js", "#{TMP_DIR}/templates/test_template.js")
-      `cd #{TMP_DIR}; #{@bin} generate test_template src/foo --optional_variable true --is_good -g --bool`
-      
-      File.exists?("#{TMP_DIR}/src/foo.js").should be_true
-      "#{TMP_DIR}/src/foo.js".should be_same_file_as "#{FIXTURES}/test_template_options.js"
     end
 
   end

@@ -36,7 +36,8 @@ module ArchitectureJS
 end
 
 require "sprockets/lib/sprockets"
+require "ejs"
 
-%w(dependencies generator notification watcher blueprint architect).each do |lib|
+%w(dependencies notification watcher blueprint architect).each do |lib|
   require "architecture-js/#{lib}"
 end

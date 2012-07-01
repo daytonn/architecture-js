@@ -3,6 +3,6 @@ src_dir: src
 build_dir: lib
 asset_root: ../
 output: compressed
-template_dir: templates
-template_namespace: templates
+template_dir: ['templates', 'more_templates']
+template_namespace: Foo
 name: myapp

@@ -7,11 +7,11 @@ module ArchitectureJS
                   :config_name,
                   :directories,
                   :template_directories,
-                  :generator,
+                  :templates,
                   :config,
                   :raise_errors
 
-    def self.new_from_config(path)
+    def self.init_with_config(path)
       config_file = Dir.entries(path).select {|f| f =~ /\.blueprint$/ }.first
 
       raise ".blueprint file was not found in #{path}/" if config_file.nil?
@@ -29,23 +29,20 @@ module ArchitectureJS
       @config_file = "#{config[:name].downcase}.blueprint"
       root ||= Dir.getwd
       @root = File.expand_path(root)
-      @template_directories = ["#{ArchitectureJS::base_directory}/templates", "#{@root}/templates"]
+      @template_directories = ["#{@root}/templates"]
       @directories = ['lib', 'src']
       @config = {
         blueprint: 'default',
         src_dir: 'src',
         build_dir: 'lib',
         asset_root: '../',
-        output: 'compressed'
+        output: 'compressed',
+        template_dir: 'templates',
+        template_namespace: 'templates'
       }
       @config.merge! config unless config.nil?
+      @template_directories = [*@config[:template_dir]].map { |dir| "#{@root}/#{dir}" }
       get_src_files
-      @generator = ArchitectureJS::Generator.new self
-    end
-
-    def add_templates(dir)
-      [*dir].each { |d| @template_directories << d }
-      @generator.load_templates
     end
 
     def read_config
@@ -94,6 +91,8 @@ module ArchitectureJS
     def update(compress = false)
       read_config
       get_src_files
+      get_templates
+      create_templates_file unless @templates.empty?
       compile_src_files
       compress_application if compress || @config[:output] == 'compressed'
       puts ArchitectureJS::Notification.log "application updated" unless @errors
@@ -105,6 +104,39 @@ module ArchitectureJS
       [*@config[:src_dir]].each do |directory| 
         add_src_files_to_project File.expand_path(directory, @root)
       end      
+    end
+
+    def get_templates
+      @templates = {}
+      @template_directories.each do |dir|
+        find_templates_in_directory dir
+      end
+    end
+
+    def find_templates_in_directory(dir)
+      dir_glob = File.join(dir, "**", "*.jst")
+      Dir.glob(dir_glob).each do |f|
+        name = get_template_name f, dir
+        @templates[name] = EJS.compile(File.read f)
+      end
+    end
+
+    def get_template_name(file, dir, ext = '.jst')
+      File.basename(file.gsub(/#{dir}\/?/, ''), ext)
+    end
+
+    def create_templates_file
+      templates_string = ''
+      app_name = @config[:name]
+      template_namespace = @config[:template_namespace]
+      formatted_templates = @templates.map do |name, function|
+        "\"#{name}\": #{function}"
+      end
+      template = ERB.new File.read("#{ArchitectureJS::base_directory}/templates/templates_file.erb")
+      @compiled_templates_file = template.result binding
+      File.open("#{@root}/#{@config[:build_dir]}/templates.js", "w+") do |f|
+        f << @compiled_templates_file
+      end
     end
 
     def add_src_files_to_project(directory)

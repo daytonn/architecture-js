@@ -26,13 +26,8 @@ module Architect
 
     def run
       parse_command
-      if @command == :generate
-        parse_arguments
-        parse_generate_options
-      else
-        parse_options
-        parse_arguments
-      end
+      parse_options
+      parse_arguments
 
       if @command
           self.send @command unless @command =~ /^-/
@@ -62,22 +57,8 @@ module Architect
       puts ArchitectureJS::Notification.error e.message
     end
 
-    def generate
-      @project = ArchitectureJS::Blueprint.new_from_config(@root)
-      config = {
-        arguments: @args,
-        template: @args.first,
-        filename: @args[1],
-        options: @template_options
-      }
-      @project.generator.generate config
-    rescue Exception => e
-      puts ArchitectureJS::Notification.error e.message
-      templates if @project
-    end
-
     def compile
-      @project = ArchitectureJS::Blueprint.new_from_config(@root)
+      @project = ArchitectureJS::Blueprint.init_with_config(@root)
       compress = @options[:c] || @options[:compress]
       @project.update(compress)
     rescue Exception => e
@@ -85,7 +66,7 @@ module Architect
     end
 
     def watch
-      @project = ArchitectureJS::Blueprint.new_from_config(@root)
+      @project = ArchitectureJS::Blueprint.init_with_config(@root)
       @project.update
       @watcher = @project.watch("architect is watching for changes. Type 'quit' to stop.")
       start_interactive_session
@@ -93,16 +74,8 @@ module Architect
       puts ArchitectureJS::Notification.error e.message
     end
 
-    def templates
-      @project = ArchitectureJS::Blueprint.new_from_config(@root)
-      puts "Templates:"
-      @project.generator.templates.each { |k,v| puts "  - #{k}" }
-    rescue Exception => e
-      puts ArchitectureJS::Notification.error e.message
-    end
-
     def src_files
-      @project = ArchitectureJS::Blueprint.new_from_config(@root)
+      @project = ArchitectureJS::Blueprint.init_with_config(@root)
       puts "Source files:"
       @project.src_files.each { |f| puts "  - #{File.basename f}" }
     rescue Exception => e
@@ -125,20 +98,13 @@ module Architect
           when /help/
             puts 'Interactive commands:'
             puts '  compile - compile the application'
-            puts '  generate - generate a template'
-            puts '  templates - list available templates to generate'
             puts '  src_files - list source files to be compiled into the build_dir'
             puts '  help - show this menu'
             puts '  quit - stop watching for changes'
-          when /compile|generate|templates|src_files/
-            if @command == :generate
-              parse_arguments args
-              parse_generate_options
-            else
-              args = args.drop 1
-              parse_interactive_options args
-              parse_arguments args
-            end
+          when /compile|src_files/
+            args = args.drop 1
+            parse_interactive_options args
+            parse_arguments args
 
             self.send @command
           else
@@ -185,33 +151,6 @@ module Architect
             help
           end
         end.parse!
-      end
-
-      def parse_generate_options
-        @options = {
-          help: false
-        }
-        @template_options = {}
-
-        @args.each_with_index do |arg, i|
-          # double dash options contain variables
-          if arg.match(/^--/)
-            option_key = arg.gsub(/^--/, '')
-            option_value = @args[i + 1]
-
-            if (option_value && option_value.match(/^-/) || option_value.nil?)
-              # no option value
-              @template_options[option_key.to_sym] = false
-            else
-              # option has a value
-              @template_options[option_key.to_sym] = option_value
-            end
-          # single dash options are flags
-          elsif arg.match(/^-/)
-            @template_options[arg.gsub(/^-/, '').to_sym] = true
-          end
-        end
-        # each_with_index
       end
 
       def parse_arguments(args = Array.try_convert(ARGV))
