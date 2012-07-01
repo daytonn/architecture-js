@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "architecture-js"
-  s.version = "0.5.8"
+  s.version = "0.6.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Dayton Nolan"]
-  s.date = "2012-05-27"
+  s.date = "2012-07-01"
   s.description = "Architecture.js helps you generate scaffolding, manage third-party packages, compile, and compress your application."
   s.email = "daytonn@gmail.com"
   s.executables = ["architect"]
@@ -25,6 +25,7 @@ Gem::Specification.new do |s|
     "AUTHORS",
     "Gemfile",
     "Gemfile.lock",
+    "Guardfile",
     "HELP",
     "LICENSE.txt",
     "README.md",
@@ -96,12 +97,14 @@ Gem::Specification.new do |s|
     "spec/fixtures/lib1_compressed.js",
     "spec/fixtures/lib2.js",
     "spec/fixtures/lib2_compressed.js",
+    "spec/fixtures/multiple_templates.blueprint",
     "spec/fixtures/myapp.blueprint",
     "spec/fixtures/src_file.js",
     "spec/fixtures/templates/env_template.js",
     "spec/fixtures/templates/test_template_one.js",
     "spec/fixtures/templates/test_template_two.js",
     "spec/fixtures/test_blueprint.rb",
+    "spec/fixtures/test_template.jst",
     "spec/fixtures/test_template_options.js",
     "spec/fixtures/test_template_two.js",
     "spec/fixtures/underscore_template.js",
@@ -110,12 +113,13 @@ Gem::Specification.new do |s|
     "spec/helpers_spec.rb",
     "spec/notification_spec.rb",
     "spec/spec_helper.rb",
-    "templates/blank.js"
+    "spec/templates_spec.rb",
+    "templates/templates_file.erb"
   ]
   s.homepage = "https://github.com/daytonn/architecture-js"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
-  s.rubygems_version = "1.8.21"
+  s.rubygems_version = "1.8.24"
   s.summary = "architecture.js is a command line application to dynamically build and manage complex javascript applications."
 
   if s.respond_to? :specification_version then
@@ -123,6 +127,7 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<listen>, [">= 0"])
+      s.add_runtime_dependency(%q<ejs>, [">= 0"])
       s.add_runtime_dependency(%q<jsmin>, ["~> 1.0.1"])
       s.add_development_dependency(%q<rspec>, ["~> 2.8.0"])
       s.add_development_dependency(%q<bundler>, [">= 0"])
@@ -131,6 +136,7 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<listen>, [">= 0"])
     else
       s.add_dependency(%q<listen>, [">= 0"])
+      s.add_dependency(%q<ejs>, [">= 0"])
       s.add_dependency(%q<jsmin>, ["~> 1.0.1"])
       s.add_dependency(%q<rspec>, ["~> 2.8.0"])
       s.add_dependency(%q<bundler>, [">= 0"])
@@ -140,6 +146,7 @@ Gem::Specification.new do |s|
     end
   else
     s.add_dependency(%q<listen>, [">= 0"])
+    s.add_dependency(%q<ejs>, [">= 0"])
     s.add_dependency(%q<jsmin>, ["~> 1.0.1"])
     s.add_dependency(%q<rspec>, ["~> 2.8.0"])
     s.add_dependency(%q<bundler>, [">= 0"])
