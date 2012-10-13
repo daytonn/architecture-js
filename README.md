@@ -75,6 +75,63 @@ The `output` determines whether the compiled javascript will be `compressed` or 
 ### name
 The `name` is the name of your architecture project. The name value can be used by the blueprint in a variety of ways. By default the name is used to create the main application file in the /src directory (in lowercase).
 
+<a id="compilation"></a>
+## Compilation
+
+### compile
+You can compile your architecture project manually with the compile command:
+
+    architect compile
+
+This will get the requirements of every file in your `src_dir`(s) and compile them into your `build_dir` using the settings found in the `.blueprint` file in the current directory.
+
+<a id="watch"></a>
+### watch
+
+Having to do this manually every time you change a file and want to see it in your browser is a pain in the ass. Using the `watch` command is probably the only way you'll want to develop an ArchitectureJS project:
+
+    architect watch
+
+This will watch the project directory and compile the project every time a file changes. Even rather large applications compile instantly, so you can work without ever having to wait for it to build.
+
+<a id="templates"></a>
+## Templates
+
+The ArchitectureJS templating system is designed to let you organize your javascript templates on the file system however you like. ArchitectureJS uses the ruby-ejs gem to automatically compile your template files into your application.
+
+By default, ArchitectureJS searches for templates in the blueprint's template_dir. Any file with a .jst extension will be compiled into your application as a [JST](http://code.google.com/p/trimpath/wiki/JavaScriptTemplates) template function under your blueprint's `template_namespace`. For example with the following project structure:
+
+* lib
+* myapp.blueprint
+* src
+	* myapp.js
+* templates
+	* my_template.jst
+	* another_template.jst
+
+Given the following configuration, when the application is compiled, the templates will be compiled into the build_dir (/lib) in a file named templates.js:
+
+blueprint: default
+src_dir: src
+build_dir: lib
+asset_root: ../
+output: compressed
+template_dir: templates
+template_namespace: templates
+name: MyApp
+
+ArchitectureJS will create a template file like this:
+
+```js
+	MyApp.templates = {
+	    "my_template": /* compiled ejs template function */,
+	    "another_template": /* compiled ejs template function */
+	};
+```
+
+You can then include the `[build_dir]/templates.js` file directly in your html or use `//= require` in your application file. This allows you to treat templates as individual files, while seamlessly providing template methods to render your templates within your application.
+
+
 <a id="sprockets"></a>
 ## Sprockets
 ArchitectureJS uses Sprockets under the hood to enable using a file system layout that corresponds to your javascript architecture. This is the heart of the ArchitectureJS system. In addition to concatenating scripts, Sprockets can also include stylesheet and image assets used by scripts. It has a basic syntax using javascript comments, gracefully enhancing plain old vanilla javascript.
@@ -138,38 +195,6 @@ ArchitectureJS automatically sets up Sprockets' `load_path` to include your proj
     //= require <jquery-1.7.1>
 ``` 
 
-## Compilation
-
-### compile
-You can compile your architecture project manually with the compile command:
-
-    architect compile
-
-This will get the requirements of every file in your `src_dir`(s) and compile them into your `build_dir` using the settings found in the `.blueprint` file in the current directory.
-
-<a id="watch"></a>
-### watch
-
-Having to do this manually every time you change a file and want to see it in your browser is a pain in the ass. Using the `watch` command is probably the only way you'll want to develop an ArchitectureJS project:
-
-    architect watch
-
-This will watch the project directory and compile the project every time a file changes. Even rather large applications compile instantly, so you can work without ever having to wait for it to build.
-
-## Templates
-
-The ArchitectureJS templating system is designed to let you organize your javascript templates on the file system however you like. ArchitectureJS uses the ruby-ejs gem to automatically compile your template files into your application.
-
-By default, ArchitectureJS searches for templates in the blueprint's template_dir. Any file with a .jst extension will be compiled into your application as an underscore.js style template function under your blueprint's template_namespace namespace. For example with the following project structure:
-
-* lib
-* myapp.blueprint
-* src
-	* myapp.js
-* templates
-	* my_template.jst
-	* another_template.jst
-
 ##Contributing to architecture.js
  
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
@@ -180,30 +205,7 @@ By default, ArchitectureJS searches for templates in the blueprint's template_di
 * Make sure to add tests for it. This is important so I don't break it in a future version unintentionally.
 * Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.
 
-Given the following configuration, when the application is compiled, the templates will be compiled into the build_dir (/lib) in a file named templates.js:
-
-blueprint: default
-src_dir: src
-build_dir: lib
-asset_root: ../
-output: compressed
-template_dir: templates
-template_namespace: templates
-name: MyApp
-
-ArchitectureJS will create a template file like this:
-
-```js
-	MyApp.templates = {
-	    "my_template": /* compiled ejs template function */,
-	    "another_template": /* compiled ejs template function */
-	};
-```
-
-You can then include the `build_dir/templates.js` file directly in your html or use `//= require` in your application file. This allows you to treat templates as individual files, while seamlessly providing template methods to render your templates within your application.
-
 ##Copyright
 
 Copyright (c) 2011 Dayton Nolan. See LICENSE.txt for
 further details.
-
