@@ -12,24 +12,20 @@ ArchitectureJS is javascript build tool that helps you create and manage large-s
 * Realtime file monitoring utility to compile your application while you code
 
 ## Installation
-Requires ruby version 1.9 or higher. The best way is using rubygems:
+Requires ruby version 1.9 or higher. Using rubygems:
 
     gem install architecture-js
-
-Or include it in your projects `Gemfile` with Bundler:
-
-    gem 'architecture-js', '~> 0.2.0'
 
 ## Getting Started
 ArchitectureJS comes with a small command line utility named `architect` to manage your architecture projects. To be sure architecture-js is installed correctly, type this command:
 
     architect -h
  
-If `architect` is installed, you should see the help menu. There are only a few simple commands: create, compile, watch, and generate. These commands are all you need to manage your architecture projects.
+If `architect` is installed, you should see the help menu. There are only a few simple commands: create, compile, and watch. These commands are all you need to manage your architecture projects.
 
 To create an architect application use the create command (where "myapp" is the name of _your_ application)
 
-    architect create myapp
+    architect create MyApp
 
 This will create the default project scaffold:
 
@@ -42,22 +38,24 @@ This will create the default project scaffold:
 ## Default Configurtaion
 The `myapp.blueprint` file is the configuration file for your project. The default config file looks something like this
 
-    blueprint: default
-    src_dir: src
-    build_dir: lib
-    asset_root: ../
-    output: compressed
-    name: myapp
+	blueprint: default
+	src_dir: src
+	build_dir: lib
+	asset_root: ../
+	output: compressed
+	template_dir: templates
+	template_namespace: templates
+	name: MyApp
 
 ### blueprint
-The project's `blueprint` is the scaffolding framework your application is based on. The default blueprint is `default` which is a bare bones layout for simple javascript libraries. It has one directory for source files (src), and a build directory named "lib" for distributable code. Other blueprints can be plugged in to support other architectures. These blueprints extend the basic project template and can have their own templates, compilation tasks, and project scaffolding. Third party blueprints may have many of their own properties and layouts, but all ArchitectureJS projects will share this same core properties contained in this default blueprint.
+The project's `blueprint` is the framework your application is based on. The default blueprint is `default` which is a bare bones layout useful for simple javascript libraries (ie. underscore.js, backbone.js). Other blueprints can be used to support any application architecture you prefer. Blueprints are simple `Ruby` classes which extend the basic blueprint. Custom blueprints can have unique properties and scaffolding, but all ArchitectureJS projects will share this same core properties contained in this default blueprint (even if they are not used).
 
 ### src_dir
-The `src_dir` is the directory or directories where the source files to be compiled into the `build_dir` are kept. By default the `src_dir` is usually a single directory represented as a string:
+The `src_dir` is the target path or paths where `architect` will search for files to be compiled. By default the `src_dir` is usually a single directory represented as a string:
 
     src_dir: src
 
-However the src_dir can be multiple directories. To compile the files in the three directories named "classes", "widgets", and "plugins", src_dir would be an array:
+However the src_dir can be multiple paths. To search for source files in three directories named "classes", "widgets", and "plugins", `src_dir` would be an array:
 
     src_dir: [classes, widgets, plugins]
 
@@ -65,7 +63,7 @@ However the src_dir can be multiple directories. To compile the files in the thr
 Any files in these three directories would be compiled into the build directory, including their requirements.
 
 ### build_dir
-The `build_dir` is where all your source files will be compiled.
+The `build_dir` is where all source files will be compiled.
 
 ### asset_root
 The `asset_root` is where stylesheet and image assets will be installed by the `//= provide` directive. By default the `asset_root` is the project root. Stylesheets and images will be placed in css and images directories respectively.
@@ -75,7 +73,7 @@ The `asset_root` is where stylesheet and image assets will be installed by the `
 The `output` determines whether the compiled javascript will be `compressed` or `expanded`, which are the two possible values. The JSMin engine is used for compression.
 
 ### name
-The `name` is the name of your architecture project. The name value can be used by the blueprint in a variety of ways. By default the name is used to create the main application file in the /src directory.
+The `name` is the name of your architecture project. The name value can be used by the blueprint in a variety of ways. By default the name is used to create the main application file in the /src directory (in lowercase).
 
 <a id="sprockets"></a>
 ## Sprockets
@@ -158,61 +156,19 @@ Having to do this manually every time you change a file and want to see it in yo
 
 This will watch the project directory and compile the project every time a file changes. Even rather large applications compile instantly, so you can work without ever having to wait for it to build.
 
-## Scaffolds
+## Templates
 
-The ArchitectureJS scaffolding allows you to generate custom script templates dynamically. This system is a great way to share common boilerplate code in one easy to maintain place. 
+The ArchitectureJS templating system is designed to let you organize your javascript templates on the file system however you like. ArchitectureJS uses the ruby-ejs gem to automatically compile your template files into your application.
 
-### generate
-The `generate` command will create a new file based on a predefined template. Default template files are defined by the blueprint the project is using. The `default` blueprint only has one template named `blank`:
+By default, ArchitectureJS searches for templates in the blueprint's template_dir. Any file with a .jst extension will be compiled into your application as an underscore.js style template function under your blueprint's template_namespace namespace. For example with the following project structure:
 
-    architect generate blank test
-
-This will create a blank javascript file named `test.js` in the current directory. This doesn't really do much, the only reason it's there is to test the template generator. However, You can add your own templates by putting files inside a `/templates` directory inside your project root. For example, if you created a `/templates/class.js` file, you could generate a class template with the following command:
-
-    architect generate class widget
-
-This would create a file named `widget.js` in the current directory based on the contents of `/templates/class.js`. At this point the file is just an empty file. Let's make a more practical template. We'll edit the `class.js` template to take advantage of the command line options:
-
-```ruby
-    <%= options[:name] %> = (function() {
-    <% if options[:f] %>
-        function <%= options[:name] %>() {};
-        return new <%= options[:name] %>();
-    <% else %>
-        var <%= options[:name] %> = function() {};
-        return <%= options[:name] %>;
-    <% end %>
-    })();
-```
-
-The syntax may be a little strange if you've never worked with ERB but this template gives us a great way to generate template files via the command line with `architect`. There are two types of variable you can pass to a template via the generate command: named variables and flags. Named variables allow you to set variables with values. To pass a named variable you use the double dash syntax `architect generate class widget --name "Widget"`, passing the value as the next argument. Flags are simple boolean switches that turn on a flag. To pass a flag, use the single dash syntax `architect generate class widget -f`. All arguments passed will be available through the options variable in the template. Using the `class` template from above we can generate two basic class models using the command options:
-
-    architect generate class widget --name "Foo"
-
-Which would create:
-
-```js
-    Foo = (function() {
-        var Foo = function() {};
-        return Foo;
-    })();
-```
-
-We can generate a slightly different class template using the -f flag:
-
-    architect generate class widget --name "Foo" -f
-
-Which generates:
-
-```js
-    Foo = (function() {
-        function Foo() {};
-        return new Foo();
-    })();
-```
-
-This is obviously a contrived but not wholly unrealistic example of how you can use the architect template generator. Some blueprints contain default templates of their own which are available without the presence of a `/templates` folder. These templates should be documented by the blueprint's authors.
-
+* lib
+* myapp.blueprint
+* src
+	* myapp.js
+* templates
+	* my_template.jst
+	* another_template.jst
 
 ##Contributing to architecture.js
  
@@ -223,6 +179,28 @@ This is obviously a contrived but not wholly unrealistic example of how you can 
 * Commit and push until you are happy with your contribution
 * Make sure to add tests for it. This is important so I don't break it in a future version unintentionally.
 * Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.
+
+Given the following configuration, when the application is compiled, the templates will be compiled into the build_dir (/lib) in a file named templates.js:
+
+blueprint: default
+src_dir: src
+build_dir: lib
+asset_root: ../
+output: compressed
+template_dir: templates
+template_namespace: templates
+name: MyApp
+
+ArchitectureJS will create a template file like this:
+
+```js
+	MyApp.templates = {
+	    "my_template": /* compiled ejs template function */,
+	    "another_template": /* compiled ejs template function */
+	};
+```
+
+You can then include the `build_dir/templates.js` file directly in your html or use `//= require` in your application file. This allows you to treat templates as individual files, while seamlessly providing template methods to render your templates within your application.
 
 ##Copyright
 
