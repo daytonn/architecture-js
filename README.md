@@ -124,8 +124,8 @@ ArchitectureJS will create a template file like this:
 
 ```js
 	MyApp.templates = {
-	    "my_template": /* compiled ejs template function */,
-	    "another_template": /* compiled ejs template function */
+	    "my_template": /* compiled jst template function */,
+	    "another_template": /* compiled jst template function */
 	};
 ```
 
