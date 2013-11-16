@@ -10,7 +10,6 @@ end
 require 'rake'
 require 'jeweler'
 Jeweler::Tasks.new do |gem|
-  # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
   gem.name = "architecture-js"
   gem.homepage = "https://github.com/daytonn/architecture-js"
   gem.license = "MIT"
@@ -18,11 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.description = %Q{Architecture.js helps you generate scaffolding, manage third-party packages, compile, and compress your application.}
   gem.email = "daytonn@gmail.com"
   gem.authors = ["Dayton Nolan"]
-  # Include your dependencies below. Runtime dependencies are required when using your gem,
-  # and development dependencies are only needed for development (ie running rake tasks, tests, etc)
   gem.add_runtime_dependency 'jsmin'
   gem.add_runtime_dependency 'listen'
-  #  gem.add_development_dependency 'rspec', '> 1.2.3'
 end
 Jeweler::RubygemsDotOrgTasks.new
 
