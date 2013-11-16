@@ -20,9 +20,7 @@ Gem::Specification.new do |s|
   s.files = [
     ".DS_Store",
     ".document",
-    ".rspec",
     ".ruby-version",
-    ".rvmrc",
     ".travis.yml",
     "AUTHORS",
     "Gemfile",
@@ -116,49 +114,50 @@ Gem::Specification.new do |s|
     "spec/notification_spec.rb",
     "spec/spec_helper.rb",
     "spec/templates_spec.rb",
-    "templates/templates_file.erb"
+    "templates/templates_file.erb",
+    "travis.yml"
   ]
   s.homepage = "https://github.com/daytonn/architecture-js"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
-  s.rubygems_version = "2.0.3"
+  s.rubygems_version = "1.8.23"
   s.summary = "architecture.js is a command line application to dynamically build and manage complex javascript applications."
 
   if s.respond_to? :specification_version then
-    s.specification_version = 4
+    s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<listen>, [">= 0"])
       s.add_runtime_dependency(%q<ejs>, [">= 0"])
-      s.add_runtime_dependency(%q<jsmin>, ["~> 1.0.1"])
-      s.add_development_dependency(%q<rspec>, ["~> 2.8.0"])
+      s.add_runtime_dependency(%q<jsmin>, [">= 0"])
+      s.add_development_dependency(%q<rspec>, [">= 0"])
       s.add_development_dependency(%q<nyan-cat-formatter>, [">= 0"])
       s.add_development_dependency(%q<unicorn-formatter>, [">= 0"])
       s.add_development_dependency(%q<bundler>, [">= 0"])
-      s.add_development_dependency(%q<jeweler>, ["~> 1.8.3"])
+      s.add_development_dependency(%q<jeweler>, [">= 0"])
       s.add_runtime_dependency(%q<jsmin>, [">= 0"])
       s.add_runtime_dependency(%q<listen>, [">= 0"])
     else
       s.add_dependency(%q<listen>, [">= 0"])
       s.add_dependency(%q<ejs>, [">= 0"])
-      s.add_dependency(%q<jsmin>, ["~> 1.0.1"])
-      s.add_dependency(%q<rspec>, ["~> 2.8.0"])
+      s.add_dependency(%q<jsmin>, [">= 0"])
+      s.add_dependency(%q<rspec>, [">= 0"])
       s.add_dependency(%q<nyan-cat-formatter>, [">= 0"])
       s.add_dependency(%q<unicorn-formatter>, [">= 0"])
       s.add_dependency(%q<bundler>, [">= 0"])
-      s.add_dependency(%q<jeweler>, ["~> 1.8.3"])
+      s.add_dependency(%q<jeweler>, [">= 0"])
       s.add_dependency(%q<jsmin>, [">= 0"])
       s.add_dependency(%q<listen>, [">= 0"])
     end
   else
     s.add_dependency(%q<listen>, [">= 0"])
     s.add_dependency(%q<ejs>, [">= 0"])
-    s.add_dependency(%q<jsmin>, ["~> 1.0.1"])
-    s.add_dependency(%q<rspec>, ["~> 2.8.0"])
+    s.add_dependency(%q<jsmin>, [">= 0"])
+    s.add_dependency(%q<rspec>, [">= 0"])
     s.add_dependency(%q<nyan-cat-formatter>, [">= 0"])
     s.add_dependency(%q<unicorn-formatter>, [">= 0"])
     s.add_dependency(%q<bundler>, [">= 0"])
-    s.add_dependency(%q<jeweler>, ["~> 1.8.3"])
+    s.add_dependency(%q<jeweler>, [">= 0"])
     s.add_dependency(%q<jsmin>, [">= 0"])
     s.add_dependency(%q<listen>, [">= 0"])
   end
