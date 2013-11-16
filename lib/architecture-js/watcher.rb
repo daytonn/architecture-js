@@ -5,17 +5,16 @@ module ArchitectureJS
 
     def initialize(project)
       @project = project
-      @listener = Listen.to(@project.root)
+      @listener = Listen.to(@project.root) do |modified, added, removed|
+        update_files(modified, "modified") if modified.length > 0
+        update_files(added, "added") if added.length > 0
+        update_files(removed, "deleted") if removed.length > 0
+      end
       @listener.ignore(/#{@project.config[:build_dir]}/)
-               .change do |modified, added, removed|
-                 update_files(modified, "modified") if modified.length > 0
-                 update_files(added, "added") if added.length > 0
-                 update_files(removed, "deleted") if removed.length > 0
-               end
     end
 
     def watch(message = false)
-      @listener.start(false)
+      @listener.start
       puts ArchitectureJS::Notification.log message if message
       self
     end
