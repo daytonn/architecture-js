@@ -7,9 +7,8 @@ module ArchitectureJS
       @project = project
       @listener = Listen.to(@project.root)
       @listener.ignore(/#{@project.config[:build_dir]}/)
-               .filter(/\.jst?$|\.blueprint$/)
                .change do |modified, added, removed|
-                 update_files(modified, "modified") if modified.length > 0 
+                 update_files(modified, "modified") if modified.length > 0
                  update_files(added, "added") if added.length > 0
                  update_files(removed, "deleted") if removed.length > 0
                end
