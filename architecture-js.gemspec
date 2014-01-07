@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "architecture-js"
-  s.version = "0.6.2"
+  s.version = "0.6.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Dayton Nolan"]
-  s.date = "2013-11-16"
+  s.date = "2014-01-07"
   s.description = "Architecture.js helps you generate scaffolding, manage third-party packages, compile, and compress your application."
   s.email = "daytonn@gmail.com"
   s.executables = ["architect"]
@@ -114,6 +114,7 @@ Gem::Specification.new do |s|
     "spec/notification_spec.rb",
     "spec/spec_helper.rb",
     "spec/templates_spec.rb",
+    "spec/watcher_spec.rb",
     "templates/templates_file.erb",
     "travis.yml"
   ]
@@ -133,6 +134,7 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<rspec>, [">= 0"])
       s.add_development_dependency(%q<nyan-cat-formatter>, [">= 0"])
       s.add_development_dependency(%q<unicorn-formatter>, [">= 0"])
+      s.add_development_dependency(%q<fuubar>, [">= 0"])
       s.add_development_dependency(%q<bundler>, [">= 0"])
       s.add_development_dependency(%q<jeweler>, [">= 0"])
       s.add_runtime_dependency(%q<jsmin>, [">= 0"])
@@ -144,6 +146,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<rspec>, [">= 0"])
       s.add_dependency(%q<nyan-cat-formatter>, [">= 0"])
       s.add_dependency(%q<unicorn-formatter>, [">= 0"])
+      s.add_dependency(%q<fuubar>, [">= 0"])
       s.add_dependency(%q<bundler>, [">= 0"])
       s.add_dependency(%q<jeweler>, [">= 0"])
       s.add_dependency(%q<jsmin>, [">= 0"])
@@ -156,6 +159,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<rspec>, [">= 0"])
     s.add_dependency(%q<nyan-cat-formatter>, [">= 0"])
     s.add_dependency(%q<unicorn-formatter>, [">= 0"])
+    s.add_dependency(%q<fuubar>, [">= 0"])
     s.add_dependency(%q<bundler>, [">= 0"])
     s.add_dependency(%q<jeweler>, [">= 0"])
     s.add_dependency(%q<jsmin>, [">= 0"])
