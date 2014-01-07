@@ -40,7 +40,7 @@ module Architect
     def create
       app_name = @args.first
       if @args[1]
-        sub_dir = @args[1] unless @args[1].match /^-/
+        sub_dir = @args[1] unless @args[1].match(/^-/)
       end
       blueprint = @options[:blueprint]
 
@@ -68,7 +68,7 @@ module Architect
     def watch
       @project = ArchitectureJS::Blueprint.init_with_config(@root)
       @project.update
-      @watcher = @project.watch("architect is watching for changes. Type 'quit' to stop.")
+      @watcher = @project.watch("architect is watching for changes. Type 'quit' or 'exit' to stop.")
       start_interactive_session
     rescue Exception => e
       puts ArchitectureJS::Notification.error e.message
@@ -86,14 +86,14 @@ module Architect
       def start_interactive_session
         @command = ''
 
-        while not @command =~ /^quit$/
+        while not @command =~ /^(quit|exit)$/
           print ArchitectureJS::Notification.prompt
           @command = gets.chomp
           args = @command.split(/\s/)
           parse_command args
 
           case @command
-          when /^quit$/
+          when /^(quit|exit)$/
             @watcher.stop
           when /help/
             puts 'Interactive commands:'
@@ -118,7 +118,7 @@ module Architect
 
       def parse_interactive_options(args = [])
         @options = {}
-        
+
         args.each do |option|
           case option
           when /\-c|\-\-compress/

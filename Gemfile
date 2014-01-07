@@ -7,13 +7,13 @@ gem "jsmin"
 group :test do
   gem "simplecov"
   gem 'rb-fsevent'
-  gem 'guard-rspec'
 end
 
 group :development do
   gem "rspec"
   gem "nyan-cat-formatter"
   gem "unicorn-formatter"
+  gem "fuubar"
   gem "bundler"
   gem "jeweler"
 end
